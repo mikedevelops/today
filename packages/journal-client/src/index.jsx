@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { App } from './components/App/App'
 
-const App = () => <pre>Hello, World!</pre>;
 const root = document.getElementById('root');
 
 ReactDOM.render(<App/>, root);
