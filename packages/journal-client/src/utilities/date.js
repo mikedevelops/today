@@ -38,4 +38,38 @@ const createFormatToday = (days, months) => {
     };
 };
 
+/**
+ * Format today's date
+ * @type {function(Date): string}
+ */
 export const formatToday = createFormatToday(DAYS, MONTHS);
+
+/**
+ * Create month label function
+ * @param months
+ * @returns {function(*): *}
+ */
+const createGetMonthLabel = months => month => months[month];
+
+/**
+ * Get month label
+ */
+export const getMonthLabel = createGetMonthLabel(MONTHS);
+
+/**
+ * Get the calendar days in a month
+ * @param {int} month
+ * @param {int} year
+ */
+export const getCalendarDaysInMonth = (month, year) => {
+    const last = new Date(year, month + 1, 0);
+    const days = [];
+
+    for (let d = 1; d <= last.getDate(); d += 1) {
+        days.push(
+            (new Date(year, month + 1, d)).getTime(),
+        );
+    }
+
+    return days;
+};
