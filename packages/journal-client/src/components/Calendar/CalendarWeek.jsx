@@ -2,12 +2,16 @@ import React from 'react';
 
 export const CalendarWeek = ({ days }) => {
     return (
-        <div className="calendar__week">
+        <div className="calendar-week">
             { days.map(d => {
-                const className = 'calendar__day' + (d.entry ? ' calendar__day--entry' : '');
-                const date = new Date(d.date).getDate();
+                const date = new Date(d.date).toDateString();
 
-                return <span className={className} key={d.date}>{ date }</span>;
+                return (
+                    <div className={'calendar-day' + (d.entry ? ' calendar-day--entry' : '')} key={d.date}>
+                        <span className="visually-hidden">{ date }</span>
+                        <div className={'calendar-day__icon' + (d.entry ? ' calendar-day__icon--entry' : '') }/>
+                    </div>
+                );
             }) }
         </div>
     )

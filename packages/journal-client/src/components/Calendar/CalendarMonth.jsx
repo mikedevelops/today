@@ -6,17 +6,23 @@ export const CalendarMonth = ({ month, year, entries }) => {
     const days = getCalendarDaysInMonth(month, year);
     const weeks = [];
     let weekDays = [];
+    let d = 1;
 
     days.forEach((day, index) => {
         weekDays.push({ date: day, entry: null });
 
-        if (index + 1 % 7 === 0) {
+        if (d === 7) {
            weeks.push(<CalendarWeek key={day} days={weekDays}/>);
            weekDays = [];
+           d = 1;
+
+           return;
         }
+
+        d++;
     });
 
     weeks.push(<CalendarWeek key="leftovers" days={weekDays}/>);
 
-    return <div className="calendar__month"><pre>{ getMonthLabel(month) }</pre>{ weeks }</div>;
+    return <div className="calendar-month">{ weeks }</div>;
 }

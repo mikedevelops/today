@@ -5,7 +5,7 @@ const DAYS = [
     'Wednesday',
     'Thursday',
     'Friday',
-    'Saturday'
+    'Saturday',
 ];
 
 const MONTHS = [
@@ -20,11 +20,11 @@ const MONTHS = [
     'September',
     'October',
     'November',
-    'December'
+    'December',
 ];
 
 /**
- *
+ * Format today's date
  * @param {string[]} days
  * @param {string[]} months
  * @returns {function(Date): string}
@@ -62,12 +62,12 @@ export const getMonthLabel = createGetMonthLabel(MONTHS);
  * @param {int} year
  */
 export const getCalendarDaysInMonth = (month, year) => {
-    const last = new Date(year, month + 1, 0);
+    const last = new Date(year, month, 0);
     const days = [];
 
     for (let d = 1; d <= last.getDate(); d += 1) {
         days.push(
-            (new Date(year, month + 1, d)).getTime(),
+            (new Date(year, month, d)).getTime(),
         );
     }
 
