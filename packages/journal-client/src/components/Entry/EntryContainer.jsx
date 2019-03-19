@@ -1,39 +1,14 @@
 import React from 'react';
-import { Entry } from './Entry'
+import { connect } from 'react-redux';
+import Entry from './Entry';
+import { saveEntry } from '../../actions/entryActions';
 
-export class EntryContainer extends React.Component {
-    constructor (props) {
-        super(props);
+const mapStateToProps = (state) => {
+    return state;
+};
 
-        this.state = {
-            editMode: true,
-            entry: []
-        };
+const mapDispatchToProps = (dispatch) => ({
+    submit: entry => dispatch(saveEntry(entry)),
+});
 
-        this.handleSubmitBound = this.handleSubmit.bind(this);
-        this.handleEditBound = this.handleEdit.bind(this);
-    }
-
-    handleSubmit (entry) {
-        this.setState({
-            entry: entry.split('\n'),
-            editMode: false
-        });
-    }
-
-
-    handleEdit () {
-        this.setState(state => ({
-            editMode: !state.editMode
-        }));
-    }
-
-    render () {
-        return <Entry
-            edit={this.handleEditBound}
-            submit={this.handleSubmitBound}
-            entry={this.state.entry}
-            editMode={this.state.editMode}
-        />;
-    }
-}
+export default connect(mapStateToProps, mapDispatchToProps)(Entry);

@@ -1,9 +1,9 @@
 import React from 'react';
-import { EntryContainer } from '../Entry/EntryContainer';
+import EntryContainer from '../Entry/EntryContainer';
 import { Today } from '../Date/Today'
 import { Calendar } from '../Calendar/Calendar'
 
-export class App extends React.Component {
+export default class App extends React.Component {
     render () {
         return (
             <div className="app">
