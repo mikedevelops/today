@@ -7,9 +7,13 @@ export class App extends React.Component {
     render () {
         return (
             <div className="app">
-                <Today date={new Date()}/>
-                <EntryContainer/>
-                <Calendar today={new Date(2019, 11, 31)}/>
+                <div className="main">
+                    <Today date={new Date()}/>
+                    <EntryContainer/>
+                </div>
+                <div className="sidebar">
+                    <Calendar today={new Date(2019, 11, 31)}/>
+                </div>
             </div>
         )
     }
