@@ -1,7 +1,8 @@
-import { SAVE_ENTRY } from '../actions/entryActions';
+import { SAVE_ENTRY, EDIT_ENTRY } from '../actions/entryActions';
 
 const initialState = {
     entries: [],
+    edit: true,
 };
 
 export default (state = initialState, action) => {
@@ -9,6 +10,11 @@ export default (state = initialState, action) => {
     case SAVE_ENTRY:
         return Object.assign({}, state, {
             entries: [...state.entries, action.entry],
+            edit: false,
+        });
+    case EDIT_ENTRY:
+        return Object.assign({}, state, {
+            edit: true,
         });
     default:
         return state;

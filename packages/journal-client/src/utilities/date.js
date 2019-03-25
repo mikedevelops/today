@@ -62,14 +62,31 @@ export const getMonthLabel = createGetMonthLabel(MONTHS);
  * @param {int} year
  */
 export const getCalendarDaysInMonth = (month, year) => {
-    const last = new Date(year, month, 0);
+    const last = new Date(year, month + 1, 0);
     const days = [];
 
-    for (let d = 1; d <= last.getDate(); d += 1) {
-        days.push(
-            (new Date(year, month, d)).getTime(),
-        );
+    for (let d = 1; d <= last.getDate(); d ++) {
+        const date = new Date(year, month, d);
+
+        days.push(date);
     }
 
     return days;
+};
+
+/**
+ * Determine if a date is today
+ * @param {Date} date
+ * @param {Date} today
+ */
+export const isToday = (date, today) => {
+    if (date.getFullYear() !== today.getFullYear()) {
+        return false;
+    }
+
+    if (date.getMonth() !== today.getMonth()) {
+        return false;
+    }
+
+    return date.getDate() === today.getDate();
 };

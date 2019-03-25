@@ -1,4 +1,4 @@
-import { getCalendarDaysInMonth } from '../../src/utilities/date';
+import { getCalendarDaysInMonth, isToday } from '../../src/utilities/date'
 
 describe('Date Utilities', () => {
     describe('getCalendarDaysInMonth', () => {
@@ -18,11 +18,20 @@ describe('Date Utilities', () => {
         ];
 
         days.forEach(([month, totalDays], index) => {
-            it(`Should have correct length of days for ${month} (2018)`, () => {
+            test(`Should have correct length of days for ${month} (2018)`, () => {
                 const m = getCalendarDaysInMonth(index, 2018);
 
                 expect(m).toHaveLength(totalDays);
             });
+        });
+    });
+
+    describe('isToday', () => {
+        test('Should return true if it is today', () => {
+            const today = new Date(1988, 9, 3);
+            const date = new Date(1988, 9, 3, 12, 45, 32);
+
+            expect(isToday(date, today)).toBeTruthy();
         });
     });
 });

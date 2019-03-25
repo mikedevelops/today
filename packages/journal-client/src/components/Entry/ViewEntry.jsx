@@ -1,9 +1,16 @@
 import React from 'react';
 
-export const ViewEntry = ({ entry }) => {
+/**
+ * @param {Entry} entry
+ * @param {function} handleEdit
+ * @returns {React.Element}
+ * @constructor
+ */
+export const ViewEntry = ({ entry, handleEdit }) => {
     return (
         <div className="entry-view">
-            <pre>entry...</pre>
+            <pre>{ entry.getContents() }</pre>
+            <button onClick={handleEdit}>Edit</button>
         </div>
-    )
+    );
 };

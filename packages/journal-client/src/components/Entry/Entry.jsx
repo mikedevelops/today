@@ -1,18 +1,29 @@
 import React from 'react';
 import { EditEntry } from './EditEntry'
 import entryFactory from '../../factories/entryFactory';
+import { ViewEntry } from './ViewEntry'
 
-export default ({ submit}) => {
-    const handleSubmit = event => {
+/**
+ * @param {function} handleSubmit
+ * @param {bool} edit
+ * @param {Entry} entry
+ * @param {function} handleEdit
+ * @returns {React.Element}
+ */
+export default ({ handleSubmit, edit, entry, handleEdit }) => {
+    const onSubmit = event => {
         const data = new FormData(event.target);
 
         event.preventDefault();
-        submit(entryFactory(new Date(), data.get('entry')));
+        handleSubmit(entryFactory(new Date(), data.get('entry')));
     };
 
     return (
         <div className="entry">
-            <EditEntry submit={handleSubmit} entry={''}/>
+            { edit ?
+                <EditEntry submit={onSubmit} entry={entry}/> :
+                <ViewEntry handleEdit={handleEdit} entry={entry}/>
+            }
         </div>
     )
 };
