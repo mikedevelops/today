@@ -1,18 +1,18 @@
-import React from 'react';
-import { getCalendarDaysInMonth, getMonthLabel } from '../../utilities/date'
-import { CalendarWeek } from './CalendarWeek';
+import React from 'react'
+import { getCalendarDaysInMonth } from '../../utilities/date'
+import { CalendarWeek } from './CalendarWeek'
 
-export const CalendarMonth = ({ month, year, entries }) => {
+export const CalendarMonth = ({ month, year }) => {
     const days = getCalendarDaysInMonth(month, year);
     const weeks = [];
     let weekDays = [];
     let d = 1;
 
-    days.forEach((day, index) => {
+    days.forEach((day) => {
         weekDays.push({ date: day, entry: null });
 
         if (d === 7) {
-           weeks.push(<CalendarWeek key={day} days={weekDays}/>);
+           weeks.push(<CalendarWeek key={'week_' + day.getTime()} days={weekDays}/>);
            weekDays = [];
            d = 1;
 

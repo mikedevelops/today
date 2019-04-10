@@ -5,7 +5,7 @@ export const Calendar = ({ today }) => {
     const months = [];
 
     for (let m = 0; m <= today.getMonth(); m++) {
-        months.push(<CalendarMonth entries={[]} month={m} year={today.getFullYear()}/>)
+        months.push(<CalendarMonth key={'month_' + m} entries={[]} month={m} year={today.getFullYear()}/>)
     }
 
     return (

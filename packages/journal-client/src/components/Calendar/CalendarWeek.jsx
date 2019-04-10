@@ -1,18 +1,10 @@
 import React from 'react';
+import { CalendarDay } from './CalendarDay'
 
-export const CalendarWeek = ({ days }) => {
+export const CalendarWeek = ({ days })=> {
     return (
         <div className="calendar-week">
-            { days.map(d => {
-                const date = new Date(d.date).toDateString();
-
-                return (
-                    <div className={'calendar-day' + (d.entry ? ' calendar-day--entry' : '')} key={d.date}>
-                        <span className="visually-hidden">{ date }</span>
-                        <div className={'calendar-day__icon' + (d.entry ? ' calendar-day__icon--entry' : '') }/>
-                    </div>
-                );
-            }) }
+            { days.map(d => <CalendarDay key={'day_' + d.date.getTime()} date={d.date} entry={d.entry}/>) }
         </div>
-    )
+    );
 };
