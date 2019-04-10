@@ -4,7 +4,7 @@ import { leadingZero } from '../../utilities/number'
 export const CalendarDay = ({ date, entry }) => {
     return (
         <div className={'calendar-day' + (entry ? ' calendar-day--entry' : '')} key={date.toString()}>
-            <pre>{ leadingZero(date.getDate()) }</pre>
+            <span>{ leadingZero(date.getDate()) }</span>
         </div>
     );
 };
