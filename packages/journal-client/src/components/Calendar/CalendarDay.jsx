@@ -3,7 +3,7 @@ import { leadingZero } from '../../utilities/number'
 
 export const CalendarDay = ({ date, entry }) => {
     return (
-        <div className={'calendar-day' + (entry ? ' calendar-day--entry' : '')} key={date.toString()}>
+        <div className={'calendar-day' + (entry ? ' calendar-day--entry' : '')}>
             <span>{ leadingZero(date.getDate()) }</span>
         </div>
     );

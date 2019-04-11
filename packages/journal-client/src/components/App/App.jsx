@@ -1,7 +1,7 @@
 import React from 'react';
 import EntryContainer from '../Entry/EntryContainer';
 import { Today } from '../Date/Today'
-import { Calendar } from '../Calendar/Calendar'
+import CalendarContainer from '../Calendar/CalendarContainer';
 
 export default class App extends React.Component {
     render () {
@@ -12,7 +12,7 @@ export default class App extends React.Component {
                     <EntryContainer/>
                 </div>
                 <div className="sidebar">
-                    <Calendar today={new Date(2019, 11, 31)}/>
+                    <CalendarContainer/>
                 </div>
             </div>
         )
