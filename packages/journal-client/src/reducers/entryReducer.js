@@ -6,7 +6,7 @@ import { generateRandomEntries } from '../utilities/entry';
 const randomEntries = generateRandomEntries(getDatesInRange(moment('1-1-2019'), moment(new Date()).subtract(1, 'days')), 0.33);
 const initialState = {
     items: randomEntries,
-    edit: true,
+    edit: false,
 };
 
 export default (state = initialState, action) => {

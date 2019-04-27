@@ -23,6 +23,8 @@
     "parcel": "^1.12.3"
   },
   "dependencies": {
+    "connected-react-router": "^6.4.0",
+    "history": "^4.9.0",
     "lorem-ipsum": "^2.0.1",
     "moment": "^2.24.0",
     "react": "^16.8.3",

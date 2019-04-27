@@ -12,19 +12,28 @@
             font-family: "Helvetica Neue", sans-serif;
         }
 
+        h2 {
+            margin: 0 0 1rem;
+        }
+
+        h3 {
+            margin: 0 0 0.5rem;
+        }
+
         .app {
             display: flex;
             margin: 0 auto;
+            width: 100%;
         }
 
         .main {
-            border: 1px solid red;
             padding: 3rem;
         }
 
         .sidebar {
-            border: 1px solid blue;
             padding: 3rem;
+            flex-shrink: 0;
+            margin-left: auto;
         }
 
         .calendar-week {

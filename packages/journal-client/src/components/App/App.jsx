@@ -9,7 +9,9 @@ export default class App extends React.Component {
             <BrowserRouter>
                 <div className="app">
                     <div className="main">
-                        <EntryContainer/>
+                        <Route path="/entry/:date" component={(props) =>
+                            <EntryContainer date={props.match.params.date}/>
+                        }/>
                     </div>
                     <div className="sidebar">
                         <CalendarContainer/>

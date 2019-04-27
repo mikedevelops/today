@@ -1,16 +1,14 @@
-import { connect } from 'react-redux';
 import moment from 'moment';
+import { connect } from 'react-redux';
 import Entry from './Entry';
-import { editEntry, saveEntry } from '../../actions/entryActions';
 
-const mapStateToProps = (state) => ({
-    entry: state.entry.items[state.date.today],
-    edit: state.entry.edit,
-});
+const mapStateToProps = (state, props) => {
+    const date = moment(props.date, 'DD-MM-YYYY').toDate();
 
-const mapDispatchToProps = (dispatch) => ({
-    handleSubmit: entry => dispatch(saveEntry(entry)),
-    handleEdit: () => dispatch(editEntry()),
-});
+    return {
+        entry: state.entry.items[date],
+        edit: state.entry.edit,
+    };
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(Entry);
+export default connect(mapStateToProps)(Entry);
