@@ -1,37 +1,19 @@
-import { getCalendarDaysInMonth, isToday } from '../../src/utilities/date'
+import moment from 'moment';
+import { getDatesInRange } from '../../src/utilities/date';
 
 describe('Date Utilities', () => {
-    describe('getCalendarDaysInMonth', () => {
-        const days = [
-            ['jan', 31],
-            ['feb', 28],
-            ['mar', 31],
-            ['apr', 30],
-            ['may', 31],
-            ['jun', 30],
-            ['jul', 31],
-            ['aug', 31],
-            ['sep', 30],
-            ['oct', 31],
-            ['nov', 30],
-            ['dec', 31],
-        ];
+    describe('getDatesInRange', () => {
+        test('should return dates in a given range', () => {
+            const xmasEve = new Date(2018, 11, 24);
+            const xmas = new Date(2018, 11, 25);
+            const boxingDay = new Date(2018, 11, 26);
 
-        days.forEach(([month, totalDays], index) => {
-            test(`Should have correct length of days for ${month} (2018)`, () => {
-                const m = getCalendarDaysInMonth(index, 2018);
+            const range = getDatesInRange(moment(xmasEve), moment(boxingDay));
 
-                expect(m).toHaveLength(totalDays);
-            });
-        });
-    });
-
-    describe('isToday', () => {
-        test('Should return true if it is today', () => {
-            const today = new Date(1988, 9, 3);
-            const date = new Date(1988, 9, 3, 12, 45, 32);
-
-            expect(isToday(date, today)).toBeTruthy();
+            expect(range).toHaveLength(3);
+            expect(range[0].toDate()).toEqual(xmasEve);
+            expect(range[1].toDate()).toEqual(xmas);
+            expect(range[2].toDate()).toEqual(boxingDay);
         });
     });
 });

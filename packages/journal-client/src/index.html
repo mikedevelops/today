@@ -9,6 +9,7 @@
     <style>
         #root {
             display: flex;
+            font-family: "Helvetica Neue", sans-serif;
         }
 
         .app {
@@ -26,6 +27,14 @@
             padding: 3rem;
         }
 
+        .calendar-week {
+            text-align: left;
+        }
+
+        .calendar-week:last-child {
+            text-align: right;
+        }
+
         .calendar-day {
             display: inline-block;
             font-family: monospace;
@@ -40,6 +49,12 @@
 
         .calendar-month {
             margin-bottom: 1rem;
+        }
+
+        .calendar-month__label {
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            margin-bottom: .75rem;
         }
     </style>
 </head>

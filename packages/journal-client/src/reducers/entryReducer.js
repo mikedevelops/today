@@ -1,7 +1,11 @@
-import { SAVE_ENTRY, EDIT_ENTRY } from '../actions/entryActions';
+import moment from 'moment';
+import { EDIT_ENTRY, SAVE_ENTRY } from '../actions/entryActions';
+import { getDatesInRange } from '../utilities/date';
+import { generateRandomEntries } from '../utilities/entry';
 
+const randomEntries = generateRandomEntries(getDatesInRange(moment('1-1-2019'), moment(new Date())), 0.33);
 const initialState = {
-    entries: [],
+    items: randomEntries,
     edit: true,
 };
 
@@ -9,7 +13,7 @@ export default (state = initialState, action) => {
     switch (action.type) {
     case SAVE_ENTRY:
         return Object.assign({}, state, {
-            entries: [...state.entries, action.entry],
+            items: Object.assign({}, state.items, { [action.entry.date]: action.entry }),
             edit: false,
         });
     case EDIT_ENTRY:

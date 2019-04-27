@@ -1,14 +1,15 @@
-import React from 'react'
-import { CalendarMonth } from './CalendarMonth'
-import { getDatesInRange } from '../../utilities/date'
-import { CalendarWeek } from './CalendarWeek'
-import { CalendarDay } from './CalendarDay'
+import React from 'react';
+import { CalendarMonth } from './CalendarMonth';
+import { getDatesInRange } from '../../utilities/date';
+import { CalendarWeek } from './CalendarWeek';
+import { CalendarDay } from './CalendarDay';
+import moment from 'moment';
 
 export default ({ today, entries }) => {
     /**
      * @type {Moment[]}
      */
-    const dates = getDatesInRange(new Date(today.getFullYear(), 0), new Date());
+    const dates = getDatesInRange(today.clone().startOf('year'), today);
     const calendarMatrix = {};
 
     dates.forEach(date => {
@@ -26,13 +27,14 @@ export default ({ today, entries }) => {
     return (
         <div className="calendar">
             {
-                Object.keys(calendarMatrix).map(m =>
+                Object.keys(calendarMatrix).reverse().map(m =>
                     <CalendarMonth key={`month_${m}`}>
+                        <h3 className="calendar-month__label">{ moment().month(m).format('MMMM') }</h3>
                         {
-                            Object.keys(calendarMatrix[m]).map(w =>
+                            Object.keys(calendarMatrix[m]).reverse().map(w =>
                                 <CalendarWeek key={`month_${m}_week_${w}`}>
                                     {
-                                        calendarMatrix[m][w].map(d =>
+                                        calendarMatrix[m][w].reverse().map(d =>
                                             <CalendarDay
                                                 key={`month_${m}_week_${w}_day_${d}`}
                                                 date={d.toDate()}

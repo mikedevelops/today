@@ -1,5 +1,7 @@
+import moment from 'moment';
+
 const defaultState = {
-    today: new Date(),
+    today: moment().startOf('days'),
 };
 
 export default (state = defaultState, action) => {
