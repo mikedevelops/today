@@ -37,7 +37,7 @@ export default ({ today, entries }) => {
                                         calendarMatrix[m][w].reverse().map(d =>
                                             <CalendarDay
                                                 key={`month_${m}_week_${w}_day_${d}`}
-                                                date={d.toDate()}
+                                                date={d}
                                                 entry={entries[d.toDate()]}
                                             />
                                         )

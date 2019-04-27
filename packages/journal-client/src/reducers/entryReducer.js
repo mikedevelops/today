@@ -3,7 +3,7 @@ import { EDIT_ENTRY, SAVE_ENTRY } from '../actions/entryActions';
 import { getDatesInRange } from '../utilities/date';
 import { generateRandomEntries } from '../utilities/entry';
 
-const randomEntries = generateRandomEntries(getDatesInRange(moment('1-1-2019'), moment(new Date())), 0.33);
+const randomEntries = generateRandomEntries(getDatesInRange(moment('1-1-2019'), moment(new Date()).subtract(1, 'days')), 0.33);
 const initialState = {
     items: randomEntries,
     edit: true,
