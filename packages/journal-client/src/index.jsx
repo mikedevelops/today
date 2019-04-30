@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/App/App';
 import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
+import { Provider, connect } from 'react-redux';
 import entryReducer from './reducers/entryReducer';
 import dateReducer from './reducers/dateReducer';
 import { createBrowserHistory } from 'history';
@@ -16,10 +16,12 @@ const store = createStore(combineReducers({
     router: connectRouter(history)
 }));
 
+const ConnectedApp = connect(state => state)(App);
+
 ReactDOM.render(
     <Provider store={store}>
         <ConnectedRouter history={history}>
-            <App/>
+            <ConnectedApp/>
         </ConnectedRouter>
     </Provider>,
     root

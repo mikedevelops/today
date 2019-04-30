@@ -16,3 +16,25 @@ export const generateRandomEntries = (dates, chance = 0.5) => {
 
     return entries;
 };
+
+/**
+ * @param {Date} date
+ * @param {Object<Date, Entry>} entries
+ * @return Entry|null
+ */
+export const getEntry = (date, entries) => {
+    if (entries[date] === undefined) {
+        return null;
+    }
+
+    return entries[date];
+};
+
+/**
+ * @param {Date} date
+ * @param {Object<Date, Entry>} entries
+ * @return {boolean}
+ */
+export const hasEntry = (date, entries) => {
+    return Object.hasOwnProperty.call(entries, date);
+};
