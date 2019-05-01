@@ -10,7 +10,7 @@ export const generateRandomEntries = (dates, chance = 0.5) => {
 
     dates.forEach((date) => {
         if (Math.random() <= chance) {
-            entries[date.toDate()] = entryFactory(date, loremIpsum({ count: 5, units: 'sentences' }));
+            entries[date.unix()] = entryFactory(date, loremIpsum({ count: 5, units: 'sentences' }));
         }
     });
 
@@ -18,23 +18,23 @@ export const generateRandomEntries = (dates, chance = 0.5) => {
 };
 
 /**
- * @param {Date} date
- * @param {Object<Date, Entry>} entries
+ * @param {number} id
+ * @param {Object<number, Entry>} entries
  * @return Entry|null
  */
-export const getEntry = (date, entries) => {
-    if (entries[date] === undefined) {
+export const getEntry = (id, entries) => {
+    if (entries[id] === undefined) {
         return null;
     }
 
-    return entries[date];
+    return entries[id];
 };
 
 /**
- * @param {Date} date
- * @param {Object<Date, Entry>} entries
+ * @param {number} id
+ * @param {Object<number, Entry>} entries
  * @return {boolean}
  */
-export const hasEntry = (date, entries) => {
-    return Object.hasOwnProperty.call(entries, date);
+export const hasEntry = (id, entries) => {
+    return Object.hasOwnProperty.call(entries, id);
 };

@@ -12,6 +12,8 @@ export default ({ today, entries }) => {
     const dates = getDatesInRange(today.clone().startOf('year'), today);
     const calendarMatrix = {};
 
+    // Convert dates into a tree
+    // TODO: this should be a util
     dates.forEach(date => {
         if (calendarMatrix[date.month()] === undefined) {
             calendarMatrix[date.month()] = {};
@@ -38,7 +40,8 @@ export default ({ today, entries }) => {
                                             <CalendarDay
                                                 key={`month_${m}_week_${w}_day_${d}`}
                                                 date={d}
-                                                entry={entries[d.toDate()]}
+                                                entry={entries[d.unix()]}
+                                                today={today}
                                             />
                                         )
                                     }

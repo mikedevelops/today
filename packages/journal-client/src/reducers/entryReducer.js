@@ -13,7 +13,7 @@ export default (state = initialState, action) => {
     switch (action.type) {
     case SAVE_ENTRY:
         return Object.assign({}, state, {
-            items: Object.assign({}, state.items, { [action.entry.date]: action.entry }),
+            items: Object.assign({}, state.items, { [action.entry.getId()]: action.entry }),
             edit: false,
         });
     case EDIT_ENTRY:

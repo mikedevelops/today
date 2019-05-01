@@ -1,13 +1,15 @@
 import React from 'react';
 import EntryContainer from '../Entry/EntryContainer';
 import CalendarContainer from '../Calendar/CalendarContainer';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Redirect, Route } from 'react-router-dom'
 import { hasEntry } from '../../utilities/entry';
 import moment from 'moment';
+import TodayContainer from '../Entry/TodayContainer';
 
 export default class App extends React.Component {
     render () {
         const entries = this.props.entry.items;
+        const today = this.props.date.today;
 
         return (
             <BrowserRouter>
@@ -15,14 +17,15 @@ export default class App extends React.Component {
                     <div className="main">
                         <Route path="/entry/:date" component={(props) => {
                             const date = moment(props.match.params.date, 'DD-MM-YYYY');
+                            const id = date.unix();
 
-                            if (hasEntry(date.toDate(), entries)) {
-                                return <EntryContainer date={props.match.params.date}/>
+                            if (date.isSame(today) || !hasEntry(id, entries)) {
+                                return <Redirect to="/"/>;
                             }
 
-                            return <pre>404</pre>
+                            return <EntryContainer date={date}/>
                         }}/>
-                        <Route path="/" component={() => <pre>today</pre>}/>
+                        <Route exact={true} path="/" component={TodayContainer}/>
                     </div>
                     <div className="sidebar">
                         <CalendarContainer/>

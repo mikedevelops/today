@@ -1,8 +1,8 @@
 # Entries
 
-- [ ] Write entry
-- [ ] Save entry
-- [ ] Edit entry
+- [x] Write entry
+- [x] Save entry
+- [x] Edit today's entry
 
 # Calendar
 
