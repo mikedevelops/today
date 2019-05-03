@@ -1,10 +1,11 @@
 import React from 'react';
 
-export const Contents = ({ content }) => {
-    return (
-        <div>
-            <p>{ content }</p>
-            {/*// TODO: CARET component*/}
-        </div>
-    );
-};
+export class Contents extends React.Component {
+    render () {
+        return (
+            <div className="entry-contents">
+                <p>{ this.props.content }</p>
+            </div>
+        );
+    }
+}

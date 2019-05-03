@@ -47,12 +47,13 @@ export class ComposeEntry extends React.Component {
 
     render () {
         const compose = () => (
-            <div>
+            <div className="compose">
                 <form
                     ref={this.form}
                     onSubmit={this.submitEntry.bind(this)}
                     onKeyDown={debounce(this.autosave.bind(this), 1000)}>
                     <textarea
+                        className="compose__entry-input"
                         ref={this.content}
                         onBlur={this.submitEntry.bind(this)}
                         onKeyDown={this.handleInput.bind(this)}

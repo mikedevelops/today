@@ -36,7 +36,6 @@ class TodayWrapper extends React.Component {
     render () {
         return (
             <div>
-                <Contents content={this.state.content}/>
                 <ComposeEntry entry={this.todaysEntry} submit={this.props.submit} handleInput={this.handleInput.bind(this)}/>
             </div>
         )
