@@ -29,8 +29,8 @@ export class ComposeEntry extends React.Component {
             event.preventDefault();
         }
 
-        // Do not submit if the entry is empty
-        if (data.get('content').length === 0) {
+        // Do not submit if nothing has changed
+        if (data.get('content') === this.props.entry.getContents()) {
             return;
         }
 
