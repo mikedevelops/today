@@ -29,7 +29,12 @@ export class ComposeEntry extends React.Component {
             event.preventDefault();
         }
 
-        this.props.entry.setContents(data.get('entry'));
+        // Do not submit if the entry is empty
+        if (data.get('content').length === 0) {
+            return;
+        }
+
+        this.props.entry.setContents(data.get('content'));
         this.props.submit(this.props.entry);
     }
 
@@ -57,7 +62,7 @@ export class ComposeEntry extends React.Component {
                         ref={this.content}
                         onBlur={this.submitEntry.bind(this)}
                         onKeyDown={this.handleInput.bind(this)}
-                        name="entry"
+                        name="content"
                         defaultValue={this.props.entry.getContents()}/>
                 </form>
             </div>
