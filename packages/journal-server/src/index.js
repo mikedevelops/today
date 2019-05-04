@@ -35,12 +35,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session({ secret: process.env.SESSION_SECRET, resave: true, saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());
+
 app.use(entryRouter);
 app.use(authenticationRouter);
-
-app.get('/', (req, res) => {
-    res.json(req.user);
-});
 
 app.get('/status', (req, res) => {
     res.sendStatus(status.OK);
