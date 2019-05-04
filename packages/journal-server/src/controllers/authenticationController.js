@@ -29,3 +29,12 @@ module.exports.register = (req, res) => {
         res.json(user.toObject());
     });
 };
+
+/**
+ * @param {Request} req
+ * @param {Response} res
+ */
+module.exports.logout = (req, res) => {
+    req.logout();
+    res.redirect('/');
+};
