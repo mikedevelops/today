@@ -1,6 +1,6 @@
-const Entry = require('../schema/entrySchema');
-const logger = require('../services/logger');
 const status = require('http-status');
+const Entry = require('../models/Entry');
+const logger = require('../services/logger');
 const { handleMongooseException, handleResourceNotFound } = require('../utilities/errors');
 
 /**
