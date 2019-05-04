@@ -18,8 +18,7 @@ const PORT = 8080 || process.env.PORT;
 
 const { connection } = mongoose;
 
-// TODO: .env these params
-mongoose.connect('mongodb://localhost/journal', { useNewUrlParser: true });
+mongoose.connect(process.env.DB_HOST, { useNewUrlParser: true });
 
 connection.on('error', logger.error.bind(null));
 
@@ -33,7 +32,7 @@ connection.on('open', () => {
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(session({ secret: 'secret', resave: true, saveUninitialized: true }));
+app.use(session({ secret: process.env.SESSION_SECRET, resave: true, saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(entryRouter);
