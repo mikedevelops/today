@@ -8,7 +8,7 @@ const { handleMongooseException, handleResourceNotFound } = require('../utilitie
  * @param {Response} res
  */
 module.exports.listEntries = (req, res) => {
-    Entry.find({}, (error, entries) => {
+    Entry.find({ user: req.user.id }, (error, entries) => {
         if (error !== null) {
             return handleMongooseException(error, res, logger);
         }
@@ -42,9 +42,10 @@ module.exports.getEntry = (req, res) => {
  * @param {Response} res
  */
 module.exports.saveEntry = (req, res) => {
-    const { contents, date } = req.body;
+    const { content, date } = req.body;
+    const { id } = req.user;
 
-    Entry.create({ contents, date: new Date(date) }, (error, entry) => {
+    Entry.create({ content, date: new Date(date), user: id }, (error, entry) => {
         // TODO: handle duplicate key here better
         if (error !== null) {
             return res.status(status.INTERNAL_SERVER_ERROR).send(error.message);

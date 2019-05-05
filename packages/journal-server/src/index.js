@@ -1,43 +1,36 @@
+require('dotenv').config();
+
 const express = require('express');
-const session = require('express-session');
 const status = require('http-status');
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
 const passport = require('passport');
 const entryRouter = require('./routes/entries');
 const authenticationRouter = require('./routes/authentication');
 const logger = require('./services/logger');
+const db = require('./services/database');
+const emitter = require('./services/emitter');
+const debug = require('./middleware/debug');
 
 require('./services/authentication');
 
 const app = express();
 
-require('dotenv').config();
-
-const PORT = 8080 || process.env.PORT;
-
-const { connection } = mongoose;
-
-mongoose.connect(process.env.DB_HOST, { useNewUrlParser: true });
-
-connection.on('error', logger.error.bind(null));
-
-connection.on('open', () => {
-    logger.info('Connected to the database');
-
-    app.listen(PORT, () => {
-        logger.info(`Server running on ${8080}`);
-    });
-});
+logger.level = process.env.DEBUG ? 'debug' : 'info';
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(session({ secret: process.env.SESSION_SECRET, resave: true, saveUninitialized: true }));
 app.use(passport.initialize());
-app.use(passport.session());
 
+app.all('*', debug);
 app.use(entryRouter);
 app.use(authenticationRouter);
+
+db.connect(() => {
+    server = app.listen(process.env.PORT, () => {
+        logger.info(`Server started and listening on ${process.env.PORT}`);
+        emitter.emit('ready');
+    });
+});
 
 app.get('/status', (req, res) => {
     res.sendStatus(status.OK);
