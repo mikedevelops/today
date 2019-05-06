@@ -33,5 +33,9 @@
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
     "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "lorem-ipsum": "^2.0.1",
+    "meow": "^5.0.0"
   }
 }
