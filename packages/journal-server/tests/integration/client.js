@@ -1,5 +1,7 @@
 const request = require('request-promise');
 const logger = require('../../src/services/logger');
+const User = require('../../src/models/User');
+const Entry = require('../../src/models/Entry');
 
 /**
  * Build endpoint
@@ -17,27 +19,38 @@ const buildHeaders = token => ({ 'Authorization': `Bearer ${token}` });
 
 /**
  * Reset the test database
- * @param {Db} db
  */
-module.exports.cleanDatabase = async (db) => {
-    const collections = await db.listCollections().toArray();
-    const drops = collections.map(c => db.collection(c.name).drop());
-
-    logger.debug(`Reset database "${db.s.databaseName}"`);
-
-    return Promise.all(drops);
+module.exports.cleanDatabase = async () => {
+    await User.remove({});
+    logger.debug('Removed Users');
+    await Entry.remove({});
+    logger.debug('Removed Entries');
 };
 
 /**
  * Register a user
  * @param {string} username
  */
-module.exports.registerUser = (username) => {
-    return new Promise((resolve) => {
+module.exports.register = (username) => {
+    return new Promise((resolve, reject) => {
         request.post(buildRequest('register'), {
             form: { username, password: 'Admin123!' },
             json: true,
-        }).then(resolve);
+        }).then(resolve).catch(reject);
+    });
+};
+
+/**
+ * Log a user in
+ * @param {string} username
+ * @param {string} password
+ */
+module.exports.login = (username, password) => {
+    return new Promise((resolve, reject) => {
+        request.post(buildRequest('login'), {
+            form: { username, password },
+            json: true,
+        }).then(resolve).catch(reject);
     });
 };
 
@@ -48,12 +61,12 @@ module.exports.registerUser = (username) => {
  * @param {number} date
  */
 module.exports.saveEntry = (token, content, date) => {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
         request.post(buildRequest('entries'), {
             json: true,
             headers: buildHeaders(token),
             body: { content, date },
-        }).then(resolve);
+        }).then(resolve).catch(reject);
     });
 };
 

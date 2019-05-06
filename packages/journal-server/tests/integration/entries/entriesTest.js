@@ -28,7 +28,7 @@ describe('Entries integration', () => {
             const date = Date.now();
 
             client.saveEntry(global.users.mike.token, 'Hello, World!', date).then(entry => {
-                client.saveEntry(global.users.mike.token, 'Hello, World!', date).then(error => {
+                client.saveEntry(global.users.mike.token, 'Hello, World!', date).catch(() => {
                     done();
                 });
             });
