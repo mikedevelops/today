@@ -1,5 +1,5 @@
-export const SAVE_ENTRY = 'SAVE_ENTRY';
-export const EDIT_ENTRY = 'EDIT_ENTRY';
+export const ENTRY_SAVE = 'ENTRY_SAVE';
+export const ENTRY_EDIT = 'ENTRY_EDIT';
 
 /**
  * Save entry
@@ -7,7 +7,7 @@ export const EDIT_ENTRY = 'EDIT_ENTRY';
  * @returns {{type: string, entry: Entry}}
  */
 export const saveEntry = entry => ({
-    type: SAVE_ENTRY,
+    type: ENTRY_SAVE,
     entry,
 });
 
@@ -16,5 +16,5 @@ export const saveEntry = entry => ({
  * @returns {{type: string}}
  */
 export const editEntry = () => ({
-    type: EDIT_ENTRY,
+    type: ENTRY_EDIT,
 });

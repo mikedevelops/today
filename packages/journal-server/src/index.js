@@ -4,6 +4,7 @@ const express = require('express');
 const status = require('http-status');
 const bodyParser = require('body-parser');
 const passport = require('passport');
+const cors = require('cors');
 const entryRouter = require('./routes/entries');
 const authenticationRouter = require('./routes/authentication');
 const logger = require('./services/logger');
@@ -17,6 +18,7 @@ const app = express();
 
 logger.level = process.env.DEBUG ? 'debug' : 'info';
 
+app.use(cors({ origin: 'http://journal.local:1234' }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
