@@ -35,13 +35,13 @@ export const loginError = error => ({
 
 /**
  * Login request
- * @return {Function}
+ * @return {Function}§
  * @param loginData
  */
 export const login = loginData => dispatch => {
     dispatch(loginStart());
 
-    axios.post('http://localhost:8080/login', { body: loginData, json: true })
+    axios.post('http://localhost:8080/login', loginData)
         .then(({ data }) => {
             dispatch(saveUser(data));
             dispatch(loginSuccess(data));

@@ -1,4 +1,3 @@
-const status = require('http-status');
 const passport = require('passport');
 
 /**

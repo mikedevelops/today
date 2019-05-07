@@ -1,10 +1,13 @@
 import React from 'react';
 import { Redirect } from 'react-router';
+import { formDataToObject } from '../../utilities/form';
 
 export default ({ user, submit }) => {
     const handleSubmit = event => {
+        const data = new FormData(event.target);
+
         event.preventDefault();
-        submit(new FormData(event.target));
+        submit(formDataToObject(data));
     };
 
     // If the user has a token, redirect to home
@@ -15,10 +18,10 @@ export default ({ user, submit }) => {
     return (
         <form onSubmit={handleSubmit} className="auth">
             <label htmlFor="username">Email Address</label>
-            <input autoComplete="true" type="email" id="username"/>
+            <input autoComplete="true" name="username" type="email" id="username"/>
 
             <label htmlFor="password">Password</label>
-            <input autoComplete="true" type="password" id="password"/>
+            <input autoComplete="true" name="password" type="password" id="password"/>
 
             <button type="submit">Login</button>
         </form>

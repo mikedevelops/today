@@ -9,14 +9,21 @@ import LoginContainer from '../Authentication/LoginContainer';
 import LogoutContainer from '../Authentication/LogoutContainer';
 
 export default class App extends React.Component {
+    componentDidMount () {
+        this.props.hydrateEntries(this.props.user.token);
+    }
+
     render () {
         const entries = this.props.entry.items;
         const today = this.props.date.today;
         const { user } = this.props;
 
+        if (user.token === null && this.props.router.location.pathname !== '/login') {
+            return <Redirect to="/login"/>;
+        }
+
         return (
             <BrowserRouter>
-                {/* Clear storage and redirect */}
                 <Route path="/logout" component={LogoutContainer}/>
 
                 <div className="app">

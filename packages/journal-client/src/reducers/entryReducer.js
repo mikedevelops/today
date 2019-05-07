@@ -1,4 +1,6 @@
-import { ENTRY_EDIT, ENTRY_SAVE } from '../actions/entryActions';
+import { ENTRIES_GET_ALL_SUCCESS, ENTRY_EDIT, ENTRY_SAVE } from '../actions/entryActions';
+import moment from 'moment';
+import entryFactory from '../factories/entryFactory';
 
 const initialState = {
     items: {},
@@ -15,6 +17,16 @@ export default (state = initialState, action) => {
     case ENTRY_EDIT:
         return Object.assign({}, state, {
             edit: true,
+        });
+    case ENTRIES_GET_ALL_SUCCESS:
+        return Object.assign({}, state, {
+            items: action.entries.reduce((entries, entry) => {
+                const date = moment(entry.date);
+
+                entries[date.unix()] = entryFactory(date, entry.content);
+
+                return entries;
+            }, {}),
         });
     default:
         return state;
