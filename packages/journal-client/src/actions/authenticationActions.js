@@ -15,12 +15,10 @@ export const loginStart = () => ({
 
 /**
  * Successful login
- * @param user
  * @return {{type: string, user: *}}
  */
-export const loginSuccess = user => ({
+export const loginSuccess = () => ({
     type: LOGIN_SUCCESS,
-    user,
 });
 
 /**
@@ -35,7 +33,7 @@ export const loginError = error => ({
 
 /**
  * Login request
- * @return {Function}§
+ * @return {Function}
  * @param loginData
  */
 export const login = loginData => dispatch => {
@@ -44,7 +42,7 @@ export const login = loginData => dispatch => {
     axios.post('http://localhost:8080/login', loginData)
         .then(({ data }) => {
             dispatch(saveUser(data));
-            dispatch(loginSuccess(data));
+            dispatch(loginSuccess());
         }).catch(error => {
             dispatch(loginError(error));
         });
