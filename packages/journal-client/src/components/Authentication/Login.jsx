@@ -21,7 +21,7 @@ export default ({ user, submit }) => {
             <input autoComplete="true" name="username" type="email" id="username"/>
 
             <label htmlFor="password">Password</label>
-            <input autoComplete="true" name="password" type="password" id="password"/>
+            <input autoComplete="true" name="password" type="text" id="password"/>
 
             <button type="submit">Login</button>
         </form>
