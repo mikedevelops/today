@@ -2,14 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import thunk from 'redux-thunk';
 import App from './components/App/App';
-import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
-import { Provider, connect } from 'react-redux';
+import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
+import { connect, Provider } from 'react-redux';
 import entryReducer from './reducers/entryReducer';
 import dateReducer from './reducers/dateReducer';
 import userReducer from './reducers/userReducer';
 import { createBrowserHistory } from 'history';
-import { connectRouter, ConnectedRouter } from 'connected-react-router';
-import { getEntries } from './actions/entryActions';
+import { ConnectedRouter, connectRouter } from 'connected-react-router';
 
 const root = document.getElementById('root');
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -21,12 +20,14 @@ const store = createStore(combineReducers({
     user: userReducer,
 }), composeEnhancers(applyMiddleware(thunk)));
 
-const mapDispatchToProps = dispatch => {
+const appProps = ({ user, router }) => {
     return {
-        hydrateEntries: token => dispatch(getEntries(token)),
+        user,
+        router,
     }
 };
-const ConnectedApp = connect(state => state, mapDispatchToProps)(App);
+
+const ConnectedApp = connect(appProps)(App);
 
 ReactDOM.render(
     <Provider store={store}>

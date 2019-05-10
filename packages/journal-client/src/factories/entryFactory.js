@@ -1,7 +1,7 @@
 import Entry from '../entities/Entry';
 
 /**
- * @param {Moment.moment} date
+ * @param {moment.Moment} date
  * @param {string} content
  * @return {Entry}
  */

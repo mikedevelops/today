@@ -1,12 +1,12 @@
 import React from 'react';
+import moment from 'moment';
 import { Redirect, Route } from 'react-router';
-import moment from './App';
 import { hasEntry } from '../../utilities/entry';
 import EntryContainer from '../Entry/EntryContainer';
 import TodayContainer from '../Entry/TodayContainer';
 import CalendarContainer from '../Calendar/CalendarContainer';
 
-export default () => {
+export default ({ today, entries, user }) => {
     return (
         <div className="dashboard">
             <div className="main">
@@ -24,9 +24,9 @@ export default () => {
                 <Route exact={true} path="/" component={TodayContainer}/>
             </div>
 
-            <Route path="/" exact={true} component={() => {
-                return <div className="sidebar"><CalendarContainer/></div>;
-            }}/>
+            <div className="sidebar">
+                { user.token && <Route path="/" component={CalendarContainer}/> }
+            </div>
         </div>
     );
-};
+}

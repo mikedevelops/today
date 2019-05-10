@@ -5,52 +5,63 @@ import { CalendarWeek } from './CalendarWeek';
 import { CalendarDay } from './CalendarDay';
 import moment from 'moment';
 
-export default ({ today, entries }) => {
-    /**
-     * @type {Moment[]}
-     */
-    const dates = getDatesInRange(today.clone().startOf('year'), today);
-    const calendarMatrix = {};
+export default class Calendar extends React.Component {
+    constructor (props) {
+        super(props);
 
-    // Convert dates into a tree
-    // TODO: this should be a util
-    dates.forEach(date => {
-        if (calendarMatrix[date.month()] === undefined) {
-            calendarMatrix[date.month()] = {};
-        }
+        this.state = {
+            hydrated: false,
+        };
+    }
 
-        if (calendarMatrix[date.month()][date.week()] === undefined) {
-            calendarMatrix[date.month()][date.week()] = [];
-        }
+    componentDidMount () {
+        this.props.hydrate(this.props.user.token);
+    }
 
-        calendarMatrix[date.month()][date.week()].push(date);
-    });
+    render () {
+        const dates = getDatesInRange(this.props.today.clone().startOf('year'), this.props.today);
+        const calendarMatrix = {};
 
-    return (
-        <div className="calendar">
-            {
-                Object.keys(calendarMatrix).reverse().map(m =>
-                    <CalendarMonth key={`month_${m}`}>
-                        <h3 className="calendar-month__label">{ moment().month(m).format('MMMM') }</h3>
-                        {
-                            Object.keys(calendarMatrix[m]).reverse().map(w =>
-                                <CalendarWeek key={`month_${m}_week_${w}`}>
-                                    {
-                                        calendarMatrix[m][w].reverse().map(d =>
-                                            <CalendarDay
-                                                key={`month_${m}_week_${w}_day_${d}`}
-                                                date={d}
-                                                entry={entries[d.unix()]}
-                                                today={today}
-                                            />
-                                        )
-                                    }
-                                </CalendarWeek>
-                            )
-                        }
-                    </CalendarMonth>
-                )
+        // Convert dates into a tree
+        // TODO: this should be a util
+        dates.forEach(date => {
+            if (calendarMatrix[date.month()] === undefined) {
+                calendarMatrix[date.month()] = {};
             }
-        </div>
-    );
+
+            if (calendarMatrix[date.month()][date.week()] === undefined) {
+                calendarMatrix[date.month()][date.week()] = [];
+            }
+
+            calendarMatrix[date.month()][date.week()].push(date);
+        });
+
+        return (
+            <div className="calendar">
+                {
+                    Object.keys(calendarMatrix).reverse().map(m =>
+                        <CalendarMonth key={`month_${m}`}>
+                            <h3 className="calendar-month__label">{ moment().month(m).format('MMMM') }</h3>
+                            {
+                                Object.keys(calendarMatrix[m]).reverse().map(w =>
+                                    <CalendarWeek key={`month_${m}_week_${w}`}>
+                                        {
+                                            calendarMatrix[m][w].reverse().map(d =>
+                                                <CalendarDay
+                                                    key={`month_${m}_week_${w}_day_${d}`}
+                                                    date={d}
+                                                    entry={this.props.entries[d.unix()]}
+                                                    today={this.props.today}
+                                                />
+                                            )
+                                        }
+                                    </CalendarWeek>
+                                )
+                            }
+                        </CalendarMonth>
+                    )
+                }
+            </div>
+        );
+    }
 };

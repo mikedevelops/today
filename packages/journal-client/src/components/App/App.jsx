@@ -1,9 +1,13 @@
 import React from 'react';
-import { BrowserRouter, Redirect, Route } from 'react-router-dom';
+import { Redirect, Route } from 'react-router-dom';
 import LogoutContainer from '../Authentication/LogoutContainer';
-import Dashboard from './Dashboard';
+import DashboardContainer from './DashboardContainer';
 import NavBarContainer from '../Navigation/NavBarContainer';
 import LoginContainer from '../Authentication/LoginContainer';
+import { whyDidYouUpdate } from 'why-did-you-update/es';
+
+// TODO: Remove this on production
+// whyDidYouUpdate(React);
 
 export default class App extends React.Component {
     render () {
@@ -14,14 +18,14 @@ export default class App extends React.Component {
         }
 
         return (
-            <BrowserRouter>
+            <div>
                 <Route path="/logout" component={LogoutContainer}/>
                 <Route path="/login" component={LoginContainer}/>
                 <div className="app">
                     <NavBarContainer/>
-                    <Dashboard/>
+                    <DashboardContainer/>
                 </div>
-            </BrowserRouter>
+            </div>
         )
     }
 }

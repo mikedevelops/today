@@ -2,6 +2,7 @@ import axios from 'axios';
 
 export const ENTRY_SAVE = 'ENTRY_SAVE';
 export const ENTRY_EDIT = 'ENTRY_EDIT';
+export const CLEAR_ENTRIES = 'CLEAR_ENTRIES';
 export const ENTRIES_GET_ALL_START = 'ENTRIES_GET_ALL_START';
 export const ENTRIES_GET_ALL_SUCCESS = 'ENTRIES_GET_ALL_SUCCESS';
 export const ENTRIES_GET_ALL_ERROR = 'ENTRIES_GET_ALL_ERROR';
@@ -67,4 +68,14 @@ export const getEntries = token => dispatch => {
     }).catch(error => {
         dispatch(getAllEntriesError(error));
     });
+};
+
+/**
+ * Clear local entry state
+ * @return {{type: *}}
+ */
+export const clearEntries = () => {
+    return {
+        type: CLEAR_ENTRIES,
+    };
 };
