@@ -3,10 +3,6 @@
 - [x] Write entry
 - [x] Save entry
 - [x] Edit today's entry
-- [ ] Sort Entry component hierarchy 
-- [ ] View entry fancyness
-- [ ] caret component
-- [ ] focus to edit
 - [ ] activities
 
 # Calendar
