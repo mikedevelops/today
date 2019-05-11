@@ -12,11 +12,11 @@ const cli = meow('Create user entries', {
         },
         chance: {
             type: 'number',
-            defaultValue: 0.5,
+            default: 0.5,
         },
         db: {
             type: 'string',
-            defaultValue: 'journal-test',
+            default: 'journal-test',
         },
     },
 });
