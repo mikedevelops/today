@@ -1,6 +1,6 @@
-const { loremIpsum } = require('lorem-ipsum');
-const moment = require('moment');
 const meow = require('meow');
+const moment = require('moment');
+const { loremIpsum } = require('lorem-ipsum');
 const winston = require('winston');
 const User = require('../src/models/User');
 const Entry = require('../src/models/Entry');
@@ -56,7 +56,8 @@ User.findOne({ username: cli.flags.user }, (error, user) => {
         throw new Error(`Cannot find user "${cli.flags.user}"`);
     }
 
-    Entry.remove({}).then(() => {
+    // Remove the user's entries
+    Entry.remove({ user: user._id }).then(() => {
         while(start.isSameOrBefore(end)) {
             if (Math.random() >= cli.flags.chance) {
                 date.add(1, 'day');
