@@ -3,17 +3,18 @@ import { connect } from 'react-redux';
 import { saveEntry } from '../../actions/entryActions';
 import Today from './Today';
 
-const mapStateToProps = ({ entry, date }) => {
+const mapStateToProps = ({ entry, date, user }) => {
     const today = date.today.unix();
     return {
         entry: entry.items[today],
         date: date.today,
+        user,
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        submit: (entry) => dispatch(saveEntry(entry)),
+        submit: (entry, token) => dispatch(saveEntry(entry, token)),
     };
 };
 

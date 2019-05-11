@@ -1,6 +1,10 @@
 import axios from 'axios';
+import entryFactory from '../factories/entryFactory';
 
 export const ENTRY_SAVE = 'ENTRY_SAVE';
+export const ENTRY_SAVE_START = 'ENTRY_SAVE_START';
+export const ENTRY_SAVE_SUCCESS = 'ENTRY_SAVE_SUCCESS';
+export const ENTRY_SAVE_ERROR = 'ENTRY_SAVE_ERROR';
 export const ENTRY_EDIT = 'ENTRY_EDIT';
 export const CLEAR_ENTRIES = 'CLEAR_ENTRIES';
 export const ENTRIES_GET_ALL_START = 'ENTRIES_GET_ALL_START';
@@ -8,14 +12,54 @@ export const ENTRIES_GET_ALL_SUCCESS = 'ENTRIES_GET_ALL_SUCCESS';
 export const ENTRIES_GET_ALL_ERROR = 'ENTRIES_GET_ALL_ERROR';
 
 /**
- * Save entry
- * @param {Entry} entry
- * @returns {{type: string, entry: Entry}}
+ * Start saving entry
+ * @return {{type: string}}
  */
-export const saveEntry = entry => ({
-    type: ENTRY_SAVE,
+export const saveEntryStart = () => ({
+    type: ENTRY_SAVE_START,
+});
+
+/**
+ * Entry saved successfully
+ * @param {Entry} entry
+ * @return {{entry: *, type: string}}
+ */
+export const saveEntrySuccess = entry => ({
+    type: ENTRY_SAVE_SUCCESS,
     entry,
 });
+
+/**
+ * Error saving Entry
+ * @param {string} error
+ * @return {{type: string, error: *}}
+ */
+export const saveEntryError = error => ({
+    type: ENTRY_SAVE_ERROR,
+    error,
+});
+
+/**
+ * Save entry
+ * @param {Entry} entry
+ * @param {string} token
+ * @returns {{type: string, entry: Entry}}
+ */
+export const saveEntry = (entry, token) => dispatch => {
+    dispatch(saveEntryStart());
+
+    axios.post('http://localhost:8080/entries', entry, {
+        headers: { 'Authorization': `Bearer ${token}` },
+        body: entry,
+        json: true,
+    }).then(({ data }) => {
+        const newEntry = entryFactory(data.date, data.content);
+
+        dispatch(saveEntrySuccess(newEntry));
+    }).catch(error => {
+        dispatch(saveEntryError(error));
+    });
+};
 
 /**
  * Edit entry

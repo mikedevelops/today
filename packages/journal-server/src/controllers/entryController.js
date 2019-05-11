@@ -45,14 +45,18 @@ module.exports.saveEntry = (req, res) => {
     const { content, date } = req.body;
     const { id } = req.user;
 
-    Entry.create({ content, date: new Date(date), user: id }, (error, entry) => {
-        // TODO: handle duplicate key here better
-        if (error !== null) {
-            return res.status(status.INTERNAL_SERVER_ERROR).send(error.message);
-        }
+    Entry.findOneAndUpdate(
+        { date },
+        { content, date: new Date(date), user: id },
+        (error, entry) => {
+            // TODO: handle duplicate key here better
+            if (error !== null) {
+                return res.status(status.INTERNAL_SERVER_ERROR).send(error.message);
+            }
 
-        res.json(entry.toObject());
-    });
+            res.json(entry.toObject());
+        },
+    );
 };
 
 /**

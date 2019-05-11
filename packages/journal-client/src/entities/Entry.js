@@ -1,37 +1,37 @@
 export default class Entry {
     /**
-     * @param {Moment.moment} date
-     * @param {string} contents
+     * @param {moment.Moment} date
+     * @param {string} content
      */
-    constructor(date, contents = []) {
+    constructor(date, content = []) {
         this.date = date;
-        this.contents = contents;
+        this.content = content;
         this.id = this.date.unix();
     }
 
     /**
      * @returns {string[]}
      */
-    getContents() {
-        return this.contents;
+    getContent() {
+        return this.content;
     }
 
     /**
      * @param {string} content
      */
-    setContents(content) {
-        this.contents = content;
+    setContent(content) {
+        this.content = content;
     }
 
     /**
-     * @returns {Moment.moment}
+     * @returns {moment.Moment}
      */
     getDate() {
         return this.date;
     }
 
     /**
-     * @param {Moment.moment} date
+     * @param {moment.Moment} date
      */
     setDate(date) {
         this.date = date;

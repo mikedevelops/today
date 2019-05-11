@@ -4,7 +4,7 @@ import debounce from 'lodash.debounce';
 
 /**
  * @param {Entry} entry
- * @param {Moment.moment} date
+ * @param {moment.Moment} date
  * @param {Function} submit
  * @constructor
  */
@@ -16,10 +16,8 @@ export class ComposeEntry extends React.Component {
         this.content = React.createRef();
     }
 
-    shouldComponentUpdate () {
-        // TODO: this may need looking at, prevent updating here to update store (autosave)
-        // without triggering a re-render of this component
-        return false;
+    componentDidUpdate (prevProps, prevState, snapshot) {
+        this.content.current.focus();
     }
 
     submitEntry (event = null) {
@@ -30,24 +28,16 @@ export class ComposeEntry extends React.Component {
         }
 
         // Do not submit if nothing has changed
-        if (data.get('content') === this.props.entry.getContents()) {
+        if (data.get('content') === this.props.entry.getContent()) {
             return;
         }
 
-        this.props.entry.setContents(data.get('content'));
+        this.props.entry.setContent(data.get('content'));
         this.props.submit(this.props.entry);
     }
 
     autosave () {
         this.submitEntry();
-    }
-
-    handleInput () {
-        // Pushing this onto the next stack to get the value of the input
-        // _after_ the keydown
-        window.requestAnimationFrame(() => {
-            this.props.handleInput(this.content.current.value)
-        });
     }
 
     render () {
@@ -61,9 +51,8 @@ export class ComposeEntry extends React.Component {
                         className="compose__entry-input"
                         ref={this.content}
                         onBlur={this.submitEntry.bind(this)}
-                        onKeyDown={this.handleInput.bind(this)}
                         name="content"
-                        defaultValue={this.props.entry.getContents()}/>
+                        defaultValue={this.props.entry.getContent()}/>
                 </form>
             </div>
         );

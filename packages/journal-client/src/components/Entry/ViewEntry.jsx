@@ -8,7 +8,7 @@ import React from 'react';
 export const ViewEntry = ({ entry }) => {
     return (
         <div className="entry-view">
-            <span>{ entry.getContents() }</span>
+            <span>{ entry.getContent() }</span>
         </div>
     );
 };

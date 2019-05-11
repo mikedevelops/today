@@ -6,20 +6,32 @@ export default class TodayWrapper extends React.Component {
     constructor (props) {
         super(props);
 
-        this.todaysEntry = props.entry !== undefined ? props.entry : entryFactory(props.date);
+        this.submitEntryBound = this.submitEntry.bind(this);
+        this.entry = props.entry !== undefined ? props.entry : entryFactory(props.date);
         this.state = {
-            content: this.todaysEntry.getContents()
+            content: this.entry.getContent()
         };
+
+    }
+
+    componentWillUpdate (nextProps) {
+        if (nextProps.entry !== undefined) {
+            this.entry = nextProps.entry;
+        }
     }
 
     handleInput (content) {
         this.setState({ content });
     }
 
+    submitEntry (entry) {
+        this.props.submit(entry, this.props.user.token);
+    }
+
     render () {
         return <ComposeEntry
-            entry={this.todaysEntry}
-            submit={this.props.submit}
+            entry={this.entry}
+            submit={this.submitEntryBound}
             handleInput={this.handleInput.bind(this)}
         />;
     }
