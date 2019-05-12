@@ -1,18 +1,19 @@
 const mongoose = require('mongoose');
 const logger = require('./logger');
 
-mongoose.connect(process.env.DB_HOST, { useNewUrlParser: true, dbName: process.env.DB_NAME });
-mongoose.connection.on('error', (error) => {
-    logger.error(error);
-});
-
 /**
+ * Connect to the database
  * @param {Function} next
  */
 module.exports.connect = (next) => {
-    mongoose.connection.on('open', () => {
+    mongoose.connect(
+        process.env.DB_HOST,
+        { useNewUrlParser: true, dbName: process.env.DB_NAME }
+    ).then(() => {
         logger.info(`Connected to the database ${process.env.DB_HOST}`);
         next();
+    }).catch(error => {
+        logger.error(`Unable to connect to database: ${error.message}`);
     });
 };
 
