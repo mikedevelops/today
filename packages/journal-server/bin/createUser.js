@@ -1,6 +1,6 @@
 const meow = require('meow');
 const winston = require('winston');
-const User = require('../src/models/User');
+const User = require('../src/models/user/User');
 
 const cli = meow('Create user entries', {
     flags: {
@@ -13,7 +13,6 @@ const cli = meow('Create user entries', {
         },
     },
 });
-
 
 process.env.DB_HOST = `mongodb://localhost/${cli.flags.db}`;
 process.env.DB_NAME = cli.flags.db;

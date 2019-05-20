@@ -1,9 +1,11 @@
 const meow = require('meow');
 const moment = require('moment');
 const { loremIpsum } = require('lorem-ipsum');
+const BooleanActivity = require('../src/models/activity/BooleanActivity');
 const winston = require('winston');
-const User = require('../src/models/User');
-const Entry = require('../src/models/Entry');
+const User = require('../src/models/user/User');
+const Entry = require('../src/models/entry/Entry');
+const db = require('../src/services/database');
 
 const cli = meow('Create user entries', {
     flags: {
@@ -23,8 +25,6 @@ const cli = meow('Create user entries', {
 
 process.env.DB_HOST = `mongodb://localhost/${cli.flags.db}`;
 process.env.DB_NAME = cli.flags.db;
-
-require('../src/services/database');
 
 const logger = winston.createLogger({
     transports: [
@@ -47,36 +47,41 @@ if (start.isAfter(end)) {
     throw new Error('Start date must be before the end date');
 }
 
-User.findOne({ username: cli.flags.user }, (error, user) => {
-    if (error) {
-        throw new Error(error);
-    }
+db.connect(async () => {
+    const user = await User.findOne({ username: cli.flags.user });
 
     if (user === null) {
-        throw new Error(`Cannot find user "${cli.flags.user}"`);
+        logger.error(`Cannot find user "${cli.flags.user}"`);
+        process.exit(0);
     }
 
-    // Remove the user's entries
-    Entry.remove({ user: user._id }).then(() => {
-        while(start.isSameOrBefore(end)) {
-            if (Math.random() >= cli.flags.chance) {
-                date.add(1, 'day');
-                continue;
-            }
+    // Remove user's existing entries
+    await Entry.remove({ user: user._id });
 
-            entries.push(Entry.create({
-                content: loremIpsum({ count: 5, unit: 'sentences' }),
-                date: date.toDate(),
-                user: user._id,
-            }));
-
+    while(start.isSameOrBefore(end)) {
+        if (Math.random() >= cli.flags.chance) {
             date.add(1, 'day');
+            continue;
         }
 
-
-        Promise.all(entries).then(() => {
-            logger.info(`Created ${entries.length} entries for user "${cli.flags.user}"`);
-            process.exit(0);
+        const activity = new BooleanActivity({
+            name: 'BooleanActivity',
+            icon: 'path/to/icon',
+            value: Math.random() <= 0.5,
         });
-    });
+
+        entries.push(Entry.create({
+            content: loremIpsum({ count: 5, unit: 'sentences' }),
+            date: date.toDate(),
+            user: user._id,
+            activities: [activity],
+        }));
+
+        date.add(1, 'day');
+    }
+
+    await Promise.all(entries);
+
+    logger.info(`Created ${entries.length} entries for user "${cli.flags.user}"`);
+    process.exit(0);
 });

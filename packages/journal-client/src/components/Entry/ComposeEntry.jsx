@@ -45,14 +45,15 @@ export class ComposeEntry extends React.Component {
             <div className="compose">
                 <form
                     ref={this.form}
-                    onSubmit={this.submitEntry.bind(this)}
-                    onKeyDown={debounce(this.autosave.bind(this), 1000)}>
-                    <textarea
-                        className="compose__entry-input"
-                        ref={this.content}
-                        onBlur={this.submitEntry.bind(this)}
-                        name="content"
-                        defaultValue={this.props.entry.getContent()}/>
+                    onSubmit={this.submitEntry.bind(this)}>
+                    <div className="entry-view">
+                        <textarea
+                            className="compose__entry-input"
+                            ref={this.content}
+                            onBlur={this.submitEntry.bind(this)}
+                            name="content"
+                            defaultValue={this.props.entry.getContent()}/>
+                    </div>
                 </form>
             </div>
         );

@@ -18,14 +18,14 @@ export default class App extends React.Component {
         }
 
         return (
-            <div>
+            <main className="main">
                 <Route path="/logout" component={LogoutContainer}/>
                 <Route path="/login" component={LoginContainer}/>
                 <div className="app">
                     <NavBarContainer/>
                     <DashboardContainer/>
                 </div>
-            </div>
-        )
+            </main>
+        );
     }
 }

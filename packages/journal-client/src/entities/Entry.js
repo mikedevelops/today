@@ -2,15 +2,38 @@ export default class Entry {
     /**
      * @param {moment.Moment} date
      * @param {string} content
+     * @param {Activity[]} activities
+     * @param {string|null} id
      */
-    constructor(date, content = []) {
+    constructor(date, content, activities, id) {
+        /**
+         * @type {moment.Moment}
+         */
         this.date = date;
+
+        /**
+         * @type {string}
+         */
         this.content = content;
-        this.id = this.date.unix();
+
+        /**
+         * @type {number}
+         */
+        this.key = this.date.unix();
+
+        /**
+         * @type {Activity[]}
+         */
+        this.activities = activities;
+
+        /**
+         * @type {string|null}
+         */
+        this.id = id;
     }
 
     /**
-     * @returns {string[]}
+     * @returns {string}
      */
     getContent() {
         return this.content;
@@ -40,7 +63,28 @@ export default class Entry {
     /**
      * @return {number}
      */
+    getKey() {
+        return this.key;
+    }
+
+    /**
+     * @return {Activity[]}
+     */
+    getActivities() {
+        return this.activities;
+    }
+
+    /**
+     * @return {string|null}
+     */
     getId() {
         return this.id;
+    }
+
+    /**
+     * @param {string} id
+     */
+    setId(id) {
+        this.id = id;
     }
 }

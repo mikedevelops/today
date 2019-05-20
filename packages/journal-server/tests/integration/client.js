@@ -1,7 +1,7 @@
 const request = require('request-promise');
 const logger = require('../../src/services/logger');
-const User = require('../../src/models/User');
-const Entry = require('../../src/models/Entry');
+const User = require('../../src/models/user/User');
+const Entry = require('../../src/models/entry/Entry');
 
 /**
  * Build endpoint

@@ -1,7 +1,7 @@
 const status = require('http-status');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+const User = require('../models/user/User');
 const { handleMongooseException } = require('../utilities/errors');
 const logger = require('../services/logger');
 
@@ -23,7 +23,7 @@ module.exports.login = (req, res) => {
             return res.json({
                 username: user.username,
                 id: user.id,
-                token: jwt.sign({ id: user.id }, 'token_secret')
+                token: jwt.sign({ id: user.id }, 'token_secret'),
             });
         });
     })(req, res);

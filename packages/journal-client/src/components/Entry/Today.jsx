@@ -1,6 +1,7 @@
 import React from 'react';
 import entryFactory from '../../factories/entryFactory';
 import { ComposeEntry } from './ComposeEntry';
+import Activity from '../Activity/Activity';
 
 export default class TodayWrapper extends React.Component {
     constructor (props) {
@@ -11,7 +12,6 @@ export default class TodayWrapper extends React.Component {
         this.state = {
             content: this.entry.getContent()
         };
-
     }
 
     componentWillUpdate (nextProps) {
@@ -28,11 +28,21 @@ export default class TodayWrapper extends React.Component {
         this.props.submit(entry, this.props.user.token);
     }
 
+    buildActivities () {
+        return this.entry.getActivities().map(activity => {
+            return <Activity activity={activity}/>;
+        });
+    }
+
     render () {
-        return <ComposeEntry
-            entry={this.entry}
-            submit={this.submitEntryBound}
-            handleInput={this.handleInput.bind(this)}
-        />;
+        return (
+            <div>
+                <ComposeEntry
+                    entry={this.entry}
+                    submit={this.submitEntryBound}
+                    handleInput={this.handleInput.bind(this)}/>
+                { this.buildActivities() }
+            </div>
+        );
     }
 }

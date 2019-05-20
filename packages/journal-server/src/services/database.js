@@ -8,12 +8,16 @@ const logger = require('./logger');
 module.exports.connect = (next) => {
     mongoose.connect(
         process.env.DB_HOST,
-        { useNewUrlParser: true, dbName: process.env.DB_NAME }
-    ).then(() => {
+        {
+            useNewUrlParser: true,
+            dbName: process.env.DB_NAME,
+            useFindAndModify: false,
+        },
+    ).then(async () => {
         logger.info(`Connected to the database ${process.env.DB_HOST}`);
         next();
     }).catch(error => {
-        logger.error(`Unable to connect to database: ${error.message}`);
+        logger.error(`${error.message}`);
     });
 };
 

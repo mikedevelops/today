@@ -21,3 +21,10 @@ module.exports.handleResourceNotFound = (resourceIdentifier, res, logger) => {
     logger.warning(msg);
     res.status(status.NOT_FOUND).send(msg);
 };
+
+/**
+ * @param {string} type
+ */
+module.exports.handleActivityModelNotFound = (type) => {
+    throw new Error(`No model defined for activity type "${type}"`);
+};

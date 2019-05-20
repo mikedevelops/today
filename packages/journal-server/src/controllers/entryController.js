@@ -1,7 +1,8 @@
 const status = require('http-status');
-const Entry = require('../models/Entry');
+const Entry = require('../models/entry/Entry');
 const logger = require('../services/logger');
 const { handleMongooseException, handleResourceNotFound } = require('../utilities/errors');
+const activityManager = require('../managers/activityManager');
 
 /**
  * @param {Request} req
@@ -41,22 +42,22 @@ module.exports.getEntry = (req, res) => {
  * @param {Request} req
  * @param {Response} res
  */
-module.exports.saveEntry = (req, res) => {
-    const { content, date } = req.body;
-    const { id } = req.user;
+module.exports.saveEntry = async (req, res) => {
+    const { content, date, activities, id } = req.body;
 
-    Entry.findOneAndUpdate(
-        { date },
-        { content, date: new Date(date), user: id },
-        (error, entry) => {
-            // TODO: handle duplicate key here better
-            if (error !== null) {
-                return res.status(status.INTERNAL_SERVER_ERROR).send(error.message);
-            }
+    try {
+        let entry = id !== undefined
+            ? await Entry.findById(id)
+            : await Entry.create({ content, date, user: req.user.id });
 
-            res.json(entry.toObject());
-        },
-    );
+        entry.activities = activities.map(activityManager.createActivity);
+        entry = await entry.save();
+
+        return res.json(entry.toObject());
+    } catch (error) {
+        handleMongooseException(error, res, logger);
+        return res.status(status.INTERNAL_SERVER_ERROR).send(error.message);
+    }
 };
 
 /**
