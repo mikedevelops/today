@@ -11,7 +11,8 @@ import { createBrowserHistory } from 'history';
 import { ConnectedRouter, connectRouter } from 'connected-react-router';
 
 const root = document.getElementById('root');
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({ trace: true, traceLimit: 25 }) || compose;
 const history = createBrowserHistory();
 const store = createStore(combineReducers({
     entry: entryReducer,

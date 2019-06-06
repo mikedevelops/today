@@ -6,27 +6,29 @@ import EntryContainer from '../Entry/EntryContainer';
 import TodayContainer from '../Entry/TodayContainer';
 import CalendarContainer from '../Calendar/CalendarContainer';
 
-export default ({ today, entries, user }) => {
-    return (
-        <div className="dashboard">
-            <div className="main">
-                <Route path="/entry/:date" component={(props) => {
-                    const date = moment(props.match.params.date, 'DD-MM-YYYY');
-                    const id = date.unix();
+export default class Dashboard extends React.Component {
+    render () {
+        return (
+            <div className="dashboard">
+                <div className="main">
+                    <Route path="/entry/:date" component={(props) => {
+                        const date = moment(props.match.params.date, 'DD-MM-YYYY');
+                        const id = date.unix();
 
-                    if (date.isSame(today) || !hasEntry(id, entries)) {
-                        return <Redirect to="/"/>;
-                    }
+                        if (date.isSame(this.props.today) || !hasEntry(id, this.props.entries)) {
+                            return <Redirect to="/"/>;
+                        }
 
-                    return <EntryContainer date={date}/>
-                }}/>
+                        return <EntryContainer date={date}/>
+                    }}/>
 
-                <Route exact={true} path="/" component={TodayContainer}/>
+                    <Route exact={true} path="/" component={TodayContainer}/>
+                </div>
+
+                <div className="sidebar">
+                    { this.props.user !== null && <Route path="/" component={CalendarContainer}/> }
+                </div>
             </div>
-
-            <div className="sidebar">
-                { user.token && <Route path="/" component={CalendarContainer}/> }
-            </div>
-        </div>
-    );
+        );
+    }
 }

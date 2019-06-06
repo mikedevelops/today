@@ -1,17 +1,48 @@
 export default class Activity {
     /**
+     * @param {string|null} id
      * @param {string} icon
      * @param {string} type
      * @param {string} name
-     * @param {string|boolean} value
+     * @param {*|null} value
      * @param {string|null} label
+     * @param {boolean} enabled
      */
-    constructor(icon, type, name, value = null, label = null) {
+    constructor(id = null, icon, type, name, value = null, label = null, enabled) {
+        /**
+         * @type {string|null}
+         */
+        this.id = id;
+
+        /**
+         * @type {string}
+         */
         this.icon = icon;
+
+        /**
+         * @type {string}
+         */
         this.type = type;
+
+        /**
+         * @type {string}
+         */
         this.name = name;
+
+        /**
+         * @type {*|null}
+         */
         this.label = label === null ? name : label;
+
+        /**
+         * @type {string|boolean}
+         */
         this.value = value;
+
+        /**
+         * @type {boolean}
+         */
+        this.enabled = enabled;
     }
 
     /**
@@ -36,16 +67,23 @@ export default class Activity {
     }
 
     /**
-     * @return {string|null}
+     * @return {*|null}
      */
     getValue() {
         return this.value;
     }
 
     /**
-     * @param {string|null} value
+     * @param {*|null} value
      */
     setValue(value) {
         this.value = value;
+    }
+
+    /**
+     * @return {string|null}
+     */
+    getId() {
+        return this.id;
     }
 }

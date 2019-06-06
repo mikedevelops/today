@@ -46,12 +46,13 @@ module.exports.saveEntry = async (req, res) => {
     const { content, date, activities, id } = req.body;
 
     try {
-        let entry = id !== undefined
+        let entry = id !== null
             ? await Entry.findById(id)
             : await Entry.create({ content, date, user: req.user.id });
 
         entry.activities = activities.map(activityManager.createActivity);
-        entry = await entry.save();
+        entry.content = content;
+        entry = await entry.save({ new: true });
 
         return res.json(entry.toObject());
     } catch (error) {

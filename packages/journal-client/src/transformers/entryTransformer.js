@@ -9,5 +9,6 @@ export default (entry) => {
         date: entry.getDate(),
         content: entry.getContent(),
         activities: entry.getActivities().map(activityTransformer),
+        id: entry.getId(),
     };
 };

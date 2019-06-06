@@ -1,1 +1,1 @@
-export const ACTIVITY_BOOLEAN = 'BooleanActivity';
+module.exports.ACTIVITY_BOOLEAN = 'BooleanActivity';

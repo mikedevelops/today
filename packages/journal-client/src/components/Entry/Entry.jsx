@@ -11,7 +11,6 @@ export default ({ entry, View }) => {
         <div className="entry">
             <h2>{ entry.date.format('Do MMMM YYYY') }</h2>
             <View entry={entry}/>
-            { entry.getActivities().map(activity => <Activity activity={activity}/>) }
         </div>
     )
 };

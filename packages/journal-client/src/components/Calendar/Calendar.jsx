@@ -15,7 +15,7 @@ export default class Calendar extends React.Component {
     }
 
     componentDidMount () {
-        this.props.hydrate(this.props.user.token);
+        this.props.hydrate(this.props.user.getToken());
     }
 
     render () {

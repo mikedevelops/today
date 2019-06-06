@@ -11,16 +11,16 @@ export default class BooleanActivity extends React.Component {
         };
     }
 
-    componentDidUpdate () {
-
-    }
-
     componentWillReceiveProps (nextProps, nextContext) {
         this.setState({ value: nextProps.activity.getValue() });
     }
 
-    handleChange(event) {
-        this.setState({ value: !this.state.value });
+    handleChange() {
+            const value = !this.state.value;
+
+            this.setState({ value });
+            this.props.activity.setValue(value);
+            this.props.submit();
     }
 
     render() {
@@ -33,7 +33,7 @@ export default class BooleanActivity extends React.Component {
                     onChange={this.handleChangeBound}
                     name={this.props.activity.getName()}
                     type="checkbox"
-                    checked={this.state.value}/>
+                    defaultChecked={this.state.value}/>
             </fieldset>
         );
     }

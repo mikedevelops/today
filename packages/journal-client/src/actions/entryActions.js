@@ -1,8 +1,8 @@
 import axios from 'axios';
+import moment from 'moment';
 import entryFactory from '../factories/entryFactory';
 import activityFactory from '../factories/activityFactory';
 import entryTransformer from '../transformers/entryTransformer';
-import moment from 'moment';
 
 export const ENTRY_SAVE = 'ENTRY_SAVE';
 export const ENTRY_SAVE_START = 'ENTRY_SAVE_START';
@@ -48,17 +48,19 @@ export const saveEntryError = error => ({
  * @param {string} token
  * @returns {{type: string, entry: Entry}}
  */
-export const saveEntry = (entry, token) => dispatch => {
+export const saveEntry = (entry, token) => (dispatch) => {
     dispatch(saveEntryStart());
 
-    axios.post('http://localhost:8080/entries', entryTransformer(entry), {
-        headers: { 'Authorization': `Bearer ${token}` },
+    const transformedEntry = entryTransformer(entry);
+
+    axios.post('http://localhost:8080/entries', transformedEntry, {
+        headers: { Authorization: `Bearer ${token}` },
         json: true,
     }).then(({ data }) => {
         const newEntry = entryFactory(data.date, data.content, data.activities, data._id);
 
         dispatch(saveEntrySuccess(newEntry));
-    }).catch(error => {
+    }).catch((error) => {
         dispatch(saveEntryError(error));
     });
 };
@@ -103,25 +105,19 @@ export const getAllEntriesError = error => ({
  * Get the current users entries
  * @return {Function}
  */
-export const getEntries = token => dispatch => {
+export const getEntries = token => (dispatch) => {
     dispatch(getAllEntriesStart);
 
     axios.get('http://localhost:8080/entries', {
-        headers: { 'Authorization': `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token}` },
         json: true,
     }).then(({ data }) => {
-        dispatch(getAllEntriesSuccess(data.map(entry => {
-            return entryFactory(moment(entry.date), entry.content, entry.activities.map(activity => {
-                return activityFactory(
-                    activity.type,
-                    activity.name,
-                    activity.icon,
-                    activity.value,
-                    activity.label,
-                );
-            }));
-        })));
-    }).catch(error => {
+        dispatch(getAllEntriesSuccess(
+            data.map((entry) => {
+                return entryFactory(entry._id, moment(entry.date), entry.content, entry.activities);
+            }),
+        ));
+    }).catch((error) => {
         dispatch(getAllEntriesError(error));
     });
 };
@@ -130,8 +126,6 @@ export const getEntries = token => dispatch => {
  * Clear local entry state
  * @return {{type: *}}
  */
-export const clearEntries = () => {
-    return {
-        type: CLEAR_ENTRIES,
-    };
-};
+export const clearEntries = () => ({
+    type: CLEAR_ENTRIES,
+});

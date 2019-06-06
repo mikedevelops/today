@@ -1,13 +1,7 @@
 import React from 'react';
 import Entry from './Entry';
-import debounce from 'lodash.debounce';
+import ActivityContainer from '../../components/Activity/ActivityContainer';
 
-/**
- * @param {Entry} entry
- * @param {moment.Moment} date
- * @param {Function} submit
- * @constructor
- */
 export class ComposeEntry extends React.Component {
     constructor (props) {
         super(props);
@@ -28,9 +22,10 @@ export class ComposeEntry extends React.Component {
         }
 
         // Do not submit if nothing has changed
-        if (data.get('content') === this.props.entry.getContent()) {
-            return;
-        }
+        // TODO: implement dirty property on entry
+        // if (data.get('content') === this.props.entry.getContent()) {
+        //     return;
+        // }
 
         this.props.entry.setContent(data.get('content'));
         this.props.submit(this.props.entry);
@@ -41,22 +36,30 @@ export class ComposeEntry extends React.Component {
     }
 
     render () {
-        const compose = () => (
-            <div className="compose">
-                <form
-                    ref={this.form}
-                    onSubmit={this.submitEntry.bind(this)}>
-                    <div className="entry-view">
-                        <textarea
-                            className="compose__entry-input"
-                            ref={this.content}
-                            onBlur={this.submitEntry.bind(this)}
-                            name="content"
-                            defaultValue={this.props.entry.getContent()}/>
-                    </div>
-                </form>
-            </div>
-        );
+        const compose = () => {
+            return (
+                <div className="compose">
+                    <form
+                        ref={this.form}
+                        onSubmit={this.submitEntry.bind(this)}>
+                        <div className="entry-view">
+                            <textarea
+                                className="compose__entry-input"
+                                ref={this.content}
+                                onBlur={this.submitEntry.bind(this)}
+                                name="content"
+                                defaultValue={this.props.entry.getContent()}/>
+                        </div>
+                        { this.props.entry.getActivities().map(activity =>
+                            <ActivityContainer
+                                key={activity.getId()}
+                                activity={activity}
+                                submit={this.submitEntry.bind(this)}
+                            />) }
+                    </form>
+                </div>
+            );
+        };
 
         return <Entry entry={this.props.entry} View={compose}/>
     };

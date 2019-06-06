@@ -1,11 +1,24 @@
 import Entry from '../entities/Entry';
+import activityFactory from './activityFactory';
 
 /**
+ * @param {string|null} id
  * @param {moment.Moment} date
  * @param {string} content
- * @param {Activity[]} activities
- * @param {string|null} id
+ * @param {{_id: string, type: string, name: string, icon: string, value: *|null, label: string|null}[]} activities
  * @return {Entry}
  */
-export default (date, content = '', activities = [], id = null) =>
-    new Entry(date, content, activities, id);
+export default (id = null, date, content = '', activities = []) => {
+    const hydratedActivities = activities.map((activity) => {
+        return activityFactory(
+            activity._id,
+            activity.type,
+            activity.name,
+            activity.icon,
+            activity.value,
+            activity.label
+        );
+    });
+
+    return new Entry(date, content, hydratedActivities, id);
+};

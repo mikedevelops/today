@@ -11,7 +11,7 @@ export default ({ user, submit }) => {
     };
 
     // If the user has a token, redirect to home
-    if (user.token !== null) {
+    if (user !== null) {
         return <Redirect to="/"/>;
     }
 

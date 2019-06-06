@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import Dashboard from './Dashboard';
+import { hydrateUser } from '../../actions/userActions';
 
 const mapStateToProps = ({ date, entry, user }) => {
     return {
@@ -9,4 +10,10 @@ const mapStateToProps = ({ date, entry, user }) => {
     };
 };
 
-export default connect(mapStateToProps)(Dashboard);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        hydrateUser: id => dispatch(hydrateUser(id)),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

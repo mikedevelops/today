@@ -1,9 +1,9 @@
 const status = require('http-status');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
-const User = require('../models/user/User');
 const { handleMongooseException } = require('../utilities/errors');
 const logger = require('../services/logger');
+const userFactory = require('../factories/userFactory');
 
 /**
  * @param {Request} req
@@ -20,10 +20,12 @@ module.exports.login = (req, res) => {
                 return res.send(loginError);
             }
 
+            // TODO: transformer
             return res.json({
                 username: user.username,
                 id: user.id,
                 token: jwt.sign({ id: user.id }, 'token_secret'),
+                activities: user.activities,
             });
         });
     })(req, res);
@@ -36,11 +38,7 @@ module.exports.login = (req, res) => {
 module.exports.register = (req, res) => {
     const { username, password } = req.body;
 
-    User.create({ username, password }, (error, user) => {
-        if (error !== null) {
-            return handleMongooseException(error, res, logger);
-        }
-
+    userFactory(username, password).then((user) => {
         logger.debug(`User registered "${user.username}"`);
 
         req.login(user, { session: false }, (loginError) => {
@@ -48,12 +46,16 @@ module.exports.register = (req, res) => {
                 return res.send(loginError);
             }
 
+            // TODO: transformer
             return res.json({
                 username: user.username,
                 id: user.id,
                 token: jwt.sign({ id: user.id }, 'token_secret'),
+                activities: user.activities,
             });
         });
+    }).catch((error) => {
+        return handleMongooseException(error, res, logger);
     });
 };
 

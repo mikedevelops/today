@@ -13,14 +13,14 @@ export default class App extends React.Component {
     render () {
         const { user } = this.props;
 
-        if (user.token === null && this.props.router.location.pathname !== '/login') {
+        if (user === null && this.props.router.location.pathname !== '/login') {
             return <Redirect to="/login"/>;
         }
 
         return (
             <main className="main">
-                <Route path="/logout" component={LogoutContainer}/>
                 <Route path="/login" component={LoginContainer}/>
+                <Route path="/logout" component={LogoutContainer}/>
                 <div className="app">
                     <NavBarContainer/>
                     <DashboardContainer/>
