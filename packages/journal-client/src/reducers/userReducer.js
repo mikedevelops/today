@@ -10,7 +10,7 @@ const user = storageUser === undefined ? null : userFactory(
 export default (state = user, action) => {
     switch (action.type) {
     case USER_SAVE:
-        return userFactory(action.user.id, action.user.username, action.user.token, action.user.activities);
+        return action.user;
 
     case USER_CLEAR:
         return null;

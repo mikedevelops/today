@@ -7,6 +7,7 @@ module.exports = new mongoose.Schema({
         {
             type: { type: String },
             name: { type: String },
+            defaultValue: { type: mongoose.Schema.Types.Mixed },
             enabled: { type: Boolean },
         },
     ],

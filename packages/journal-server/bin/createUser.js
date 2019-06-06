@@ -1,6 +1,8 @@
 const meow = require('meow');
 const winston = require('winston');
 const User = require('../src/models/user/User');
+const { connect } = require('../src/services/database');
+const userFactory = require('../src/factories/userFactory');
 
 const cli = meow('Create user entries', {
     flags: {
@@ -31,22 +33,20 @@ if (cli.flags.user === undefined) {
     throw new Error('Username required --user');
 }
 
-User.findOne({ username: cli.flags.user }, (error, user) => {
-    if (error) {
-        throw new Error(error);
-    }
+try {
+    connect(async () => {
+        let user = await User.findOne({ username: cli.flags.user });
 
-    if (user !== null) {
-        logger.info(`User "${user.username}" already exists`);
-        process.exit(0);
-    }
-
-    User.create({ username: cli.flags.user, password: 'Admin123!' }, (error, user) => {
-        if (error !== null) {
-            throw new Error(error);
+        if (user !== null) {
+            logger.info(`User "${user.username}" already exists`);
+            process.exit(0);
         }
 
-        logger.info(`User created "${user.username}"`);
+        user = await userFactory(cli.flags.user, 'Admin123!');
+        logger.info(`User "${user.username}" created`);
         process.exit(0);
     });
-});
+} catch (e) {
+    logger.error(e.message);
+    process.exit(0);
+}

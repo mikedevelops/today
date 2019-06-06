@@ -1,4 +1,5 @@
 import store from 'store';
+import userFactory from '../factories/userFactory';
 
 export const USER_SAVE = 'USER_SAVE';
 export const USER_CLEAR = 'USER_CLEAR';
@@ -12,10 +13,12 @@ export const USER_HYDRATE_ERROR = 'USER_HYDRATE_ERROR';
  * @return {Function}
  */
 export const saveUser = user => (dispatch) => {
-    store.set('user', user);
+    const newUser = userFactory(user.id, user.username, user.token, user.activities);
+
+    store.set('user', newUser);
     dispatch({
         type: USER_SAVE,
-        user,
+        user: newUser,
     });
 };
 

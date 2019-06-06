@@ -1,5 +1,5 @@
 import User from '../entities/User';
-import Activity from '../entities/Activity';
+import activityFactory from './activityFactory';
 
 /**
  * @param {string} id
@@ -10,14 +10,14 @@ import Activity from '../entities/Activity';
  */
 export default (id, username, token, activities = []) => {
     const userActivities = activities.map((activity) => {
-        return new Activity(
+        const value = activity.value === undefined ? activity.defaultValue : activity.value;
+        return activityFactory(
             activity.id,
-            activity.icon,
             activity.type,
             activity.name,
-            activity.value,
+            activity.icon,
+            value,
             activity.label,
-            activity.enabled,
         );
     });
 
