@@ -21,18 +21,14 @@ export class ComposeEntry extends React.Component {
             event.preventDefault();
         }
 
-        // Do not submit if nothing has changed
-        // TODO: implement dirty property on entry
-        // if (data.get('content') === this.props.entry.getContent()) {
-        //     return;
-        // }
-
         this.props.entry.setContent(data.get('content'));
-        this.props.submit(this.props.entry);
-    }
 
-    autosave () {
-        this.submitEntry();
+        if (!this.props.entry.isDirty()) {
+           return;
+        }
+
+        this.props.submit(this.props.entry);
+        this.props.entry.clean();
     }
 
     render () {

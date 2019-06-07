@@ -43,6 +43,11 @@ export default class Activity {
          * @type {boolean}
          */
         this.enabled = enabled;
+
+        /**
+         * @type {boolean}
+         */
+        this.dirty = false;
     }
 
     /**
@@ -77,6 +82,11 @@ export default class Activity {
      * @param {*|null} value
      */
     setValue(value) {
+        if (value === this.value) {
+            return;
+        }
+
+        this.dirty = true;
         this.value = value;
     }
 
@@ -85,5 +95,16 @@ export default class Activity {
      */
     getId() {
         return this.id;
+    }
+
+    /**
+     * @return {boolean}
+     */
+    isDirty() {
+        return this.dirty;
+    }
+
+    clean() {
+        this.dirty = false;
     }
 }

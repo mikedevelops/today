@@ -30,6 +30,11 @@ export default class Entry {
          * @type {string|null}
          */
         this.id = id;
+
+        /**
+         * @type {boolean}
+         */
+        this.dirty = false;
     }
 
     /**
@@ -43,6 +48,11 @@ export default class Entry {
      * @param {string} content
      */
     setContent(content) {
+        if (content === this.content) {
+            return;
+        }
+
+        this.dirty = true;
         this.content = content;
     }
 
@@ -86,5 +96,21 @@ export default class Entry {
      */
     setId(id) {
         this.id = id;
+    }
+
+    /**
+     * @return {boolean}
+     */
+    isDirty() {
+        if (this.dirty === true) {
+            return true;
+        }
+
+        return this.activities.filter(a => a.isDirty()).length > 0;
+    }
+
+    clean() {
+        this.dirty = false;
+        this.activities.forEach(a => a.clean());
     }
 }
