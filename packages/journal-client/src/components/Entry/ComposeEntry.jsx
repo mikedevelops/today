@@ -52,7 +52,7 @@ export class ComposeEntry extends React.Component {
                         </div>
                         { this.props.entry.getActivities().map(activity =>
                             <ActivityContainer
-                                key={activity.getId()}
+                                key={activity.getName()}
                                 activity={activity}
                                 submit={this.submitEntry.bind(this)}
                             />) }
