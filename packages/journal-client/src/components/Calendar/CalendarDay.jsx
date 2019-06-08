@@ -9,17 +9,13 @@ import { Link } from 'react-router-dom';
  */
 export const CalendarDay = ({ date, entry, today }) => {
     const label = date.format('DD');
-    const isToday = today.isSame(date, 'date');
-    const link = isToday || entry;
+    const isLink = entry !== undefined;
+    const getLink = entry => entry.isDate(today) ? '/' : entry.getSlug();
 
     return (
-        <div className={'calendar-day' + (link ? ' calendar-day--entry' : '')}>
-            { link ?
-                <Link to={
-                    isToday || today.isSame(entry.getDate()) ?
-                        '/' :
-                        `/entry/${entry.date.format('DD-MM-YYYY')}`
-                }>{ label }</Link> :
+        <div className={'calendar-day' + (isLink ? ' calendar-day--entry' : '')}>
+            { isLink ?
+                <Link to={getLink(entry)}>{ label }</Link> :
                 <span>{ label }</span>
             }
         </div>

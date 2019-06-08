@@ -38,3 +38,35 @@ export const getEntry = (id, entries) => {
 export const hasEntry = (id, entries) => {
     return Object.hasOwnProperty.call(entries, id);
 };
+
+/**
+ * @param {Entry} entry
+ * @param {Object<number,Entry>} entries
+ * @return {Entry|null}
+ */
+export const getPreviousEntry = (entry, entries) => {
+    const keys = Object.keys(entries).sort();
+    const currentIndex = keys.indexOf(entry.getKey().toString());
+
+    if (currentIndex < 1) {
+        return null;
+    }
+
+    return getEntry(parseInt(keys[currentIndex - 1], 10), entries);
+};
+
+/**
+ * @param {Entry} entry
+ * @param {Object<number,Entry>} entries
+ * @return {null|Entry}
+ */
+export const getNextEntry = (entry, entries) => {
+    const keys = Object.keys(entries).sort();
+    const currentIndex = keys.indexOf(entry.getKey().toString());
+
+    if (currentIndex === keys.length) {
+        return null;
+    }
+
+    return getEntry(parseInt(keys[currentIndex + 1], 10), entries);
+};

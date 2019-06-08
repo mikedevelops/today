@@ -1,13 +1,18 @@
 import moment from 'moment';
-import { generateRandomEntries, getEntry, hasEntry } from '../../src/utilities/entry';
+import { generateRandomEntries, getEntry, getNextEntry, getPreviousEntry, hasEntry } from '../../src/utilities/entry';
 import entryFactory from '../../src/factories/entryFactory';
 import { loremIpsum } from 'lorem-ipsum';
 import Entry from '../../src/entities/Entry';
 
 jest.mock('../../src/factories/entryFactory');
+jest.mock('../../src/entities/Entry');
 jest.mock('lorem-ipsum');
 
 describe('Entries Utilities', () => {
+    beforeEach(() => {
+        Entry.mockClear();
+    });
+
     describe('generateRandomEntries', () => {
         test('should generate random entries', () => {
             entryFactory.mockReturnValue('entry');
@@ -65,6 +70,40 @@ describe('Entries Utilities', () => {
             const entries = { 666: entry };
 
             expect(hasEntry(777, entries)).toBe(false);
+        });
+    });
+
+    describe('getPreviousEntry', () => {
+        test('should return the previous entry', () => {
+            const currentEntry = new Entry();
+            const currentDate = moment('03/10/1988');
+            const prevEntry = new Entry();
+            const prevDate = moment('01/10/1988');
+            const entries = {
+                [currentDate.unix()]: currentEntry,
+                [prevDate.unix()]: prevEntry,
+            };
+
+            currentEntry.getKey.mockReturnValue(currentDate.unix());
+
+            expect(getPreviousEntry(currentEntry, entries)).toBe(prevEntry);
+        });
+    });
+
+    describe('getNextEntry', () => {
+        test('should return the next entry', () => {
+            const currentEntry = new Entry();
+            const currentDate = moment('03/10/1988');
+            const nextEntry = new Entry();
+            const nextDate = moment('12/10/1988');
+            const entries = {
+                [currentDate.unix()]: currentEntry,
+                [nextDate.unix()]: nextEntry,
+            };
+
+            currentEntry.getKey.mockReturnValue(currentDate.unix());
+
+            expect(getNextEntry(currentEntry, entries)).toBe(nextEntry);
         });
     });
 });

@@ -1,6 +1,7 @@
 import React from 'react';
 import Text from '../Form/Text';
 import Activity from '../Activity/Activity';
+import EntryTools from './EntryToolsContainer';
 
 export default class Entry extends React.Component {
     constructor (props) {
@@ -36,7 +37,7 @@ export default class Entry extends React.Component {
     render () {
         return (
             <div className="entry">
-                <h2>{ this.props.entry.date.format('Do MMMM YYYY') }</h2>
+                <EntryTools entry={this.props.entry}/>
                 <div className="entry-view">
                     <form ref={this.form}>
                         <Text

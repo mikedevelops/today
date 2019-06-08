@@ -113,4 +113,16 @@ export default class Entry {
         this.dirty = false;
         this.activities.forEach(a => a.clean());
     }
+
+    getSlug() {
+        return `/entry/${this.date.format('DD-MM-YYYY')}`;
+    }
+
+    /**
+     * @param {moment.Moment} date
+     * @return {boolean}
+     */
+    isDate(date) {
+        return this.date.isSame(date);
+    }
 }
