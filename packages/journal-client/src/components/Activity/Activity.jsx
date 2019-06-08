@@ -4,13 +4,12 @@ import BooleanActivity from './BooleanActivity';
 
 /**
  * @param {Activity} activity
- * @param {User} user
- * @param {Entry} entry
+ * @param {boolean} readonly
  * @param {function} submit
  * @return {*}
  */
-export default ({ activity, user, entry, submit }) => {
-    const activityProps = { user, entry, submit };
+export default ({ activity, readonly, submit }) => {
+    const activityProps = { submit, readonly };
 
     const input = () => {
         if (activity.getType() === ACTIVITY_BOOLEAN) {

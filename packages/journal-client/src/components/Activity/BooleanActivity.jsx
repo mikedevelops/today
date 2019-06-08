@@ -15,12 +15,18 @@ export default class BooleanActivity extends React.Component {
         this.setState({ value: nextProps.activity.getValue() });
     }
 
-    handleChange() {
-            const value = !this.state.value;
+    handleChange(event) {
+        // Prevent an input state change in readonly mode
+        if (this.props.readonly) {
+            event.preventDefault();
+            return;
+        }
 
-            this.setState({ value });
-            this.props.activity.setValue(value);
-            this.props.submit();
+        const value = !this.state.value;
+
+        this.setState({ value });
+        this.props.activity.setValue(value);
+        this.props.submit();
     }
 
     render() {
@@ -28,9 +34,10 @@ export default class BooleanActivity extends React.Component {
             <fieldset>
                 <label htmlFor={this.props.activity.getName()}>{ this.props.activity.getLabel() }</label>
                 <input
+                    readOnly={this.props.readonly}
                     ref={this.input}
                     id={this.props.activity.getName()}
-                    onChange={this.handleChangeBound}
+                    onClick={this.handleChangeBound}
                     name={this.props.activity.getName()}
                     type="checkbox"
                     defaultChecked={this.state.value}/>

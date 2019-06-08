@@ -3,7 +3,6 @@ import moment from 'moment';
 import { Redirect, Route } from 'react-router';
 import { hasEntry } from '../../utilities/entry';
 import EntryContainer from '../Entry/EntryContainer';
-import TodayContainer from '../Entry/TodayContainer';
 import CalendarContainer from '../Calendar/CalendarContainer';
 
 export default class Dashboard extends React.Component {
@@ -14,15 +13,18 @@ export default class Dashboard extends React.Component {
                     <Route path="/entry/:date" component={(props) => {
                         const date = moment(props.match.params.date, 'DD-MM-YYYY');
                         const id = date.unix();
+                        const isToday = date.isSame(this.props.today);
 
-                        if (date.isSame(this.props.today) || !hasEntry(id, this.props.entries)) {
+                        if (isToday || !hasEntry(id, this.props.entries)) {
                             return <Redirect to="/"/>;
                         }
 
-                        return <EntryContainer date={date}/>
+                        return <EntryContainer entry={this.props.entries[id]}/>
                     }}/>
 
-                    <Route exact={true} path="/" component={TodayContainer}/>
+                    <Route exact={true} path="/" component={(props) => {
+                        return <EntryContainer entry={this.props.entries[this.props.today.unix()]}/>
+                    }}/>
                 </div>
 
                 <div className="sidebar">
