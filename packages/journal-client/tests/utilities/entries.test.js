@@ -91,7 +91,6 @@ describe('Entries Utilities', () => {
                 [prevDate.unix()]: prevEntry,
             };
 
-            currentEntry.getKey.mockReturnValue(currentDate.unix());
             currentEntry.getDate.mockReturnValue(currentDate);
             prevEntry.getDate.mockReturnValue(prevDate);
 
@@ -110,7 +109,8 @@ describe('Entries Utilities', () => {
                 [nextDate.unix()]: nextEntry,
             };
 
-            currentEntry.getKey.mockReturnValue(currentDate.unix());
+            currentEntry.getDate.mockReturnValue(currentDate);
+            nextEntry.getDate.mockReturnValue(nextDate);
 
             expect(getNextEntry(currentEntry, entries)).toBe(nextEntry);
         });
