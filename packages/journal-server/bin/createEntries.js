@@ -71,7 +71,7 @@ db.connect(async () => {
         });
 
         entries.push(Entry.create({
-            content: loremIpsum({ count: 5, unit: 'sentences' }),
+            content: date.format(moment.defaultFormatUtc) + ' ' + loremIpsum({ count: 5, unit: 'sentences' }),
             date: date.toDate(),
             user: user._id,
             activities: [activity],

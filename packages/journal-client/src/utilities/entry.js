@@ -40,19 +40,26 @@ export const hasEntry = (id, entries) => {
 };
 
 /**
+ * @param {Entry} a
+ * @param {Entry} b
+ */
+export const sortEntriesReverseChrono = (a, b) => {
+    return b.getDate().unix() - a.getDate().unix();
+};
+
+/**
+ * Get previous entry in time
  * @param {Entry} entry
  * @param {Object<number,Entry>} entries
  * @return {Entry|null}
  */
 export const getPreviousEntry = (entry, entries) => {
-    const keys = Object.keys(entries).sort();
-    const currentIndex = keys.indexOf(entry.getKey().toString());
+    // Sort reverse chronological
+    const sortedEntries = Object.keys(entries).map(e => entries[e])
+        .sort(sortEntriesReverseChrono);
+    const currentIndex = sortedEntries.indexOf(entry);
 
-    if (currentIndex < 1) {
-        return null;
-    }
-
-    return getEntry(parseInt(keys[currentIndex - 1], 10), entries);
+    return sortedEntries[currentIndex + 1] || null;
 };
 
 /**
@@ -61,12 +68,10 @@ export const getPreviousEntry = (entry, entries) => {
  * @return {null|Entry}
  */
 export const getNextEntry = (entry, entries) => {
-    const keys = Object.keys(entries).sort();
-    const currentIndex = keys.indexOf(entry.getKey().toString());
+    // Sort reverse chronological
+    const sortedEntries = Object.keys(entries).map(e => entries[e])
+        .sort(sortEntriesReverseChrono);
+    const currentIndex = sortedEntries.indexOf(entry);
 
-    if (currentIndex === keys.length) {
-        return null;
-    }
-
-    return getEntry(parseInt(keys[currentIndex + 1], 10), entries);
+    return sortedEntries[currentIndex - 1] || null;
 };

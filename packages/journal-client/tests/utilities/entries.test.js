@@ -1,5 +1,12 @@
 import moment from 'moment';
-import { generateRandomEntries, getEntry, getNextEntry, getPreviousEntry, hasEntry } from '../../src/utilities/entry';
+import {
+    generateRandomEntries,
+    getEntry,
+    getNextEntry,
+    getPreviousEntry,
+    hasEntry,
+    sortEntriesReverseChrono
+} from '../../src/utilities/entry';
 import entryFactory from '../../src/factories/entryFactory';
 import { loremIpsum } from 'lorem-ipsum';
 import Entry from '../../src/entities/Entry';
@@ -85,6 +92,8 @@ describe('Entries Utilities', () => {
             };
 
             currentEntry.getKey.mockReturnValue(currentDate.unix());
+            currentEntry.getDate.mockReturnValue(currentDate);
+            prevEntry.getDate.mockReturnValue(prevDate);
 
             expect(getPreviousEntry(currentEntry, entries)).toBe(prevEntry);
         });
@@ -104,6 +113,22 @@ describe('Entries Utilities', () => {
             currentEntry.getKey.mockReturnValue(currentDate.unix());
 
             expect(getNextEntry(currentEntry, entries)).toBe(nextEntry);
+        });
+    });
+
+    describe('sortEntriesReverseChrono', () => {
+        test('should sort dates in reverse chronological order', () => {
+            const entries = [new Entry(), new Entry(), new Entry()];
+
+            entries[0].getDate.mockReturnValue(moment('03-10-1988'));
+            entries[1].getDate.mockReturnValue(moment('05-10-1988'));
+            entries[2].getDate.mockReturnValue(moment('04-10-1988'));
+
+            const sortedEntries = [...entries].sort(sortEntriesReverseChrono);
+
+            expect(sortedEntries[0].getDate().unix()).toEqual(entries[1].getDate().unix());
+            expect(sortedEntries[1].getDate().unix()).toEqual(entries[2].getDate().unix());
+            expect(sortedEntries[2].getDate().unix()).toEqual(entries[0].getDate().unix());
         });
     });
 });
