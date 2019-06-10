@@ -1,25 +1,28 @@
 import { connect } from 'react-redux';
 import Entry from './Entry';
 import entryFactory from '../../factories/entryFactory';
-import { saveEntry } from '../../actions/entryActions';
+import { saveEntry, toggleReadOnly } from '../../actions/entryActions';
 
-const mapStateToProps = ({ date, user }, { entry }) => {
-    let mappedEntry = entry;
+const mapStateToProps = ({ date, user, entry }, props) => {
+    let mappedEntry = props.entry;
 
-    if (entry === undefined) {
+    if (mappedEntry === undefined) {
         mappedEntry = entryFactory(null, date.today, '', user.getActivities());
     }
+
+    const readonly = mappedEntry.getDate().isSame(date.today) ? false : entry.readonly;
 
     return {
         entry: mappedEntry,
         user,
-        readonly: !mappedEntry.getDate().isSame(date.today),
+        readonly,
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
         submit: (entry, token) => dispatch(saveEntry(entry, token)),
+        toggleReadonly: () => dispatch(toggleReadOnly()),
     };
 };
 

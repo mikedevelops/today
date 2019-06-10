@@ -6,11 +6,17 @@ import EntryContainer from '../Entry/EntryContainer';
 import CalendarContainer from '../Calendar/CalendarContainer';
 
 export default class Dashboard extends React.Component {
+    componentDidUpdate (prevProps, prevState, snapshot) {
+        if (prevProps.location !== this.props.location) {
+            this.props.resetReadonly();
+        }
+    }
+
     render () {
         return (
             <div className="dashboard">
                 <div className="main">
-                    <Route path="/entry/:date" component={(props) => {
+                    <Route onChange={this.props.resetReadonly} path="/entry/:date" component={(props) => {
                         const date = moment(props.match.params.date, 'DD-MM-YYYY');
                         const id = date.unix();
                         const isToday = date.isSame(this.props.today);

@@ -1,7 +1,6 @@
 import axios from 'axios';
 import moment from 'moment';
 import entryFactory from '../factories/entryFactory';
-import activityFactory from '../factories/activityFactory';
 import entryTransformer from '../transformers/entryTransformer';
 
 export const ENTRY_SAVE = 'ENTRY_SAVE';
@@ -13,6 +12,8 @@ export const CLEAR_ENTRIES = 'CLEAR_ENTRIES';
 export const ENTRIES_GET_ALL_START = 'ENTRIES_GET_ALL_START';
 export const ENTRIES_GET_ALL_SUCCESS = 'ENTRIES_GET_ALL_SUCCESS';
 export const ENTRIES_GET_ALL_ERROR = 'ENTRIES_GET_ALL_ERROR';
+export const ENTRY_TOGGLE_READONLY = 'ENTRY_TOGGLE_READONLY';
+export const ENTRY_READONLY_RESET = 'ENTRY_READONLY_RESET';
 
 /**
  * Start saving entry
@@ -128,4 +129,20 @@ export const getEntries = token => (dispatch) => {
  */
 export const clearEntries = () => ({
     type: CLEAR_ENTRIES,
+});
+
+/**
+ * Toggle Entry readonly mode
+ * @return {{type: string}}
+ */
+export const toggleReadOnly = () => ({
+    type: ENTRY_TOGGLE_READONLY,
+});
+
+/**
+ * Reset readonly to true
+ * @return {{type: *}}
+ */
+export const resetReadonly = () => ({
+    type: ENTRY_READONLY_RESET,
 });

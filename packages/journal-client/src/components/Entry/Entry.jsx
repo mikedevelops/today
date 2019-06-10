@@ -8,7 +8,6 @@ export default class Entry extends React.Component {
         super(props);
 
         this.form = React.createRef();
-
         this.submitBound = this.submit.bind(this);
     }
 
@@ -38,6 +37,7 @@ export default class Entry extends React.Component {
         return (
             <div className="entry">
                 <EntryTools entry={this.props.entry}/>
+                <button disabled={!this.props.readonly} onClick={this.props.toggleReadonly}>Edit</button>
                 <div className="entry-view">
                     <form ref={this.form}>
                         <Text
