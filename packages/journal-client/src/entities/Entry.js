@@ -38,7 +38,7 @@ export default class Entry {
         this.dirty = false;
 
         /**
-         * @type {moment.Moment}
+         * @type {moment.Moment|null}
          */
         this.lastUpdated = lastUpdated;
     }
@@ -132,10 +132,16 @@ export default class Entry {
         return this.date.isSame(date);
     }
 
+    /**
+     * @return {Entry}
+     */
     clone() {
         return new Entry(this.date, this.content, this.activities.map(a => a.clone()), this.id);
     }
 
+    /**
+     * @return {moment.Moment|null}
+     */
     getLastUpdated() {
         return this.lastUpdated;
     }

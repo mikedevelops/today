@@ -9,7 +9,7 @@ import dateReducer from './reducers/dateReducer';
 import userReducer from './reducers/userReducer';
 import { createBrowserHistory } from 'history';
 import { ConnectedRouter, connectRouter } from 'connected-react-router';
-import { resetReadonly } from './actions/entryActions';
+import { getEntries, resetReadonly } from './actions/entryActions';
 
 const root = document.getElementById('root');
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&
@@ -31,7 +31,8 @@ const mapStateToProps = ({ user, router }) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        resetReadonly: () => dispatch(resetReadonly())
+        resetReadonly: () => dispatch(resetReadonly()),
+        hydrate: token => dispatch(getEntries(token)),
     }
 };
 

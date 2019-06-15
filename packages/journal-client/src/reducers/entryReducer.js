@@ -1,7 +1,7 @@
 import {
     CLEAR_ENTRIES,
     ENTRIES_GET_ALL_SUCCESS,
-    ENTRY_EDIT, ENTRY_READONLY_RESET,
+    ENTRY_READONLY_RESET,
     ENTRY_SAVE_SUCCESS,
     ENTRY_TOGGLE_READONLY,
 } from '../actions/entryActions';
@@ -12,7 +12,7 @@ import entryFactory from '../factories/entryFactory';
 const today = moment().startOf('day');
 const range = getDatesInRange(today.clone().startOf('year'), today);
 const initialState = {
-    items: range.map(date => entryFactory(null, date, moment().utc())),
+    items: range.map(date => entryFactory(null, date, null)),
     readonly: true,
 };
 

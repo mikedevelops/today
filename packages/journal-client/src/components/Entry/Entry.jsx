@@ -63,7 +63,9 @@ export default class Entry extends React.Component {
                             save={this.submitBound}
                         />
 
-                        <pre>{ this.props.entry.getLastUpdated().local().format() }</pre>
+                        { this.props.entry.getLastUpdated() !== null &&
+                            <pre>{ this.props.entry.getLastUpdated().local().format() }</pre>
+                        }
 
                         { uniqueActivities.map(activity =>
                             <Activity

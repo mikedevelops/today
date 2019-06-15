@@ -10,7 +10,11 @@ import { whyDidYouUpdate } from 'why-did-you-update/es';
 // whyDidYouUpdate(React);
 
 export default class App extends React.Component {
-    render () {
+    componentDidMount() {
+        this.props.hydrate(this.props.user.token);
+    }
+
+    render() {
         const { user } = this.props;
 
         if (user === null && this.props.router.location.pathname !== '/login') {
