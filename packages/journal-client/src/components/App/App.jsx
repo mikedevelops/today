@@ -23,7 +23,8 @@ export default class App extends React.Component {
                 <Route path="/logout" component={LogoutContainer}/>
                 <div className="app">
                     <NavBarContainer/>
-                    <DashboardContainer/>
+                    <Route path="/entry/:date" onChange={this.props.resetReadonly} component={DashboardContainer}/>
+                    <Route path="/" exact={true} component={DashboardContainer}/>
                 </div>
             </main>
         );

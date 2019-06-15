@@ -107,4 +107,18 @@ export default class Activity {
     clean() {
         this.dirty = false;
     }
+
+    clone() {
+        return new Activity(this.id, this.icon, this.type, this.name, this.value, this.label, this.enabled);
+    }
+
+    isSame(activity) {
+        // if both activities have IDs, compare them
+        if (this.id !== null && activity.getId() !== null) {
+            return this.id === activity.getId();
+        }
+
+        // Otherwise check name and type
+        return this.name === activity.getName() && this.type === activity.getType();
+    }
 }

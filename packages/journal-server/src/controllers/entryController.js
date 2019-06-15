@@ -52,6 +52,7 @@ module.exports.saveEntry = async (req, res) => {
 
         entry.activities = activities.map(activityManager.createActivity);
         entry.content = content;
+        entry.lastUpdated = new Date();
         entry = await entry.save({ new: true });
 
         return res.json(entry.toObject());

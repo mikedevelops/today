@@ -9,6 +9,7 @@ import dateReducer from './reducers/dateReducer';
 import userReducer from './reducers/userReducer';
 import { createBrowserHistory } from 'history';
 import { ConnectedRouter, connectRouter } from 'connected-react-router';
+import { resetReadonly } from './actions/entryActions';
 
 const root = document.getElementById('root');
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&
@@ -21,14 +22,20 @@ const store = createStore(combineReducers({
     user: userReducer,
 }), composeEnhancers(applyMiddleware(thunk)));
 
-const appProps = ({ user, router }) => {
+const mapStateToProps = ({ user, router }) => {
     return {
         user,
         router,
     }
 };
 
-const ConnectedApp = connect(appProps)(App);
+const mapDispatchToProps = dispatch => {
+    return {
+        resetReadonly: () => dispatch(resetReadonly())
+    }
+};
+
+const ConnectedApp = connect(mapStateToProps, mapDispatchToProps)(App);
 
 ReactDOM.render(
     <Provider store={store}>

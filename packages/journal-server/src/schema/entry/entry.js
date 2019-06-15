@@ -6,6 +6,7 @@ const schema = new mongoose.Schema({
     date: { type: Date, required: true },
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     activities: [AbstractActivity],
+    lastUpdated: { type: Date, require: true },
 });
 
 schema.index({ date: 1, user: 1 }, { unique: true });

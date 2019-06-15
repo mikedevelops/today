@@ -4,8 +4,9 @@ export default class Entry {
      * @param {string} content
      * @param {Activity[]} activities
      * @param {string|null} id
+     * @param {moment.Moment} lastUpdated
      */
-    constructor(date, content, activities, id) {
+    constructor(date, content, activities, id, lastUpdated) {
         /**
          * @type {moment.Moment}
          */
@@ -35,6 +36,11 @@ export default class Entry {
          * @type {boolean}
          */
         this.dirty = false;
+
+        /**
+         * @type {moment.Moment}
+         */
+        this.lastUpdated = lastUpdated;
     }
 
     /**
@@ -115,7 +121,7 @@ export default class Entry {
     }
 
     getSlug() {
-        return `/entry/${this.date.format('DD-MM-YYYY')}`;
+        return `/entry/${this.date.format('YYYY-MM-DD')}`;
     }
 
     /**
@@ -124,5 +130,13 @@ export default class Entry {
      */
     isDate(date) {
         return this.date.isSame(date);
+    }
+
+    clone() {
+        return new Entry(this.date, this.content, this.activities.map(a => a.clone()), this.id);
+    }
+
+    getLastUpdated() {
+        return this.lastUpdated;
     }
 }

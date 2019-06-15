@@ -1,6 +1,8 @@
 import React from 'react';
+import Range from '../../entities/calendar/Range';
+import Month from '../../entities/calendar/Month';
+import Week from '../../entities/calendar/Week';
 import { CalendarMonth } from './CalendarMonth';
-import { getDatesInRange } from '../../utilities/date';
 import { CalendarWeek } from './CalendarWeek';
 import { CalendarDay } from './CalendarDay';
 import moment from 'moment';
@@ -9,59 +11,55 @@ export default class Calendar extends React.Component {
     constructor (props) {
         super(props);
 
-        this.state = {
-            hydrated: false,
-        };
+        /**
+         * @type {Range}
+         */
+        this.calendar = this.updateCalendar(props);
+   }
+
+    componentWillUpdate (nextProps) {
+        this.calendar = this.updateCalendar(nextProps);
     }
 
-    componentDidMount () {
-        this.props.hydrate(this.props.user.getToken());
-    }
+    updateCalendar(props) {
+        const calendar = new Range();
 
-    render () {
-        const dates = getDatesInRange(this.props.today.clone().startOf('year'), this.props.today);
-        const calendarMatrix = {};
+        props.entries.forEach((entry) => {
+            const date = entry.getDate();
+            let month = calendar.getMonth(date.month());
 
-        // Convert dates into a tree
-        // TODO: this should be a util
-        dates.forEach(date => {
-            if (calendarMatrix[date.month()] === undefined) {
-                calendarMatrix[date.month()] = {};
+            if (month === undefined) {
+                month = new Month(date.month());
+                calendar.addMonth(month);
             }
 
-            if (calendarMatrix[date.month()][date.week()] === undefined) {
-                calendarMatrix[date.month()][date.week()] = [];
+            let week = month.getWeek(date.week());
+
+            if (week === undefined) {
+                week = new Week(date.week());
+                month.addWeek(week);
             }
 
-            calendarMatrix[date.month()][date.week()].push(date);
+            week.addEntry(entry);
         });
 
-        return (
-            <div className="calendar">
-                {
-                    Object.keys(calendarMatrix).reverse().map(m =>
-                        <CalendarMonth key={`month_${m}`}>
-                            <h3 className="calendar-month__label">{ moment().month(m).format('MMMM') }</h3>
-                            {
-                                Object.keys(calendarMatrix[m]).reverse().map(w =>
-                                    <CalendarWeek key={`month_${m}_week_${w}`}>
-                                        {
-                                            calendarMatrix[m][w].reverse().map(d =>
-                                                <CalendarDay
-                                                    key={`month_${m}_week_${w}_day_${d}`}
-                                                    date={d}
-                                                    entry={this.props.entries[d.unix()]}
-                                                    today={this.props.today}
-                                                />
-                                            )
-                                        }
-                                    </CalendarWeek>
-                                )
-                            }
-                        </CalendarMonth>
-                    )
-                }
-            </div>
-        );
+        return calendar;
+    }
+
+    render() {
+        const months = [...this.calendar.months].reverse();
+
+        return months.map((month) => (
+            <CalendarMonth key={month.month}>
+                <pre>{ moment().month(month.month).format('MMMM') }</pre>
+                { month.weeks.reverse().map(week => (
+                     <CalendarWeek key={week.week}>
+                         { week.entries.reverse().map(entry => (
+                             <CalendarDay key={entry.getDate().unix()} entry={entry}/>
+                         )) }
+                     </CalendarWeek>
+                 )) }
+             </CalendarMonth>
+         ));
     }
 };

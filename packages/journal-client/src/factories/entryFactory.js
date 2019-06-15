@@ -4,11 +4,12 @@ import activityFactory from './activityFactory';
 /**
  * @param {string|null} id
  * @param {moment.Moment} date
+ * @param {moment.Moment} lastUpdated
  * @param {string} content
  * @param {{_id: string, type: string, name: string, icon: string, value: *|null, label: string|null}[]} activities
  * @return {Entry}
  */
-export default (id = null, date, content = '', activities = []) => {
+export default (id = null, date, lastUpdated, content = '', activities = []) => {
     const hydratedActivities = activities.map((activity) => {
         return activityFactory(
             activity._id,
@@ -20,5 +21,5 @@ export default (id = null, date, content = '', activities = []) => {
         );
     });
 
-    return new Entry(date, content, hydratedActivities, id);
+    return new Entry(date, content, hydratedActivities, id, lastUpdated);
 };

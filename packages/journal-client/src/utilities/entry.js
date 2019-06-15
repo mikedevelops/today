@@ -75,3 +75,8 @@ export const getNextEntry = (entry, entries) => {
 
     return sortedEntries[currentIndex - 1] || null;
 };
+
+/**
+ * @param {moment.Moment} date
+ */
+export const getEntrySlug = date => `/entry/${date.format('YYYY-MM-DD')}`;

@@ -1,7 +1,7 @@
 import React from 'react';
-import Text from '../Form/Text';
 import Activity from '../Activity/Activity';
 import EntryTools from './EntryToolsContainer';
+import TextArea from '../Form/Text';
 
 export default class Entry extends React.Component {
     constructor (props) {
@@ -34,19 +34,38 @@ export default class Entry extends React.Component {
     }
 
     render () {
+        const mergedActivities = [...this.props.user.getActivities(), ...this.props.entry.getActivities()];
+        const uniqueActivities = mergedActivities.reduce((unique, activity) => {
+            if (unique.length === 0) {
+                return [activity];
+            }
+
+            const existing = unique.find(a => a.isSame(activity));
+
+            if (existing !== undefined) {
+                return unique;
+            }
+
+            return [...unique, activity];
+        }, []);
+
+        // TODO: fix entry text area problem...
         return (
             <div className="entry">
                 <EntryTools entry={this.props.entry}/>
                 <button disabled={!this.props.readonly} onClick={this.props.toggleReadonly}>Edit</button>
                 <div className="entry-view">
                     <form ref={this.form}>
-                        <Text
+                        <TextArea
                             value={this.props.entry.getContent()}
                             readonly={this.props.readonly}
                             onBlur={this.submitBound}
+                            save={this.submitBound}
                         />
 
-                        { this.props.entry.getActivities().map(activity =>
+                        <pre>{ this.props.entry.getLastUpdated().local().format() }</pre>
+
+                        { uniqueActivities.map(activity =>
                             <Activity
                                 key={activity.getName()}
                                 readonly={this.props.readonly}

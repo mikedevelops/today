@@ -3,39 +3,48 @@ import {
     ENTRIES_GET_ALL_SUCCESS,
     ENTRY_EDIT, ENTRY_READONLY_RESET,
     ENTRY_SAVE_SUCCESS,
-    ENTRY_TOGGLE_READONLY
+    ENTRY_TOGGLE_READONLY,
 } from '../actions/entryActions';
+import moment from 'moment';
+import { getDatesInRange } from '../utilities/date';
+import entryFactory from '../factories/entryFactory';
 
+const today = moment().startOf('day');
+const range = getDatesInRange(today.clone().startOf('year'), today);
 const initialState = {
-    items: {},
+    items: range.map(date => entryFactory(null, date, moment().utc())),
     readonly: true,
 };
 
 export default (state = initialState, action) => {
     switch (action.type) {
-    case ENTRY_SAVE_SUCCESS:
+        case ENTRY_SAVE_SUCCESS:
         return Object.assign({}, state, {
-            items: Object.assign({}, state.items, { [action.entry.getKey()]: action.entry }),
-            edit: false,
-        });
+            items: state.items.map((entry) => {
+                if (entry.getKey() === action.entry.getKey()) {
+                    return action.entry;
+                }
 
-    case ENTRY_EDIT:
-        return Object.assign({}, state, {
-            edit: true,
+                return entry;
+            }),
         });
 
     case ENTRIES_GET_ALL_SUCCESS:
         return Object.assign({}, state, {
-            items: action.entries.reduce((entries, entry) => {
-                entries[entry.getKey()] = entry;
+            items: state.items.map((entry) => {
+                const actionEntry = action.entries.find(e => e.getKey() === entry.getKey());
 
-                return entries;
-            }, {}),
+                if (actionEntry !== undefined) {
+                    return actionEntry;
+                }
+
+                return entry;
+            }),
         });
 
     case CLEAR_ENTRIES:
         return Object.assign({}, state, {
-            items: {},
+            items: [],
         });
 
     case ENTRY_TOGGLE_READONLY:

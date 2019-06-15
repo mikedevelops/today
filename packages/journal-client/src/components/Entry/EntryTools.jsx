@@ -1,12 +1,12 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { getNextEntry, getPreviousEntry } from '../../utilities/entry';
+import { getEntrySlug, getNextEntry, getPreviousEntry } from '../../utilities/entry';
 
 export class EntryTools extends React.Component {
     render () {
         const prev = getNextEntry(this.props.entry, this.props.entries);
         const next = getPreviousEntry(this.props.entry, this.props.entries);
-        const getLink = entry => entry === null ? '/' : entry.getSlug();
+        const getLink = entry => entry === null ? '/' : getEntrySlug(entry.getDate());
 
         return (
             <div>

@@ -58,7 +58,13 @@ export const saveEntry = (entry, token) => (dispatch) => {
         headers: { Authorization: `Bearer ${token}` },
         json: true,
     }).then(({ data }) => {
-        const newEntry = entryFactory(data.date, data.content, data.activities, data._id);
+        const newEntry = entryFactory(
+            data._id,
+            moment(data.date),
+            moment(data.lastUpdated),
+            data.content,
+            data.activities,
+        );
 
         dispatch(saveEntrySuccess(newEntry));
     }).catch((error) => {
@@ -115,7 +121,13 @@ export const getEntries = token => (dispatch) => {
     }).then(({ data }) => {
         dispatch(getAllEntriesSuccess(
             data.map((entry) => {
-                return entryFactory(entry._id, moment(entry.date), entry.content, entry.activities);
+                return entryFactory(
+                    entry._id,
+                    moment(entry.date),
+                    moment(entry.lastUpdated),
+                    entry.content,
+                    entry.activities,
+                );
             }),
         ));
     }).catch((error) => {
