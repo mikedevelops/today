@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
  */
 export const CalendarDay = ({ entry }) => {
     return (
-        <div className={'calendar-day calendar-day--entry'}>
+        <div className={`calendar-day ${entry.getId() !== null ? 'calendar-day--entry' : ''}`}>
             <Link to={entry.getSlug()}>{ entry.getDate().format('DD') }</Link>
         </div>
     );
