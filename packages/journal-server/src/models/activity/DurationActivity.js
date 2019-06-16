@@ -1,6 +1,6 @@
 const schema = require('../../schema/activity/durationActivity');
-const { doc } = require('./AbstractActivity');
+const { activities } = require('../../schema/activity/activityVersion');
 
-const DurationActivity = doc.discriminator('DurationActivity', schema);
+const DurationActivity = activities.discriminator('DurationActivity', schema);
 
 module.exports = DurationActivity;

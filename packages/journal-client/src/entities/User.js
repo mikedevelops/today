@@ -3,18 +3,12 @@ export default class User {
      * @param {string} id
      * @param {string} token
      * @param {string} username
-     * @param {Activity[]} activities
      */
-    constructor(id, token, username, activities = []) {
+    constructor(id, token, username) {
         /*
          * @type {string}
          */
         this.username = username;
-
-        /**
-         * @type {Activity[]}
-         */
-        this.activities = activities;
 
         /**
          * @type {string}
@@ -32,13 +26,6 @@ export default class User {
      */
     getUsername() {
         return this.username;
-    }
-
-    /**
-     * @return {Activity[]}
-     */
-    getActivities() {
-        return this.activities;
     }
 
     /**

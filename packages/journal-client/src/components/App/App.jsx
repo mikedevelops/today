@@ -11,7 +11,9 @@ import { whyDidYouUpdate } from 'why-did-you-update/es';
 
 export default class App extends React.Component {
     componentDidMount() {
-        this.props.hydrate(this.props.user.token);
+        if (this.props.user !== null) {
+            this.props.hydrate(this.props.user.token);
+        }
     }
 
     render() {

@@ -1,5 +1,5 @@
 const { booleanActivitySchema } = require('../../schema/activity/booleanActivity');
-const { activities } = require('../../schema/entry/entry');
+const { activities } = require('../../schema/activity/activityVersion');
 
 const BooleanActivity = activities.discriminator('BooleanActivity', booleanActivitySchema);
 

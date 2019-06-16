@@ -13,7 +13,7 @@ export const USER_HYDRATE_ERROR = 'USER_HYDRATE_ERROR';
  * @return {Function}
  */
 export const saveUser = user => (dispatch) => {
-    const newUser = userFactory(user.id, user.username, user.token, user.activities);
+    const newUser = userFactory(user.id, user.username, user.token);
 
     store.set('user', newUser);
     dispatch({
