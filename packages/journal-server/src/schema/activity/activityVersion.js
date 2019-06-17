@@ -3,7 +3,8 @@ const AbstractActivity = require('../activity/abstractActivity');
 
 const schema = new mongoose.Schema({
     version: { type: Number, required: true },
-    activities: [AbstractActivity],
+    activities: { type: [AbstractActivity], required: true },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
 });
 
 schema.index({ version: 1 }, { unique: true });

@@ -7,6 +7,7 @@ const passport = require('passport');
 const cors = require('cors');
 const entryRouter = require('./routes/entries');
 const authenticationRouter = require('./routes/authentication');
+const activitiesRouter = require('./routes/activities');
 const logger = require('./services/logger');
 const db = require('./services/database');
 const emitter = require('./services/emitter');
@@ -26,9 +27,10 @@ app.use(passport.initialize());
 app.all('*', debug);
 app.use(entryRouter);
 app.use(authenticationRouter);
+app.use(activitiesRouter);
 
 db.connect(() => {
-    server = app.listen(process.env.PORT, () => {
+    app.listen(process.env.PORT, () => {
         logger.info(`Server started and listening on ${process.env.PORT}`);
         emitter.emit('ready');
     });
