@@ -6,9 +6,8 @@ export default class Activity {
      * @param {string} name
      * @param {*|null} value
      * @param {string|null} label
-     * @param {boolean} enabled
      */
-    constructor(id = null, icon, type, name, value = null, label = null, enabled) {
+    constructor(id = null, icon, type, name, value = null, label = null) {
         /**
          * @type {string|null}
          */
@@ -38,11 +37,6 @@ export default class Activity {
          * @type {string|boolean}
          */
         this.value = value;
-
-        /**
-         * @type {boolean}
-         */
-        this.enabled = enabled;
 
         /**
          * @type {boolean}
@@ -109,7 +103,7 @@ export default class Activity {
     }
 
     clone() {
-        return new Activity(this.id, this.icon, this.type, this.name, this.value, this.label, this.enabled);
+        return new Activity(this.id, this.icon, this.type, this.name, this.value, this.label);
     }
 
     isSame(activity) {
@@ -120,5 +114,9 @@ export default class Activity {
 
         // Otherwise check name and type
         return this.name === activity.getName() && this.type === activity.getType();
+    }
+
+    getIcon() {
+        return this.icon;
     }
 }

@@ -1,16 +1,32 @@
 import React from 'react';
 import EntryTools from './EntryToolsContainer';
 import TextArea from '../Form/Text';
+import Activity from '../Activity/ActivityContainer';
 
 export default class Entry extends React.Component {
-    constructor (props) {
+    constructor(props) {
         super(props);
 
         this.form = React.createRef();
         this.submitBound = this.submit.bind(this);
     }
 
-    submit (event = null) {
+    componentDidMount() {
+        this.props.hydrateActivities(this.props.user.token);
+    }
+
+    componentWillUpdate (nextProps, nextState, nextContext) {
+        nextProps.activities.forEach(activity => {
+            if (nextProps.entry.hasActivity(activity)) {
+                activity.setValue(activity.getValue());
+                return;
+            }
+
+            nextProps.entry.addActivity(activity);
+        });
+    }
+
+    submit(event = null) {
         // We should never be able to modify an entry if it is readonly
         if (this.props.readonly) {
             return;
@@ -32,8 +48,7 @@ export default class Entry extends React.Component {
         this.props.entry.clean();
     }
 
-    render () {
-        // TODO: fix entry text area problem...
+    render() {
         return (
             <div className="entry">
                 <EntryTools entry={this.props.entry}/>
@@ -47,8 +62,19 @@ export default class Entry extends React.Component {
                             save={this.submitBound}
                         />
 
-                        { this.props.entry.getLastUpdated() !== null &&
-                            <pre>{ this.props.entry.getLastUpdated().local().format() }</pre>
+                        {
+                            this.props.entry.getLastUpdated() !== null &&
+                                <pre>{ this.props.entry.getLastUpdated().local().format() }</pre>
+                        }
+
+                        {
+                            this.props.entry.getActivities().map(activity =>
+                                <Activity
+                                    key={activity.name}
+                                    readonly={this.props.readonly}
+                                    submit={this.submitBound}
+                                    activity={activity}
+                                />)
                         }
                     </form>
                 </div>

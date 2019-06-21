@@ -1,22 +1,16 @@
 const ActivityVersion = require('../models/activity/ActivityVersion');
-const { handleMongooseException } = require('../utilities/errors');
-const logger = require('../services/logger');
 
 /**
  * @param {Request} req
  * @param {Response} res
  */
-module.exports.getActivities = (req, res) => {
-    ActivityVersion.find({ user: req.user.id }).sort({ version: -1 }).limit(1)
-        .exec((error, [activity]) => {
-            if (error !== null) {
-                return handleMongooseException(error, res, logger);
-            }
+module.exports.getActivities = async (req, res) => {
+    const version = await ActivityVersion.findOne().populate('activities').exec();
 
-            if (activity === undefined) {
-                return res.send('No ActivityVersion found');
-            }
-
-            res.json(activity.toObject());
-        });
+    res.send(version.activities.map(a => ({
+        icon: a.icon,
+        name: a.name,
+        type: a.type,
+        defaultValue: a.defaultValue,
+    })));
 };

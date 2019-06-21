@@ -54,9 +54,7 @@ module.exports.register = (req, res) => {
                 activities: user.activities,
             });
         });
-    }).catch((error) => {
-        return handleMongooseException(error, res, logger);
-    });
+    }).catch(error => handleMongooseException(error, res, logger));
 };
 
 /**

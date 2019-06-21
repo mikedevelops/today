@@ -17,9 +17,7 @@ passport.use(new Jwt.Strategy({
     jwtFromRequest: Jwt.ExtractJwt.fromAuthHeaderAsBearerToken(),
     secretOrKey: 'token_secret',
 }, (jwtPayload, done) => {
-    User.findOne({ _id: jwtPayload.id }, (error, user) => {
-        return done(error, user);
-    });
+    User.findOne({ _id: jwtPayload.id }, (error, user) => done(error, user));
 }));
 
 passport.use(new LocalStrategy(

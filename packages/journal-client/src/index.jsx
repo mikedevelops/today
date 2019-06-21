@@ -7,6 +7,7 @@ import { connect, Provider } from 'react-redux';
 import entryReducer from './reducers/entryReducer';
 import dateReducer from './reducers/dateReducer';
 import userReducer from './reducers/userReducer';
+import activityReducer from './reducers/activityReducer';
 import { createBrowserHistory } from 'history';
 import { ConnectedRouter, connectRouter } from 'connected-react-router';
 import { getEntries, resetReadonly } from './actions/entryActions';
@@ -20,6 +21,7 @@ const store = createStore(combineReducers({
     date: dateReducer,
     router: connectRouter(history),
     user: userReducer,
+    activity: activityReducer,
 }), composeEnhancers(applyMiddleware(thunk)));
 
 const mapStateToProps = ({ user, router }) => {

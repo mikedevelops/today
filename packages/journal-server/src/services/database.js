@@ -1,3 +1,8 @@
+require('../models/activity/ActivityBlueprint');
+require('../models/activity/ActivityVersion');
+require('../models/entry/Entry');
+require('../models/user/User');
+
 const mongoose = require('mongoose');
 const logger = require('./logger');
 

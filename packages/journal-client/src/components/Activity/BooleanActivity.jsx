@@ -26,7 +26,7 @@ export default class BooleanActivity extends React.Component {
 
         this.setState({ value });
         this.props.activity.setValue(value);
-        this.props.submit();
+        this.props.submit(event);
     }
 
     render() {
@@ -37,10 +37,10 @@ export default class BooleanActivity extends React.Component {
                     readOnly={this.props.readonly}
                     ref={this.input}
                     id={this.props.activity.getName()}
-                    onClick={this.handleChangeBound}
+                    onChange={this.handleChangeBound}
                     name={this.props.activity.getName()}
                     type="checkbox"
-                    defaultChecked={this.state.value}/>
+                    checked={this.state.value}/>
             </fieldset>
         );
     }

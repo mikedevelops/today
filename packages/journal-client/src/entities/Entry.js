@@ -145,4 +145,20 @@ export default class Entry {
     getLastUpdated() {
         return this.lastUpdated;
     }
+
+    /**
+     * @param {Activity} activity
+     * @return {boolean}
+     */
+    hasActivity(activity) {
+        return this.activities.find(a => a.isSame(activity)) !== undefined;
+    }
+
+    /**
+     * @param {Activity} activity
+     */
+    addActivity(activity) {
+        this.dirty = true;
+        this.activities.push(activity);
+    }
 }

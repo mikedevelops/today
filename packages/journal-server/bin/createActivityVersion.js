@@ -3,7 +3,8 @@ const winston = require('winston');
 const db = require('../src/services/database');
 const User = require('../src/models/user/User');
 const ActivityVersion = require('../src/models/activity/ActivityVersion');
-const { ACTIVITY_BOOLEAN } = require('../../journal-client/src/config/app.config');
+const { ACTIVITY_BOOLEAN } = require('../src/schema/activity/activityBlueprint');
+const ActivityBlueprint = require('../src/models/activity/ActivityBlueprint');
 
 const cli = meow('Create Activity Version', {
     flags: {
@@ -34,16 +35,20 @@ if (cli.flags.user === undefined) {
 }
 
 db.connect(async () => {
-    const user = await User.findOne({ username: cli.flags.user })
+    const user = await User.findOne({ username: cli.flags.user });
 
     if (user === null) {
         logger.error(`Cannot find user "${cli.flags.user}"`);
         process.exit(0);
-    };
+    }
 
     const activities = [
-        { type: ACTIVITY_BOOLEAN, name: 'climbed', enabled: true, defaultValue: false, icon: 'icon' },
-        { type: ACTIVITY_BOOLEAN, name: 'happy', enabled: true, defaultValue: false, icon: 'icon' },
+        await ActivityBlueprint.create({
+            type: ACTIVITY_BOOLEAN,
+            name: 'climbed',
+            icon: 'icon',
+            defaultValue: false,
+        }),
     ];
 
     await ActivityVersion.remove();

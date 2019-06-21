@@ -19,6 +19,7 @@ export default ({ activity, readonly, submit }) => {
 
     return (
         <div className="activity">
+            <pre>{ activity.getId() }</pre>
             { input() }
         </div>
     );

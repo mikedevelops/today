@@ -1,7 +1,7 @@
 import Activity from '../entities/Activity';
 
 /**
- * @param {string} id
+ * @param {string|null} id
  * @param {string} type
  * @param {string} name
  * @param {string} icon
