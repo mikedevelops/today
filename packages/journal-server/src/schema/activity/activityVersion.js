@@ -6,6 +6,6 @@ const schema = new mongoose.Schema({
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
 });
 
-schema.index({ version: 1 }, { unique: true });
+schema.index({ version: 1, user: 1 }, { unique: true });
 
 module.exports = schema;

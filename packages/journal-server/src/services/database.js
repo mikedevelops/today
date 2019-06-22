@@ -11,13 +11,19 @@ const logger = require('./logger');
  * @param {Function} next
  */
 module.exports.connect = (next) => {
+    const options = {
+        useNewUrlParser: true,
+        dbName: process.env.DB_NAME,
+        useFindAndModify: false,
+    };
+
+    if (next === undefined) {
+        return mongoose.connect(process.env.DB_HOST, options);
+    }
+
     mongoose.connect(
         process.env.DB_HOST,
-        {
-            useNewUrlParser: true,
-            dbName: process.env.DB_NAME,
-            useFindAndModify: false,
-        },
+        options,
     ).then(async () => {
         logger.info(`Connected to the database ${process.env.DB_HOST}`);
         next();

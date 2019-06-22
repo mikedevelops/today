@@ -6,7 +6,8 @@
   "scripts": {
     "dev:server": "env TZ=UTC DEV=true nodemon src/index.js",
     "db": "mongod --dbpath=./data",
-    "test": "mocha ./tests/**/*"
+    "test": "mocha ./tests/**/*",
+    "migrate": "migrate"
   },
   "keywords": [],
   "author": "",
@@ -39,6 +40,7 @@
   },
   "devDependencies": {
     "lorem-ipsum": "^2.0.1",
-    "meow": "^5.0.0"
+    "meow": "^5.0.0",
+    "migrate-mongoose": "^3.2.2"
   }
 }
