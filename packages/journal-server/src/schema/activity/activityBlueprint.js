@@ -8,6 +8,7 @@ const activityBlueprintSchema = new mongoose.Schema({
     name: { type: String, required: true },
     type: { type: String, enum: [ACTIVITY_BOOLEAN, ACTIVITY_CHOICE], required: true },
     defaultValue: { type: mongoose.Schema.Types.Mixed, required: true },
+    choices: [{ type: String }],
 });
 
-module.exports = { ACTIVITY_BOOLEAN, activityBlueprintSchema };
+module.exports = { ACTIVITY_BOOLEAN, ACTIVITY_CHOICE, activityBlueprintSchema };

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const ActivityVersion = require('../src/models/activity/ActivityVersion');
 const User = require('../src/models/user/User');
 const ActivityBlueprint = require('../src/models/activity/ActivityBlueprint');
-const { ACTIVITY_BOOLEAN } = require('../src/schema/activity/activityBlueprint');
+const { ACTIVITY_BOOLEAN, ACTIVITY_CHOICE } = require('../src/schema/activity/activityBlueprint');
 
 require('dotenv').config();
 
@@ -17,6 +17,13 @@ export async function up() {
             name: 'climbed',
             type: ACTIVITY_BOOLEAN,
             defaultValue: false,
+        }),
+        await ActivityBlueprint.create({
+            icon: 'FIX ME',
+            name: 'mood',
+            type: ACTIVITY_CHOICE,
+            defaultValue: 'neutral',
+            choices: ['happy', 'neutral', 'down'],
         }),
     ];
 

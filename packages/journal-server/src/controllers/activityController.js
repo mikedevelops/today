@@ -1,3 +1,4 @@
+const activityTransformer = require('../transformer/activityTransformer');
 const ActivityVersion = require('../models/activity/ActivityVersion');
 
 /**
@@ -7,10 +8,5 @@ const ActivityVersion = require('../models/activity/ActivityVersion');
 module.exports.getActivities = async (req, res) => {
     const version = await ActivityVersion.findOne().populate('activities').exec();
 
-    res.send(version.activities.map(a => ({
-        icon: a.icon,
-        name: a.name,
-        type: a.type,
-        defaultValue: a.defaultValue,
-    })));
+    res.send(version.activities.map(activityTransformer));
 };
