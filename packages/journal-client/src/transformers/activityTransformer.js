@@ -1,5 +1,5 @@
 /**
- * @param {Activity} activity
+ * @param {AbstractActivity} activity
  */
 export default (activity) => {
     return {

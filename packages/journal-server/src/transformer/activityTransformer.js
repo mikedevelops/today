@@ -21,6 +21,6 @@ module.exports = (activity) => {
                 choices: activity.choices,
             };
         default:
-            return {};
+            throw new Error(`Unable to create activity with type ${activity.type}`);
     }
 };

@@ -1,9 +1,9 @@
 import React from 'react';
-import { ACTIVITY_BOOLEAN } from '../../config/app.config';
+import { ACTIVITY_CHOICE } from '../../config/app.config';
 import BooleanActivity from './BooleanActivity';
 
 /**
- * @param {Activity} activity
+ * @param {AbstractActivity} activity
  * @param {boolean} readonly
  * @param {function} submit
  * @return {*}

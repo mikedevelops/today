@@ -1,13 +1,13 @@
-export default class Activity {
+export default class AbstractActivity {
     /**
      * @param {string|null} id
      * @param {string} icon
      * @param {string} type
      * @param {string} name
-     * @param {*|null} value
      * @param {string|null} label
+     * @param {*|null} value
      */
-    constructor(id = null, icon, type, name, value = null, label = null) {
+    constructor(id = null, icon, type, name, label = null, value = null) {
         /**
          * @type {string|null}
          */
@@ -100,10 +100,6 @@ export default class Activity {
 
     clean() {
         this.dirty = false;
-    }
-
-    clone() {
-        return new Activity(this.id, this.icon, this.type, this.name, this.value, this.label);
     }
 
     isSame(activity) {

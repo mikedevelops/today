@@ -22,8 +22,8 @@ export const getActivityVersionError = (error) => ({
 });
 
 /**
- * @param {Activity[]} activities
- * @return {{activities: Activity[], type: string}}
+ * @param {AbstractActivity[]} activities
+ * @return {{activities: AbstractActivity[], type: string}}
  */
 export const getActivityVersionSuccess = (activities) => ({
     type: ACTIVITY_VERSION_GET_SUCCESS,
@@ -50,8 +50,9 @@ export const getActivityVersion = (token) => (dispatch) => {
                     activity.type,
                     activity.name,
                     activity.icon,
-                    activity.defaultValue,
                     activity.label,
+                    activity.defaultValue,
+                    activity.choices,
                 );
             }),
         ));

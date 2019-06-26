@@ -6,7 +6,7 @@ const ActivityVersion = require('../src/models/activity/ActivityVersion');
 const { ACTIVITY_BOOLEAN } = require('../src/schema/activity/activityBlueprint');
 const ActivityBlueprint = require('../src/models/activity/ActivityBlueprint');
 
-const cli = meow('Create Activity Version', {
+const cli = meow('Create AbstractActivity Version', {
     flags: {
         user: {
             type: 'string',

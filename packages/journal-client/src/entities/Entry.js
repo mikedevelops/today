@@ -2,7 +2,7 @@ export default class Entry {
     /**
      * @param {moment.Moment} date
      * @param {string} content
-     * @param {Activity[]} activities
+     * @param {AbstractActivity[]} activities
      * @param {string|null} id
      * @param {moment.Moment} lastUpdated
      */
@@ -23,7 +23,7 @@ export default class Entry {
         this.key = this.date.unix();
 
         /**
-         * @type {Activity[]}
+         * @type {AbstractActivity[]}
          */
         this.activities = activities;
 
@@ -84,7 +84,7 @@ export default class Entry {
     }
 
     /**
-     * @return {Activity[]}
+     * @return {AbstractActivity[]}
      */
     getActivities() {
         return this.activities;
@@ -147,7 +147,7 @@ export default class Entry {
     }
 
     /**
-     * @param {Activity} activity
+     * @param {AbstractActivity} activity
      * @return {boolean}
      */
     hasActivity(activity) {
@@ -155,7 +155,7 @@ export default class Entry {
     }
 
     /**
-     * @param {Activity} activity
+     * @param {AbstractActivity} activity
      */
     addActivity(activity) {
         this.dirty = true;
