@@ -12,16 +12,19 @@ export async function up() {
     const users = await User.find();
 
     const activities = [
-        await ActivityBlueprint.create({ icon: 'FIX ME', name: 'climbed', type: ACTIVITY_BOOLEAN, defaultValue: false }),
+        await ActivityBlueprint.create({
+            icon: 'FIX ME',
+            name: 'climbed',
+            type: ACTIVITY_BOOLEAN,
+            defaultValue: false,
+        }),
     ];
 
     for (const user of users) {
-        console.log(user.username);
-
-        const current = await ActivityVersion.find({ user: user._id }).sort({ version: -1 }).limit(1);
+        const [current] = await ActivityVersion.find({ user: user._id }).sort({ version: -1 }).limit(1);
         let version = 1;
 
-        if (current[0] !== undefined) {
+        if (current !== undefined) {
             version = current.version + 1;
         }
 

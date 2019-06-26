@@ -7,7 +7,7 @@
     "dev:server": "env TZ=UTC DEV=true nodemon src/index.js",
     "db": "mongod --dbpath=./data",
     "test": "mocha ./tests/**/*",
-    "migrate": "migrate"
+    "migrate": "migrate --config ./migrate.js"
   },
   "keywords": [],
   "author": "",
