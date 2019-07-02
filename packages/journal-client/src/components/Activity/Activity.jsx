@@ -1,6 +1,7 @@
 import React from 'react';
-import { ACTIVITY_CHOICE } from '../../config/app.config';
+import { ACTIVITY_BOOLEAN, ACTIVITY_CHOICE } from '../../config/app.config';
 import BooleanActivity from './BooleanActivity';
+import ChoiceActivity from './ChoiceActivity';
 
 /**
  * @param {AbstractActivity} activity
@@ -12,8 +13,13 @@ export default ({ activity, readonly, submit }) => {
     const activityProps = { submit, readonly };
 
     const input = () => {
-        if (activity.getType() === ACTIVITY_BOOLEAN) {
-            return <BooleanActivity {...activityProps} activity={activity}/>;
+        switch (activity.getType()) {
+            case ACTIVITY_BOOLEAN:
+                return <BooleanActivity {...activityProps} activity={activity}/>;
+            case ACTIVITY_CHOICE:
+                return <ChoiceActivity {...activityProps} activity={activity}/>;
+            default:
+                throw new Error(`Unable to find component for activity with type ${activity.getType()}`);
         }
     };
 

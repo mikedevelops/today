@@ -17,7 +17,7 @@ export default (id, type, name, icon, label = null, value = null, choices = []) 
         case ACTIVITY_BOOLEAN:
             return new ActivityBoolean(id, icon, name, label, value);
         case ACTIVITY_CHOICE:
-            return new ActivityChoice(id, icon, name, label, choices, value);
+            return new ActivityChoice(id, icon, name, label, value, choices);
         default:
             throw new Error(`Cannot find activity type ${type}`);
     }

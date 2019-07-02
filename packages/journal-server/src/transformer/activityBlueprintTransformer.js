@@ -4,14 +4,14 @@ const { ACTIVITY_BOOLEAN, ACTIVITY_CHOICE } = require('../schema/activity/activi
  * @param activity
  * @return {{name: *, icon: *, id: *, label: *, type: *, value: *}}
  */
-const transformBooleanActivity = (activity) => {
+const transformBooleanActivityBlueprint = (activity) => {
     return {
         id: activity.id,
         name: activity.name,
         icon: activity.icon,
         type: activity.type,
         label: activity.label,
-        value: activity.value,
+        defaultValue: activity.defaultValue,
     };
 };
 
@@ -19,14 +19,14 @@ const transformBooleanActivity = (activity) => {
  * @param activity
  * @return {{name: *, icon: *, id: *, label: *, type: *, choices: *, value: *}}
  */
-const transformChoiceActivity = (activity) => {
+const transformChoiceActivityBlueprint = (activity) => {
     return {
         id: activity.id,
         name: activity.name,
         icon: activity.icon,
         type: activity.type,
         label: activity.label,
-        value: activity.value,
+        defaultValue: activity.defaultValue,
         choices: activity.choices,
     };
 };
@@ -34,9 +34,9 @@ const transformChoiceActivity = (activity) => {
 module.exports = (activity) => {
     switch (activity.type) {
         case ACTIVITY_BOOLEAN:
-            return transformBooleanActivity(activity);
+            return transformBooleanActivityBlueprint(activity);
         case ACTIVITY_CHOICE:
-            return transformChoiceActivity(activity);
+            return transformChoiceActivityBlueprint(activity);
         default:
             throw new Error(`Unable to transform activity with type ${activity.type}`);
     }

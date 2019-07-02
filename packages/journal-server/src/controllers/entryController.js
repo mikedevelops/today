@@ -4,6 +4,7 @@ const Entry = require('../models/entry/Entry');
 const Activity = require('../models/activity/Activity');
 const logger = require('../services/logger');
 const { handleMongooseException, handleResourceNotFound } = require('../utilities/errors');
+const entryTransformer = require('../transformer/entryTransformer');
 
 /**
  * @param {Request} req
@@ -12,7 +13,7 @@ const { handleMongooseException, handleResourceNotFound } = require('../utilitie
 module.exports.listEntries = async (req, res) => {
     const entries = await Entry.find({ user: req.user.id }).populate('activities').exec();
 
-    res.json(entries.map(e => e.toObject()));
+    res.json(entries.map(entryTransformer));
 };
 
 /**
@@ -24,7 +25,7 @@ module.exports.getEntry = async (req, res) => {
 
     const entry = await Entry.findById(id).populate('activities').exec();
 
-    res.json(entry.toObject());
+    res.json(entryTransformer(entry));
 };
 
 /**
@@ -56,17 +57,19 @@ module.exports.saveEntry = async (req, res) => {
                 a = new Activity();
             }
 
-            a.icon = 'FIX THIS';
+            a.icon = activity.icon;
             a.name = activity.name;
             a.type = activity.type;
             a.value = activity.value;
+            a.choices = activity.choices;
+            a.label = activity.label;
 
             return a.save({ new: true });
         }));
 
-        entry = await entry.save({ new: true, lean: true });
+        entry = await entry.save({ new: true });
 
-        return res.json(entry);
+        return res.json(entryTransformer(entry));
     } catch (error) {
         handleMongooseException(error, res, logger);
         return res.status(status.INTERNAL_SERVER_ERROR).send(error.message);
@@ -85,6 +88,6 @@ module.exports.deleteEntry = (req, res) => {
             return handleMongooseException(error, res, logger);
         }
 
-        res.json(entry);
+        res.json(entryTransformer(entry));
     });
 };

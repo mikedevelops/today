@@ -7,11 +7,11 @@ export default class ActivityChoice extends AbstractActivity {
      * @param {string} icon
      * @param {string} name
      * @param {string} label
-     * @param {string[]} choices
      * @param {string} value
+     * @param {string[]} choices
      */
-    constructor(id = null, icon, name, label, choices, value) {
-        super(id, icon, ACTIVITY_CHOICE, name, value, label);
+    constructor(id = null, icon, name, label, value, choices) {
+        super(id, icon, ACTIVITY_CHOICE, name, label, value);
 
         this.choices = choices;
     }
@@ -22,8 +22,12 @@ export default class ActivityChoice extends AbstractActivity {
             this.icon,
             this.name,
             this.label,
-            this.choices,
             this.value,
+            this.choices,
         );
+    }
+
+    getChoices() {
+        return this.choices;
     }
 }

@@ -1,5 +1,5 @@
 import AbstractActivity from './AbstractActivity';
-import { ACTIVITY_CHOICE } from '../../config/app.config';
+import { ACTIVITY_BOOLEAN } from '../../config/app.config';
 
 export default class ActivityBoolean extends AbstractActivity {
     /**
@@ -10,10 +10,16 @@ export default class ActivityBoolean extends AbstractActivity {
      * @param {boolean} value
      */
     constructor(id, icon, name, label, value) {
-        super(id, icon, ACTIVITY_CHOICE, name, label, value);
+        super(id, icon, ACTIVITY_BOOLEAN, name, label, value);
     }
 
     clone() {
-        return new ActivityBoolean(this.id, this.icon, this.name, this.label, this.value);
+        return new ActivityBoolean(
+            this.id,
+            this.icon,
+            this.name,
+            this.label,
+            this.value,
+        );
     }
 }
