@@ -10,7 +10,7 @@ export const LOGIN_ERROR = 'LOGIN_ERROR';
  * @return {{type: string}}
  */
 export const loginStart = () => ({
-    type: LOGIN_START,
+  type: LOGIN_START,
 });
 
 /**
@@ -18,7 +18,7 @@ export const loginStart = () => ({
  * @return {{type: string, user: *}}
  */
 export const loginSuccess = () => ({
-    type: LOGIN_SUCCESS,
+  type: LOGIN_SUCCESS,
 });
 
 /**
@@ -27,8 +27,8 @@ export const loginSuccess = () => ({
  * @return {{type: string, error: *}}
  */
 export const loginError = error => ({
-    type: LOGIN_ERROR,
-    error,
+  type: LOGIN_ERROR,
+  error,
 });
 
 /**
@@ -36,14 +36,14 @@ export const loginError = error => ({
  * @return {Function}
  * @param loginData
  */
-export const login = loginData => dispatch => {
-    dispatch(loginStart());
+export const login = loginData => (dispatch) => {
+  dispatch(loginStart());
 
-    axios.post('http://localhost:8080/login', loginData)
-        .then(({ data }) => {
-            dispatch(saveUser(data));
-            dispatch(loginSuccess());
-        }).catch(error => {
-            dispatch(loginError(error));
-        });
+  axios.post('http://localhost:8080/login', loginData)
+    .then(({ data }) => {
+      dispatch(saveUser(data));
+      dispatch(loginSuccess());
+    }).catch((error) => {
+      dispatch(loginError(error));
+    });
 };

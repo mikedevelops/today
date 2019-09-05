@@ -1,2 +1,0 @@
-module.exports.ACTIVITY_CHOICE = 'ACTIVITY_CHOICE';
-module.exports.ACTIVITY_BOOLEAN = 'ACTIVITY_BOOLEAN';

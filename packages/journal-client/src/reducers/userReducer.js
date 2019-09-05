@@ -4,18 +4,18 @@ import userFactory from '../factories/userFactory';
 
 const storageUser = store.get('user');
 const user = storageUser === undefined ? null : userFactory(
-    storageUser.id, storageUser.username, storageUser.token, storageUser.activities
+  storageUser.id, storageUser.username, storageUser.token, storageUser.activities,
 );
 
 export default (state = user, action) => {
-    switch (action.type) {
+  switch (action.type) {
     case USER_SAVE:
-        return action.user;
+      return action.user;
 
     case USER_CLEAR:
-        return null;
+      return null;
 
     default:
-        return state;
-    }
+      return state;
+  }
 };

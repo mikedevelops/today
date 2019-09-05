@@ -20,7 +20,7 @@ export const ENTRY_READONLY_RESET = 'ENTRY_READONLY_RESET';
  * @return {{type: string}}
  */
 export const saveEntryStart = () => ({
-    type: ENTRY_SAVE_START,
+  type: ENTRY_SAVE_START,
 });
 
 /**
@@ -29,8 +29,8 @@ export const saveEntryStart = () => ({
  * @return {{entry: *, type: string}}
  */
 export const saveEntrySuccess = entry => ({
-    type: ENTRY_SAVE_SUCCESS,
-    entry,
+  type: ENTRY_SAVE_SUCCESS,
+  entry,
 });
 
 /**
@@ -39,37 +39,43 @@ export const saveEntrySuccess = entry => ({
  * @return {{type: string, error: *}}
  */
 export const saveEntryError = error => ({
-    type: ENTRY_SAVE_ERROR,
-    error,
+  type: ENTRY_SAVE_ERROR,
+  error,
 });
 
 /**
  * Save entry
- * @param {Entry} entry
+ * @param entry
  * @param {string} token
  * @returns {{type: string, entry: Entry}}
  */
 export const saveEntry = (entry, token) => (dispatch) => {
-    dispatch(saveEntryStart());
+  dispatch(saveEntryStart());
 
-    const transformedEntry = entryTransformer(entry);
+  const transformedEntry = entryTransformer(entry);
+  const method = entry.id === null ? 'POST' : 'PATCH';
+  let uri = 'http://localhost:8080/entries';
 
-    axios.post('http://localhost:8080/entries', transformedEntry, {
-        headers: { Authorization: `Bearer ${token}` },
-        json: true,
-    }).then(({ data }) => {
-        const newEntry = entryFactory(
-            data._id,
-            moment(data.date),
-            moment(data.lastUpdated),
-            data.content,
-            data.activities,
-        );
+  if (entry.id !== null) {
+    uri += `/${entry.id}`;
+  }
 
-        dispatch(saveEntrySuccess(newEntry));
-    }).catch((error) => {
-        dispatch(saveEntryError(error));
-    });
+  axios(uri, {
+    method: method,
+    data: transformedEntry,
+    headers: { Authorization: `Bearer ${token}` },
+    json: true,
+  }).then(({ data }) => {
+    const newEntry = entryFactory(
+      data.content,
+      moment(data.createdAt),
+      data.id,
+    );
+
+    dispatch(saveEntrySuccess(newEntry));
+  }).catch((error) => {
+    dispatch(saveEntryError(error));
+  });
 };
 
 /**
@@ -77,7 +83,7 @@ export const saveEntry = (entry, token) => (dispatch) => {
  * @returns {{type: string}}
  */
 export const editEntry = () => ({
-    type: ENTRY_EDIT,
+  type: ENTRY_EDIT,
 });
 
 /**
@@ -85,7 +91,7 @@ export const editEntry = () => ({
  * @return {{type: string}}
  */
 export const getAllEntriesStart = () => ({
-    type: ENTRIES_GET_ALL_START,
+  type: ENTRIES_GET_ALL_START,
 });
 
 /**
@@ -94,8 +100,8 @@ export const getAllEntriesStart = () => ({
  * @return {{entries: *, type: string}}
  */
 export const getAllEntriesSuccess = entries => ({
-    type: ENTRIES_GET_ALL_SUCCESS,
-    entries,
+  type: ENTRIES_GET_ALL_SUCCESS,
+  entries,
 });
 
 /**
@@ -104,8 +110,8 @@ export const getAllEntriesSuccess = entries => ({
  * @return {{type: string, error: *}}
  */
 export const getAllEntriesError = error => ({
-    type: ENTRIES_GET_ALL_ERROR,
-    error,
+  type: ENTRIES_GET_ALL_ERROR,
+  error,
 });
 
 /**
@@ -113,26 +119,22 @@ export const getAllEntriesError = error => ({
  * @return {Function}
  */
 export const getEntries = token => (dispatch) => {
-    dispatch(getAllEntriesStart);
+  dispatch(getAllEntriesStart);
 
-    axios.get('http://localhost:8080/entries', {
-        headers: { Authorization: `Bearer ${token}` },
-        json: true,
-    }).then(({ data }) => {
-        dispatch(getAllEntriesSuccess(
-            data.map((entry) => {
-                return entryFactory(
-                    entry._id,
-                    moment(entry.date),
-                    moment(entry.lastUpdated),
-                    entry.content,
-                    entry.activities,
-                );
-            }),
-        ));
-    }).catch((error) => {
-        dispatch(getAllEntriesError(error));
-    });
+  axios.get('http://localhost:8080/entries', {
+    headers: { Authorization: `Bearer ${token}` },
+    json: true,
+  }).then(({ data }) => {
+    const entries = data.map(entry => entryFactory(
+      entry.content,
+      moment(entry.createdAt),
+      entry.id,
+    ));
+
+    dispatch(getAllEntriesSuccess(entries));
+  }).catch((error) => {
+    dispatch(getAllEntriesError(error));
+  });
 };
 
 /**
@@ -140,7 +142,7 @@ export const getEntries = token => (dispatch) => {
  * @return {{type: *}}
  */
 export const clearEntries = () => ({
-    type: CLEAR_ENTRIES,
+  type: CLEAR_ENTRIES,
 });
 
 /**
@@ -148,7 +150,7 @@ export const clearEntries = () => ({
  * @return {{type: string}}
  */
 export const toggleReadOnly = () => ({
-    type: ENTRY_TOGGLE_READONLY,
+  type: ENTRY_TOGGLE_READONLY,
 });
 
 /**
@@ -156,5 +158,5 @@ export const toggleReadOnly = () => ({
  * @return {{type: *}}
  */
 export const resetReadonly = () => ({
-    type: ENTRY_READONLY_RESET,
+  type: ENTRY_READONLY_RESET,
 });

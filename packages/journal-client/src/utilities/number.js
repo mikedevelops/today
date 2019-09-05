@@ -3,4 +3,4 @@
  * @param {number} i
  * @returns {string}
  */
-export const leadingZero = i => i < 10 ? `0${i}` : i.toString();
+export const leadingZero = i => (i < 10 ? `0${i}` : i.toString());

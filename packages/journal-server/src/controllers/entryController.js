@@ -1,9 +1,7 @@
-const mongoose = require('mongoose');
 const status = require('http-status');
 const Entry = require('../models/entry/Entry');
-const Activity = require('../models/activity/Activity');
 const logger = require('../services/logger');
-const { handleMongooseException, handleResourceNotFound } = require('../utilities/errors');
+const { handleMongooseException } = require('../utilities/errors');
 const entryTransformer = require('../transformer/entryTransformer');
 
 /**
@@ -11,9 +9,9 @@ const entryTransformer = require('../transformer/entryTransformer');
  * @param {Response} res
  */
 module.exports.listEntries = async (req, res) => {
-    const entries = await Entry.find({ user: req.user.id }).populate('activities').exec();
+  const entries = await Entry.find({ user: req.user.id });
 
-    res.json(entries.map(entryTransformer));
+  return res.json(entries.map(entryTransformer));
 };
 
 /**
@@ -21,11 +19,11 @@ module.exports.listEntries = async (req, res) => {
  * @param {Response} res
  */
 module.exports.getEntry = async (req, res) => {
-    const { id } = req.params;
+  const { id } = req.params;
 
-    const entry = await Entry.findById(id).populate('activities').exec();
+  const entry = await Entry.findById(id).populate('activities').exec();
 
-    res.json(entryTransformer(entry));
+  return res.json(entryTransformer(entry));
 };
 
 /**
@@ -33,47 +31,45 @@ module.exports.getEntry = async (req, res) => {
  * @param {Response} res
  */
 module.exports.saveEntry = async (req, res) => {
-    const { content, date, activities, id } = req.body;
+  const { content, createdAt } = req.body;
 
-    try {
-        let entry = null;
+  try {
+    const entry = await Entry.create({
+      content,
+      createdAt,
+      user: req.user.id,
+    });
 
-        if (id !== null) {
-            entry = await Entry.findById(id);
-        }
+    return res.json(entryTransformer(entry));
+  } catch (error) {
+    handleMongooseException(error, res, logger);
 
-        if (!entry) {
-            entry = new Entry();
-        }
+    return res.status(status.INTERNAL_SERVER_ERROR).send(error.message);
+  }
+};
 
-        entry.content = content;
-        entry.date = date;
-        entry.lastUpdated = new Date();
-        entry.user = req.user.id;
-        entry.activities = await Promise.all(activities.map(async activity => {
-            let a = await Activity.findById(activity.id);
+/**
+ * @param req
+ * @param res
+ */
+module.exports.updateEntry = async (req, res) => {
+  const { content } = req.body;
+  const { id } = req.params;
 
-            if (!a) {
-                a = new Activity();
-            }
+  try {
+    const entry = await Entry.findById(id);
 
-            a.icon = activity.icon;
-            a.name = activity.name;
-            a.type = activity.type;
-            a.value = activity.value;
-            a.choices = activity.choices;
-            a.label = activity.label;
-
-            return a.save({ new: true });
-        }));
-
-        entry = await entry.save({ new: true });
-
-        return res.json(entryTransformer(entry));
-    } catch (error) {
-        handleMongooseException(error, res, logger);
-        return res.status(status.INTERNAL_SERVER_ERROR).send(error.message);
+    if (entry === undefined) {
+      return res.sendStatus(status.NOT_FOUND);
     }
+
+    const updatedEntry = await Entry.findOneAndUpdate({ _id: id }, { content }, { new: true });
+
+    return res.json(entryTransformer(updatedEntry));
+  } catch (e) {
+    logger.error(e.message);
+    return res.sendStatus(status.INTERNAL_SERVER_ERROR);
+  }
 };
 
 /**
@@ -81,13 +77,13 @@ module.exports.saveEntry = async (req, res) => {
  * @param {Response} res
  */
 module.exports.deleteEntry = (req, res) => {
-    const { id } = req.params;
+  const { id } = req.params;
 
-    Entry.findByIdAndRemove(id, (error, entry) => {
-        if (error !== null) {
-            return handleMongooseException(error, res, logger);
-        }
+  Entry.findByIdAndRemove(id, (error, entry) => {
+    if (error !== null) {
+      return handleMongooseException(error, res, logger);
+    }
 
-        res.json(entryTransformer(entry));
-    });
+    res.json(entryTransformer(entry));
+  });
 };

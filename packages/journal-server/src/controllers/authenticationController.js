@@ -10,25 +10,25 @@ const userFactory = require('../factories/userFactory');
  * @param {Response} res
  */
 module.exports.login = (req, res) => {
-    passport.authenticate('local', { session: false }, (error, user) => {
-        if (error !== null) {
-            return res.sendStatus(status.INTERNAL_SERVER_ERROR);
-        }
+  passport.authenticate('local', { session: false }, (error, user) => {
+    if (error !== null) {
+      return res.sendStatus(status.INTERNAL_SERVER_ERROR);
+    }
 
-        req.login(user, { session: false }, (loginError) => {
-            if (loginError !== undefined) {
-                return res.send(loginError);
-            }
+    req.login(user, { session: false }, (loginError) => {
+      if (loginError !== undefined) {
+        return res.send(loginError);
+      }
 
-            // TODO: transformer
-            return res.json({
-                username: user.username,
-                id: user.id,
-                token: jwt.sign({ id: user.id }, 'token_secret'),
-                activities: user.activities,
-            });
-        });
-    })(req, res);
+      // TODO: transformer
+      return res.json({
+        username: user.username,
+        id: user.id,
+        token: jwt.sign({ id: user.id }, 'token_secret'),
+        activities: user.activities,
+      });
+    });
+  })(req, res);
 };
 
 /**
@@ -36,25 +36,27 @@ module.exports.login = (req, res) => {
  * @param {Response} res
  */
 module.exports.register = (req, res) => {
-    const { username, password } = req.body;
+  const { username, password } = req.body;
 
-    userFactory(username, password).then((user) => {
-        logger.debug(`User registered "${user.username}"`);
+  // TODO: validate body
 
-        req.login(user, { session: false }, (loginError) => {
-            if (loginError !== undefined) {
-                return res.send(loginError);
-            }
+  userFactory(username, password).then((user) => {
+    logger.debug(`User registered "${user.username}"`);
 
-            // TODO: transformer
-            return res.json({
-                username: user.username,
-                id: user.id,
-                token: jwt.sign({ id: user.id }, 'token_secret'),
-                activities: user.activities,
-            });
-        });
-    }).catch(error => handleMongooseException(error, res, logger));
+    req.login(user, { session: false }, (loginError) => {
+      if (loginError !== undefined) {
+        return res.send(loginError);
+      }
+
+      // TODO: transformer
+      return res.json({
+        username: user.username,
+        id: user.id,
+        token: jwt.sign({ id: user.id }, 'token_secret'),
+        activities: user.activities,
+      });
+    });
+  }).catch(error => handleMongooseException(error, res, logger));
 };
 
 /**
@@ -62,7 +64,7 @@ module.exports.register = (req, res) => {
  * @param {Response} res
  */
 module.exports.logout = (req, res) => {
-    logger.debug(`User logging out"${req.user.username}"`);
-    req.logout();
-    res.redirect('/');
+  logger.debug(`User logging out"${req.user.username}"`);
+  req.logout();
+  res.redirect('/');
 };

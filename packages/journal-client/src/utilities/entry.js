@@ -6,15 +6,15 @@ import entryFactory from '../factories/entryFactory';
  * @param {number} chance
  */
 export const generateRandomEntries = (dates, chance = 0.5) => {
-    const entries = {};
+  const entries = {};
 
-    dates.forEach((date) => {
-        if (Math.random() <= chance) {
-            entries[date.unix()] = entryFactory(date, loremIpsum({ count: 5, units: 'sentences' }));
-        }
-    });
+  dates.forEach((date) => {
+    if (Math.random() <= chance) {
+      entries[date.unix()] = entryFactory(date, loremIpsum({ count: 5, units: 'sentences' }));
+    }
+  });
 
-    return entries;
+  return entries;
 };
 
 /**
@@ -23,11 +23,11 @@ export const generateRandomEntries = (dates, chance = 0.5) => {
  * @return Entry|null
  */
 export const getEntry = (id, entries) => {
-    if (entries[id] === undefined) {
-        return null;
-    }
+  if (entries[id] === undefined) {
+    return null;
+  }
 
-    return entries[id];
+  return entries[id];
 };
 
 /**
@@ -35,17 +35,13 @@ export const getEntry = (id, entries) => {
  * @param {Object<number, Entry>} entries
  * @return {boolean}
  */
-export const hasEntry = (id, entries) => {
-    return Object.hasOwnProperty.call(entries, id);
-};
+export const hasEntry = (id, entries) => Object.hasOwnProperty.call(entries, id);
 
 /**
  * @param {Entry} a
  * @param {Entry} b
  */
-export const sortEntriesReverseChrono = (a, b) => {
-    return b.getDate().unix() - a.getDate().unix();
-};
+export const sortEntriesReverseChrono = (a, b) => b.getDate().unix() - a.getDate().unix();
 
 /**
  * Get previous entry in time
@@ -54,12 +50,12 @@ export const sortEntriesReverseChrono = (a, b) => {
  * @return {Entry|null}
  */
 export const getPreviousEntry = (entry, entries) => {
-    // Sort reverse chronological
-    const sortedEntries = Object.keys(entries).map(e => entries[e])
-        .sort(sortEntriesReverseChrono);
-    const currentIndex = sortedEntries.indexOf(entry);
+  // Sort reverse chronological
+  const sortedEntries = Object.keys(entries).map(e => entries[e])
+    .sort(sortEntriesReverseChrono);
+  const currentIndex = sortedEntries.indexOf(entry);
 
-    return sortedEntries[currentIndex + 1] || null;
+  return sortedEntries[currentIndex + 1] || null;
 };
 
 /**
@@ -68,12 +64,12 @@ export const getPreviousEntry = (entry, entries) => {
  * @return {null|Entry}
  */
 export const getNextEntry = (entry, entries) => {
-    // Sort reverse chronological
-    const sortedEntries = Object.keys(entries).map(e => entries[e])
-        .sort(sortEntriesReverseChrono);
-    const currentIndex = sortedEntries.indexOf(entry);
+  // Sort reverse chronological
+  const sortedEntries = Object.keys(entries).map(e => entries[e])
+    .sort(sortEntriesReverseChrono);
+  const currentIndex = sortedEntries.indexOf(entry);
 
-    return sortedEntries[currentIndex - 1] || null;
+  return sortedEntries[currentIndex - 1] || null;
 };
 
 /**

@@ -1,26 +1,24 @@
 import { connect } from 'react-redux';
-import Dashboard from './Dashboard';
-import { resetReadonly } from '../../actions/entryActions';
 import moment from 'moment';
+import Dashboard from './Dashboard';
+import { getEntries, saveEntry } from '../../actions/entryActions';
 
-const mapStateToProps = ({ date, entry, user, router }, props) => {
-    const paramDate = moment(props.match.params.date, 'YYYY-MM-DD');
-    const mappedEntry = entry.items.find(e => e.getKey() === paramDate.unix());
+const mapProps = ({ entries, user, router }, props) => {
+  const paramDate = moment(props.match.params.date, 'YYYY-MM-DD');
+  const items = entries.get('items');
+  const mappedEntry = items.find(e => e.createdAt.unix() === paramDate.unix());
 
-    return {
-        today: date.today,
-        entries: entry.items,
-        entry: mappedEntry !== undefined ? mappedEntry : entry.items[entry.items.length - 1],
-        user,
-        location: router.location,
-
-    };
+  return {
+    entries: items,
+    entry: mappedEntry !== undefined ? mappedEntry : null,
+    token: user.token,
+    location: router.location,
+  };
 };
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        resetReadonly: () => dispatch(resetReadonly()),
-    };
-};
+const mapDispatch = dispatch => ({
+  hydrate: token => dispatch(getEntries(token)),
+  saveEntry: (entry, token) => dispatch(saveEntry(entry, token)),
+});
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
+export default connect(mapProps, mapDispatch)(Dashboard);

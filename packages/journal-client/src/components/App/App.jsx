@@ -7,15 +7,9 @@ import LoginContainer from '../Authentication/LoginContainer';
 import { whyDidYouUpdate } from 'why-did-you-update/es';
 
 // TODO: Remove this on production
-// whyDidYouUpdate(React);
+whyDidYouUpdate(React);
 
 export default class App extends React.Component {
-    componentDidMount() {
-        if (this.props.user !== null) {
-            this.props.hydrate(this.props.user.token);
-        }
-    }
-
     render() {
         const { user } = this.props;
 
@@ -29,7 +23,6 @@ export default class App extends React.Component {
                 <Route path="/logout" component={LogoutContainer}/>
                 <div className="app">
                     <NavBarContainer/>
-                    <Route path="/entry/:date" onChange={this.props.resetReadonly} component={DashboardContainer}/>
                     <Route path="/" exact={true} component={DashboardContainer}/>
                 </div>
             </main>
