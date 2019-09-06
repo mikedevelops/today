@@ -9,8 +9,8 @@ export const NewEntryDraft = ({ entry, saveEntry, token }) => {
     const data = new FormData(form.current);
     const newEntry = createEntry(
       data.get('entry_content'),
-      entry.createdAt,
-      entry.id
+      entry !== null ? entry.createdAt : moment().startOf('day'),
+      entry !== null ? entry.id : null
     );
 
     saveEntry(newEntry, token);
@@ -20,9 +20,22 @@ export const NewEntryDraft = ({ entry, saveEntry, token }) => {
   return (
     <form ref={form}>
       <fieldset>
-        <legend>{ moment().startOf('day').format() }</legend>
+        <legend><h1>{ moment().startOf('day').format() }</h1></legend>
         <label>What did you do today?</label>
-        <textarea name="entry_content" onChange={debounceSave} defaultValue={entry.content}/>
+        {entry !== null ?
+          <textarea
+            key="empty"
+            name="entry_content"
+            onChange={debounceSave}
+            defaultValue={entry.content}
+          /> :
+          <textarea
+            key="draft"
+            name="entry_content"
+            onChange={debounceSave}
+            defaultValue=""
+          />
+        }
       </fieldset>
     </form>
   )

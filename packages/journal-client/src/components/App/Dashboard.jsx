@@ -1,6 +1,5 @@
 import React from 'react';
 import { EntryList } from '../Entry/EntryList';
-import { NewEntry } from '../Entry/NewEntry';
 import moment from 'moment';
 import { NewEntryDraft } from '../Entry/NewEntryDraft';
 
@@ -27,11 +26,7 @@ export default class Dashboard extends React.Component {
     return (
       <div className="dashboard">
         <div className="main">
-          {
-            today !== undefined ?
-              <NewEntryDraft entry={today} saveEntry={this.handleSaveEntry.bind(this)}/> :
-              <NewEntry saveEntry={this.handleSaveEntry.bind(this)}/>
-          }
+          <NewEntryDraft entry={today || null} saveEntry={this.handleSaveEntry.bind(this)}/>
           <EntryList entries={entriesExcludingToday}/>
         </div>
       </div>
