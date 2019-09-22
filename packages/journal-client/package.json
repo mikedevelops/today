@@ -26,6 +26,8 @@
   "dependencies": {
     "axios": "^0.18.0",
     "connected-react-router": "^6.4.0",
+    "emoji-toolkit": "^5.0.4",
+    "fuzzy-search": "^3.0.1",
     "history": "^4.9.0",
     "immutable": "^4.0.0-rc.12",
     "lodash.debounce": "^4.0.8",

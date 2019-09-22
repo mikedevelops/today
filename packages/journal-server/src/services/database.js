@@ -1,4 +1,5 @@
 require('../models/entry/Entry');
+require('../models/activity/Activity');
 require('../models/user/User');
 
 const mongoose = require('mongoose');

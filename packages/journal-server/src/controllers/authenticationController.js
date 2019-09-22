@@ -25,7 +25,6 @@ module.exports.login = (req, res) => {
         username: user.username,
         id: user.id,
         token: jwt.sign({ id: user.id }, 'token_secret'),
-        activities: user.activities,
       });
     });
   })(req, res);

@@ -8,6 +8,7 @@ const cors = require('cors');
 const { NOT_FOUND } = require('http-status');
 const entryRouter = require('./routes/entries');
 const authenticationRouter = require('./routes/authentication');
+const activitiesRouter = require('./routes/activities');
 const logger = require('./services/logger');
 const db = require('./services/database');
 const emitter = require('./services/emitter');
@@ -25,6 +26,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
 
 app.all('*', debug);
+app.use(activitiesRouter);
 app.use(entryRouter);
 app.use(authenticationRouter);
 

@@ -2,23 +2,48 @@ import React from 'react';
 import moment from 'moment';
 import createEntry from '../../factories/entryFactory';
 import debounce from 'lodash.debounce';
+import ActivitySelector from '../Activity/ActivitySelector';
+import { mapOptionToActivity } from '../../transformers/activityTransformer';
 
 export const NewEntryDraft = ({ entry, saveEntry, token }) => {
   const form = React.createRef();
-  const save = () => {
+
+  const saveContent = () => {
+    if (form.current === null) {
+      return;
+    }
+
     const data = new FormData(form.current);
     const newEntry = createEntry(
       data.get('entry_content'),
       entry !== null ? entry.createdAt : moment().startOf('day'),
-      entry !== null ? entry.id : null
+      entry !== null ? entry.id : null,
+      entry !== null ? entry.activities : [],
     );
 
     saveEntry(newEntry, token);
   };
-  const debounceSave = debounce(save, 500);
+
+  const saveActivities = (activities) => {
+    if (form.current === null) {
+      return;
+    }
+
+    const data = new FormData(form.current);
+    const newEntry = createEntry(
+      data.get('entry_content'),
+      entry !== null ? entry.createdAt : moment().startOf('day'),
+      entry !== null ? entry.id : null,
+      entry !== null ? activities.map(mapOptionToActivity) : [],
+    );
+
+    saveEntry(newEntry, token);
+  };
+
+  const debounceSave = debounce(saveContent, 500);
 
   return (
-    <form ref={form}>
+    <form ref={form} onSubmit={event => event.preventDefault()}>
       <fieldset>
         <legend><h1>{ moment().startOf('day').format() }</h1></legend>
         <label>What did you do today?</label>
@@ -36,6 +61,8 @@ export const NewEntryDraft = ({ entry, saveEntry, token }) => {
             defaultValue=""
           />
         }
+
+        <ActivitySelector entry={entry || null} update={saveActivities}/>
       </fieldset>
     </form>
   )

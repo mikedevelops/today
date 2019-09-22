@@ -7,7 +7,7 @@ import LoginContainer from '../Authentication/LoginContainer';
 import { whyDidYouUpdate } from 'why-did-you-update/es';
 
 // TODO: Remove this on production
-whyDidYouUpdate(React);
+// whyDidYouUpdate(React);
 
 export default class App extends React.Component {
     render() {

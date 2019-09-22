@@ -20,3 +20,11 @@ export const getDatesInRange = (start, end) => {
 
   return dates;
 };
+
+/**
+ * @param a
+ * @param b
+ */
+export const sortByDateAsc = (a, b) => {
+  return b.createdAt.format('YYYYMMDD') - a.createdAt.format('YYYYMMDD');
+};

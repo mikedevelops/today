@@ -2,6 +2,7 @@ import axios from 'axios';
 import moment from 'moment';
 import entryFactory from '../factories/entryFactory';
 import entryTransformer from '../transformers/entryTransformer';
+import activityFactory from '../factories/activiryFactory';
 
 export const ENTRY_SAVE = 'ENTRY_SAVE';
 export const ENTRY_SAVE_START = 'ENTRY_SAVE_START';
@@ -70,6 +71,12 @@ export const saveEntry = (entry, token) => (dispatch) => {
       data.content,
       moment(data.createdAt),
       data.id,
+      data.activities.map(activity => activityFactory(
+        activity.type,
+        activity.icon,
+        activity.name,
+        activity.id
+      )),
     );
 
     dispatch(saveEntrySuccess(newEntry));
@@ -96,12 +103,14 @@ export const getAllEntriesStart = () => ({
 
 /**
  * Retrieved all entries
- * @param {Entry[]} entries
+ * @param entries
+ * @param activities
  * @return {{entries: *, type: string}}
  */
-export const getAllEntriesSuccess = entries => ({
+export const getAllEntriesSuccess = (entries, activities) => ({
   type: ENTRIES_GET_ALL_SUCCESS,
   entries,
+  activities,
 });
 
 /**
@@ -125,13 +134,26 @@ export const getEntries = token => (dispatch) => {
     headers: { Authorization: `Bearer ${token}` },
     json: true,
   }).then(({ data }) => {
-    const entries = data.map(entry => entryFactory(
+    const entries = data.entries.map(entry => entryFactory(
       entry.content,
       moment(entry.createdAt),
       entry.id,
+      entry.activities.map(activity => activityFactory(
+        activity.type,
+        activity.icon,
+        activity.name,
+        activity.id,
+      )),
     ));
 
-    dispatch(getAllEntriesSuccess(entries));
+    const activities = data.activities.map(activity => activityFactory(
+      activity.type,
+      activity.icon,
+      activity.name,
+      activity.id,
+    ));
+
+    dispatch(getAllEntriesSuccess(entries, activities));
   }).catch((error) => {
     dispatch(getAllEntriesError(error));
   });

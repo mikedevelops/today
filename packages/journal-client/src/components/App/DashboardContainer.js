@@ -13,6 +13,7 @@ const mapProps = ({ entries, user, router }, props) => {
     entry: mappedEntry !== undefined ? mappedEntry : null,
     token: user.token,
     location: router.location,
+    activities: entries.activities,
   };
 };
 

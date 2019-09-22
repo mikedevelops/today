@@ -1,17 +1,24 @@
-const status = require('http-status');
 const Entry = require('../models/entry/Entry');
-const logger = require('../services/logger');
-const { handleMongooseException } = require('../utilities/errors');
+const Activity = require('../models/activity/Activity');
 const entryTransformer = require('../transformer/entryTransformer');
+const activityTransformer = require('../transformer/activityTransformer');
+const entryManager = require('../managers/entryManager');
 
 /**
  * @param {Request} req
  * @param {Response} res
  */
 module.exports.listEntries = async (req, res) => {
-  const entries = await Entry.find({ user: req.user.id });
+  const entries = await Entry
+    .find({ user: req.user.id })
+    .populate('activities')
+    .exec();
+  const activities = await Activity.find({ user: req.user.id });
 
-  return res.json(entries.map(entryTransformer));
+  return res.json({
+    entries: entries.map(entryTransformer),
+    activities: activities.map(activityTransformer),
+  });
 };
 
 /**
@@ -20,8 +27,9 @@ module.exports.listEntries = async (req, res) => {
  */
 module.exports.getEntry = async (req, res) => {
   const { id } = req.params;
-
-  const entry = await Entry.findById(id).populate('activities').exec();
+  const entry = await Entry.findOne({ _id: id })
+    .populate('activities')
+    .exec();
 
   return res.json(entryTransformer(entry));
 };
@@ -31,21 +39,11 @@ module.exports.getEntry = async (req, res) => {
  * @param {Response} res
  */
 module.exports.saveEntry = async (req, res) => {
-  const { content, createdAt } = req.body;
-
-  try {
-    const entry = await Entry.create({
-      content,
-      createdAt,
-      user: req.user.id,
-    });
-
-    return res.json(entryTransformer(entry));
-  } catch (error) {
-    handleMongooseException(error, res, logger);
-
-    return res.status(status.INTERNAL_SERVER_ERROR).send(error.message);
-  }
+  const { content, createdAt, activities } = req.body;
+  const updatedActivities = await entryManager.addActivities(activities, req.user);
+  const entry = await entryManager.createEntry(createdAt, content, updatedActivities);
+  const populatedEntry = await entry.populate('activities').execPopulate();
+  return res.json(entryTransformer(populatedEntry));
 };
 
 /**
@@ -53,37 +51,10 @@ module.exports.saveEntry = async (req, res) => {
  * @param res
  */
 module.exports.updateEntry = async (req, res) => {
-  const { content } = req.body;
+  const { content, activities } = req.body;
   const { id } = req.params;
-
-  try {
-    const entry = await Entry.findById(id);
-
-    if (entry === undefined) {
-      return res.sendStatus(status.NOT_FOUND);
-    }
-
-    const updatedEntry = await Entry.findOneAndUpdate({ _id: id }, { content }, { new: true });
-
-    return res.json(entryTransformer(updatedEntry));
-  } catch (e) {
-    logger.error(e.message);
-    return res.sendStatus(status.INTERNAL_SERVER_ERROR);
-  }
-};
-
-/**
- * @param {Request} req
- * @param {Response} res
- */
-module.exports.deleteEntry = (req, res) => {
-  const { id } = req.params;
-
-  Entry.findByIdAndRemove(id, (error, entry) => {
-    if (error !== null) {
-      return handleMongooseException(error, res, logger);
-    }
-
-    res.json(entryTransformer(entry));
-  });
+  const updatedActivities = await entryManager.addActivities(activities, req.user);
+  const entry = await entryManager.updateEntry(id, content, updatedActivities);
+  const populatedEntry = await entry.populate('activities').execPopulate();
+  return res.json(entryTransformer(populatedEntry));
 };

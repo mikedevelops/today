@@ -5,4 +5,5 @@ export default entry => ({
   content: entry.content,
   createdAt: entry.createdAt,
   id: entry.id,
+  activities: entry.activities,
 });
