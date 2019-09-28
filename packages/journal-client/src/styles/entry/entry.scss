@@ -1,0 +1,35 @@
+.entry-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.entry-list__item {
+  padding: 5rem 0;
+
+  &:nth-child(2n) {
+    background-color: $color-subtle-grey;
+  }
+}
+
+.entry-view {
+  margin: 0 auto;
+  max-width: $entry-max-width;
+}
+
+.entry-view__date {
+  @include underline($color-blue);
+
+  display: inline-block;
+  font-family: $font-base;
+  z-index: 0;
+}
+
+.entry-view__content {
+  font-family: $font-alt;
+  padding-left: 2rem;
+
+  p:last-of-type {
+    margin-bottom: 0;
+  }
+}

@@ -1,0 +1,12 @@
+@import './styles/base/normalize';
+@import './styles/base/settings';
+@import './styles/base/color';
+@import './styles/base/type';
+@import './styles/base/patterns';
+@import './styles/form/form';
+@import './styles/entry/entry';
+
+body {
+  background-color: white;
+  font-family: 'Avenir', 'sans-serif';
+}

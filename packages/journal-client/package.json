@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "parcel src/index.html --no-autoinstall --no-cache",
+    "dev": "parcel src/index.html --no-cache",
     "test": "jest"
   },
   "keywords": [],
@@ -21,6 +21,7 @@
     "eslint-plugin-react": "^7.12.4",
     "jest": "^24.5.0",
     "parcel": "^1.12.3",
+    "sass": "^1.22.12",
     "why-did-you-update": "^1.0.6"
   },
   "dependencies": {

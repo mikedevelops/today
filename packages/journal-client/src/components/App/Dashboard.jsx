@@ -26,8 +26,12 @@ export default class Dashboard extends React.Component {
     return (
       <div className="dashboard">
         <div className="main">
-          <NewEntryDraft entry={today || null} saveEntry={this.handleSaveEntry.bind(this)}/>
-          <EntryList entries={entriesExcludingToday}/>
+          <EntryList entries={entriesExcludingToday}>
+            <NewEntryDraft
+              entry={today || null}
+              saveEntry={this.handleSaveEntry.bind(this)}
+            />
+          </EntryList>
         </div>
       </div>
     );

@@ -1,0 +1,16 @@
+@mixin underline($color) {
+  $width: 105%;
+
+  position: relative;
+
+  &:before {
+    background-color: $color;
+    bottom: 0;
+    content: '';
+    height: 0.75rem;
+    left: calc((#{$width} - 100%) / 2 * -1);
+    position: absolute;
+    width: $width;
+    z-index: -1;
+  }
+}

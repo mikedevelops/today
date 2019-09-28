@@ -43,9 +43,11 @@ export const NewEntryDraft = ({ entry, saveEntry, token }) => {
   const debounceSave = debounce(saveContent, 500);
 
   return (
-    <form ref={form} onSubmit={event => event.preventDefault()}>
+    <form className="entry-view" ref={form} onSubmit={event => event.preventDefault()}>
       <fieldset>
-        <legend><h1>{ moment().startOf('day').format() }</h1></legend>
+        <legend>
+          <h1 className="entry-view__date">{ moment().startOf('day').format() }</h1>
+        </legend>
         <label>What did you do today?</label>
         {entry !== null ?
           <textarea
