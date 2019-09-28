@@ -14,6 +14,7 @@ const MAX_ENTRIES = 10;
 module.exports.listEntries = async (req, res) => {
   const entries = await Entry
     .find({ user: req.user.id })
+    .sort({ createdAt: -1 })
     .limit(MAX_ENTRIES)
     .populate('activities')
     .exec();
