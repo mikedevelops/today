@@ -9,7 +9,7 @@ const MAX_ENTRIES = 10;
 
 /**
  * @param {Request} req
- * @param {Response} res
+ * @param {Response} res\
  */
 module.exports.listEntries = async (req, res) => {
   const entries = await Entry
