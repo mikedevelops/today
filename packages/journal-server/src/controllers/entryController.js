@@ -4,6 +4,8 @@ const entryTransformer = require('../transformer/entryTransformer');
 const activityTransformer = require('../transformer/activityTransformer');
 const entryManager = require('../managers/entryManager');
 
+const MAX_ENTRIES = 5;
+
 /**
  * @param {Request} req
  * @param {Response} res
@@ -11,6 +13,7 @@ const entryManager = require('../managers/entryManager');
 module.exports.listEntries = async (req, res) => {
   const entries = await Entry
     .find({ user: req.user.id })
+    .limit(MAX_ENTRIES)
     .populate('activities')
     .exec();
   const activities = await Activity.find({ user: req.user.id });
