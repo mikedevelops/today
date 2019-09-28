@@ -1,6 +1,5 @@
 @mixin underline($color) {
   $width: 105%;
-
   position: relative;
 
   &:before {

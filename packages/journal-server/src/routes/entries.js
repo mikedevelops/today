@@ -9,5 +9,6 @@ router.get('/entries', protectedRoute, controller.listEntries);
 router.post('/entries', protectedRoute, controller.saveEntry);
 router.delete('/entries/:id', protectedRoute, () => {});
 router.patch('/entries/:id', protectedRoute, controller.updateEntry);
+router.patch('/entries/:id/activities', protectedRoute, controller.updateEntryActivities);
 
 module.exports = router;

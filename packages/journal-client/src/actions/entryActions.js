@@ -3,6 +3,8 @@ import moment from 'moment';
 import entryFactory from '../factories/entryFactory';
 import entryTransformer from '../transformers/entryTransformer';
 import activityFactory from '../factories/activiryFactory';
+import { saveActivitiesStart } from './activityActions';
+import { handleSaveEntryResponse } from '../services/entryService';
 
 export const ENTRY_SAVE = 'ENTRY_SAVE';
 export const ENTRY_SAVE_START = 'ENTRY_SAVE_START';
@@ -13,8 +15,6 @@ export const CLEAR_ENTRIES = 'CLEAR_ENTRIES';
 export const ENTRIES_GET_ALL_START = 'ENTRIES_GET_ALL_START';
 export const ENTRIES_GET_ALL_SUCCESS = 'ENTRIES_GET_ALL_SUCCESS';
 export const ENTRIES_GET_ALL_ERROR = 'ENTRIES_GET_ALL_ERROR';
-export const ENTRY_TOGGLE_READONLY = 'ENTRY_TOGGLE_READONLY';
-export const ENTRY_READONLY_RESET = 'ENTRY_READONLY_RESET';
 
 /**
  * Start saving entry
@@ -67,19 +67,7 @@ export const saveEntry = (entry, token) => (dispatch) => {
     headers: { Authorization: `Bearer ${token}` },
     json: true,
   }).then(({ data }) => {
-    const newEntry = entryFactory(
-      data.content,
-      moment(data.createdAt),
-      data.id,
-      data.activities.map(activity => activityFactory(
-        activity.type,
-        activity.icon,
-        activity.name,
-        activity.id
-      )),
-    );
-
-    dispatch(saveEntrySuccess(newEntry));
+    dispatch(saveEntrySuccess(handleSaveEntryResponse(data)));
   }).catch((error) => {
     dispatch(saveEntryError(error));
   });
@@ -167,18 +155,19 @@ export const clearEntries = () => ({
   type: CLEAR_ENTRIES,
 });
 
-/**
- * Toggle Entry readonly mode
- * @return {{type: string}}
- */
-export const toggleReadOnly = () => ({
-  type: ENTRY_TOGGLE_READONLY,
-});
+export const saveEntryActivities = (entry, activities, token) => (dispatch) => {
+  dispatch(saveActivitiesStart());
 
-/**
- * Reset readonly to true
- * @return {{type: *}}
- */
-export const resetReadonly = () => ({
-  type: ENTRY_READONLY_RESET,
-});
+  const transformedEntry = entryTransformer(entry);
+  const uri = `http://localhost:8080/entries/${transformedEntry.id}/activities`;
+
+  axios(uri, {
+    method: 'PATCH',
+    // TODO: transformer
+    data: { activities },
+    headers: { Authorization: `Bearer ${token}` },
+    json: true,
+  }).then(({ data }) => {
+    dispatch(saveEntrySuccess(handleSaveEntryResponse(data)));
+  });
+};

@@ -1,6 +1,7 @@
 import React from 'react';
 import Fuzzy from 'fuzzy-search';
 import emoji from 'emoji-toolkit';
+import { EnhancedSelectedItem } from './EnhancedSelectedItem';
 
 export class EnhancedSelect extends React.Component {
   constructor(props) {
@@ -49,10 +50,6 @@ export class EnhancedSelect extends React.Component {
   update(selected) {
     const { update } = this.props;
     update(selected);
-  }
-
-  printButton(option) {
-    return `${emoji.shortnameToUnicode(option.icon)}${option.label}`;
   }
 
   handleNewOption(event) {
@@ -119,21 +116,24 @@ export class EnhancedSelect extends React.Component {
             </option>
           ) }
         </select>
+        <ol className="selected-list">
+          { selected.map(option =>
+            <li className="selected-list__item" key={option.name}>
+              <EnhancedSelectedItem
+                click={this.handleDeselection.bind(this, option.name)}
+                // click={() => console.log('click')}
+                icon={emoji.shortnameToUnicode(option.icon)}
+                name={option.label}
+              />
+            </li>
+          )}
+        </ol>
         <input
           onClick={this.handleShowOptions.bind(this)}
           onBlur={this.handleHideOptions.bind(this)}
           onKeyDown={this.handleNewOption.bind(this)}
           onInput={this.search.bind(this)}
         />
-        <ol className="selected">
-          { selected.map(option =>
-            <li key={option.name}>
-              <button onClick={this.handleDeselection.bind(this, option.name)}>
-                { this.printButton(option) + ' X' }
-              </button>
-            </li>
-          )}
-        </ol>
         <ol className="results">
           { this.state.results.map(result =>
             <li key={result.name}>

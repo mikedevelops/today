@@ -9,3 +9,5 @@ export const mapOptionToActivity = option => ({
   id: option.name,
   icon: option.icon,
 });
+
+

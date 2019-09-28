@@ -1,0 +1,24 @@
+.selected-list {
+  display: flex;
+  list-style: none;
+  margin-top: 1.75rem;
+  padding: 0;
+}
+
+.selected-item {
+  background-color: white;
+  border: 1px solid $color-blue;
+  box-shadow: -0.25rem 0.25rem 0 0 $color-blue;
+  cursor: pointer;
+  font-weight: bold;
+  margin: 0 1rem 1rem 0;
+  padding: .5rem 1rem .75rem;
+  position: relative;
+}
+
+.selected-item__icon {
+  font-size: 1.5rem;
+  margin-right: .5rem;
+  position: relative;
+  top: 5px;
+}

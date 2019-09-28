@@ -63,7 +63,6 @@ export const NewEntryDraft = ({ entry, saveEntry, token }) => {
             defaultValue=""
           />
         }
-
         <ActivitySelector entry={entry || null} update={saveActivities}/>
       </fieldset>
     </form>
