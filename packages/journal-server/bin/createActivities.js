@@ -3,6 +3,8 @@ const winston = require('winston');
 const User = require('../src/models/user/User');
 const Activity = require('../src/models/activity/Activity');
 const db = require('../src/services/database');
+const { LoremIpsum } = require('lorem-ipsum');
+const { addActivities } = require('../src/managers/entryManager');
 
 const cli = meow('Create user entries', {
   flags: {
@@ -12,13 +14,17 @@ const cli = meow('Create user entries', {
     },
     db: {
       type: 'string',
-      default: 'journal',
+      default: 'journal-test',
+    },
+    activities: {
+      type: 'number',
+      default: 10,
     },
   },
 });
 
-process.env.DB_HOST = `mongodb://localhost/${cli.flags.db}`;
-process.env.DB_NAME = cli.flags.db;
+const dbHost = 'mongodb://localhost';
+const dbName = cli.flags.db;
 
 const logger = winston.createLogger({
   transports: [
@@ -32,7 +38,7 @@ if (cli.flags.user === undefined) {
   throw new Error('Username required --user');
 }
 
-db.connect(async () => {
+db.connect(dbHost, dbName, async () => {
   const user = await User.findOne({ username: cli.flags.user });
 
   if (user === null) {
@@ -40,17 +46,24 @@ db.connect(async () => {
     process.exit(0);
   }
 
-  // Remove user's existing entries
-  await Activity.remove({ user: user._id });
+  // Remove all previous activities
+  await Activity.remove({});
 
-  const activities = [
-    { icon: ':grinning:', name: 'Happy', type: 'HAPPY', user: user._id },
-    { icon: ':no_mouth:', name: 'Quiet', type: 'QUIET', user: user._id },
-    { icon: ':person_climbing:', name: 'Climbed', type: 'CLIMBED', user: user._id }
-  ];
+  const activities = [];
+  const lorem = new LoremIpsum();
 
-  const activity = await Activity.create(activities);
+  for (let i = 0; i < cli.flags.activities; i++) {
+    activities.push({
+      id: null,
+      icon: ':smile:',
+      user: user._id,
+      name: lorem.generateWords(1),
+      lastUsed: new Date(),
+    });
+  }
 
-  logger.info(`Created ${activities.length} activities`);
+  const newActivities = await addActivities(activities, { id: user._id });
+
+  logger.info(`Created ${newActivities.length} activities`);
   process.exit(0);
 });

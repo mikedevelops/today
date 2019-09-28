@@ -2,10 +2,11 @@ const Entry = require('../models/entry/Entry');
 const Activity = require('../models/activity/Activity');
 const activityTransformer = require('../transformer/activityTransformer');
 
-module.exports.createEntry = async (createdAt, content, activities) => {
+module.exports.createEntry = async (createdAt, content, user, activities) => {
   return Entry.create({
     createdAt,
     content,
+    user,
     activities: activities.map(a => a.id),
   });
 };
@@ -18,6 +19,11 @@ module.exports.updateEntry = async (id, content, activities) => {
   );
 };
 
+/**
+ * @param {{ icon: string, name: string, id: string }[] }activities
+ * @param {{ id: string }} user
+ * @return {Promise<*>}
+ */
 module.exports.addActivities = async (activities, user) => {
   const newActivities = activities.filter(a => a.id === null);
   const newActivityPromises = newActivities.map(activity => Activity.create({

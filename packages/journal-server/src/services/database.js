@@ -7,24 +7,26 @@ const logger = require('./logger');
 
 /**
  * Connect to the database
+ * @param host
+ * @param name
  * @param {Function} next
  */
-module.exports.connect = (next) => {
+module.exports.connect = (host, name, next) => {
   const options = {
     useNewUrlParser: true,
-    dbName: process.env.DB_NAME,
+    dbName: name,
     useFindAndModify: false,
   };
 
   if (next === undefined) {
-    return mongoose.connect(process.env.DB_HOST, options);
+    return mongoose.connect(host, options);
   }
 
   mongoose.connect(
-    process.env.DB_HOST,
+    host,
     options,
   ).then(async () => {
-    logger.info(`Connected to the database ${process.env.DB_HOST}`);
+    logger.info(`Connected to the database ${host}/${name}`);
     next(null);
   }).catch((error) => {
     logger.error(`${error.message}`);

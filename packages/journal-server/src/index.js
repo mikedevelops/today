@@ -30,7 +30,9 @@ app.use(activitiesRouter);
 app.use(entryRouter);
 app.use(authenticationRouter);
 
-db.connect(() => {
+const dbName = process.env.DEV ? `${process.env.DB_NAME}-test` : process.env.DB_NAME;
+
+db.connect(process.env.DB_HOST, dbName, () => {
   app.listen(process.env.PORT, () => {
     logger.info(`Server started and listening on ${process.env.PORT}`);
     emitter.emit('ready');

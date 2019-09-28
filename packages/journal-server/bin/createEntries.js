@@ -5,11 +5,14 @@ const winston = require('winston');
 const User = require('../src/models/user/User');
 const Entry = require('../src/models/entry/Entry');
 const db = require('../src/services/database');
+const { createEntry } = require('../src/managers/entryManager');
+const Activity = require('../src/models/activity/Activity');
 
 const cli = meow('Create user entries', {
   flags: {
     user: {
       type: 'string',
+      default: 'mike@email.com',
     },
     chance: {
       type: 'number',
@@ -17,13 +20,13 @@ const cli = meow('Create user entries', {
     },
     db: {
       type: 'string',
-      default: 'journal',
+      default: 'journal-test',
     },
   },
 });
 
-process.env.DB_HOST = `mongodb://localhost/${cli.flags.db}`;
-process.env.DB_NAME = cli.flags.db;
+const dbHost = 'mongodb://localhost';
+const dbName = cli.flags.db;
 
 const logger = winston.createLogger({
   transports: [
@@ -46,7 +49,7 @@ if (start.isAfter(end)) {
   throw new Error('Start date must be before the end date');
 }
 
-db.connect(async () => {
+db.connect(dbHost, dbName, async () => {
   const user = await User.findOne({ username: cli.flags.user });
 
   if (user === null) {
@@ -58,16 +61,19 @@ db.connect(async () => {
   await Entry.remove({ user: user._id });
 
   while (start.isSameOrBefore(end)) {
-    if (Math.random() >= cli.flags.chance) {
+    if (!date.isSame(end) && Math.random() >= cli.flags.chance) {
       date.add(1, 'day');
       continue;
     }
 
-    entries.push(Entry.create({
-      content: `${date.format(moment.defaultFormatUtc)} ${loremIpsum({ count: 5, unit: 'sentences' })}`,
-      createdAt: date.toDate(),
-      user: user._id,
-    }));
+    const activities = await Activity.find({}).limit(4);
+
+    entries.push(createEntry(
+      date.toDate(),
+      loremIpsum({ count: 5, unit: 'sentences' }),
+      user._id,
+      activities,
+    ));
 
     date.add(1, 'day');
   }

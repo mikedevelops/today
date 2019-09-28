@@ -41,7 +41,7 @@ module.exports.getEntry = async (req, res) => {
 module.exports.saveEntry = async (req, res) => {
   const { content, createdAt, activities } = req.body;
   const updatedActivities = await entryManager.addActivities(activities, req.user);
-  const entry = await entryManager.createEntry(createdAt, content, updatedActivities);
+  const entry = await entryManager.createEntry(createdAt, content, req.user, updatedActivities);
   const populatedEntry = await entry.populate('activities').execPopulate();
   return res.json(entryTransformer(populatedEntry));
 };

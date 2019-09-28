@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev:server": "env TZ=UTC DEV=true nodemon src/index.js",
+    "server:test": "env TZ=UTC DEV=true nodemon src/index.js",
+    "server": "TZ=UTC node src/index.js",
     "db": "mongod --dbpath=./data",
     "test": "mocha ./tests/**/*",
     "migrate": "migrate --config ./migrate.js"
