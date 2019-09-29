@@ -1,4 +1,5 @@
 const activityTransformer = require('../transformer/activityTransformer');
+const Activity = require('../models/activity/Activity');
 
 /**
  * @param {{ icon: string, name: string, id: string }[] }activities

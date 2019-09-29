@@ -2,6 +2,7 @@ import React from 'react';
 import Fuzzy from 'fuzzy-search';
 import emoji from 'emoji-toolkit';
 import { EnhancedSelectedItem } from './EnhancedSelectedItem';
+import { EnhancedSelectOption } from './EnhancedSelectOption';
 
 export class EnhancedSelect extends React.Component {
   constructor(props) {
@@ -11,6 +12,23 @@ export class EnhancedSelect extends React.Component {
       selected: props.selected,
       compose: false,
     };
+
+    this.containerRef = React.createRef();
+    this.handleClickBound = this.handleClick.bind(this);
+  }
+
+  componentDidMount() {
+    document.addEventListener('click', this.handleClickBound);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('click', this.handleClickBound);
+  }
+
+  handleClick (event) {
+    if (this.state.results.length && !this.containerRef.current.contains(event.target)) {
+      this.hideOptions();
+    }
   }
 
   search(event) {
@@ -58,23 +76,19 @@ export class EnhancedSelect extends React.Component {
     }
 
     const { update, selected } = this.props;
+    const value = event.target.value.trim().toLocaleLowerCase();
 
     if (this.state.results.length) {
-      const value = event.target.value.trim().toLocaleLowerCase();
       if (this.state.results.find(result => result.name === value)) {
         return;
       }
-
-      event.target.value = '';
-      update([...selected, this.state.results[0]]);
-      return;
     }
 
     const fuzzy = new Fuzzy(Object.keys(emoji.emojiList), [], { sort: true });
-    const results = fuzzy.search(event.target.value);
+    const results = fuzzy.search(value);
     const option = {
       name: null,
-      label: event.target.value.trim(),
+      label: value,
       icon: results[0] || ':question:'
     };
 
@@ -93,17 +107,16 @@ export class EnhancedSelect extends React.Component {
     }));
   }
 
-  handleHideOptions() {
-    // this.setState(() => ({
-    //   results: []
-    // }));
+  hideOptions() {
+    this.setState(() => ({
+      results: []
+    }));
   }
 
   render () {
     const { selected, options } = this.props;
-
     return (
-      <div>
+      <div ref={this.containerRef}>
         <select
           readOnly={true}
           multiple={true}
@@ -121,28 +134,30 @@ export class EnhancedSelect extends React.Component {
             <li className="selected-list__item" key={option.name}>
               <EnhancedSelectedItem
                 click={this.handleDeselection.bind(this, option.name)}
-                // click={() => console.log('click')}
                 icon={emoji.shortnameToUnicode(option.icon)}
                 name={option.label}
               />
             </li>
           )}
+          <li className="selected-list__item" key="new activity">
+            <input
+              placeholder="Add an activity"
+              className="enhanced-select__input enhanced-button"
+              onClick={this.handleShowOptions.bind(this)}
+              onKeyDown={this.handleNewOption.bind(this)}
+              onInput={this.search.bind(this)}
+            />
+          </li>
         </ol>
-        <input
-          onClick={this.handleShowOptions.bind(this)}
-          onBlur={this.handleHideOptions.bind(this)}
-          onKeyDown={this.handleNewOption.bind(this)}
-          onInput={this.search.bind(this)}
-        />
-        <ol className="results">
+        <ol className="enhanced-select__results">
           { this.state.results.map(result =>
-            <li key={result.name}>
-              <button
+            <li className="enhanced-select__result-item" key={result.name}>
+              <EnhancedSelectOption
+                click={this.handleSelection.bind(this, result.name)}
                 disabled={selected.find(option => option.name === result.name) || false}
-                onClick={this.handleSelection.bind(this, result.name)}
-              >
-                { this.printButton(result) }
-              </button>
+                icon={emoji.shortnameToUnicode(result.icon)}
+                label={result.label}
+              />
             </li>
           )}
         </ol>

@@ -27,10 +27,10 @@ export default class Dashboard extends React.Component {
       <div className="dashboard">
         <div className="main">
           <EntryList entries={entriesExcludingToday}>
-            {/*<NewEntryDraft*/}
-            {/*  entry={today || null}*/}
-            {/*  saveEntry={this.handleSaveEntry.bind(this)}*/}
-            {/*/>*/}
+            <NewEntryDraft
+              entry={today || null}
+              saveEntry={this.handleSaveEntry.bind(this)}
+            />
           </EntryList>
         </div>
       </div>

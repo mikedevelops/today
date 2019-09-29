@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { EnhancedSelect } from './EnhancedSelect';
+import { EnhancedSelect } from '../EnhancedSelect/EnhancedSelect';
 import { mapActivityToOption } from '../../transformers/activityTransformer';
 
 const mapProps = ({ entries }, { entry, update }) => {
