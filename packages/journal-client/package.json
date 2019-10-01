@@ -27,6 +27,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "connected-react-router": "^6.4.0",
+    "draft-js": "^0.11.1",
     "emoji-toolkit": "^5.0.4",
     "fuzzy-search": "^3.0.1",
     "history": "^4.9.0",

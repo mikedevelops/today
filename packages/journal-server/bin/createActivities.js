@@ -4,7 +4,7 @@ const User = require('../src/models/user/User');
 const Activity = require('../src/models/activity/Activity');
 const db = require('../src/services/database');
 const { LoremIpsum } = require('lorem-ipsum');
-const { addActivities } = require('../src/managers/entryManager');
+const { addActivities } = require('../src/managers/activityManager');
 
 const cli = meow('Create user entries', {
   flags: {

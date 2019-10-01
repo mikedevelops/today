@@ -1,6 +1,4 @@
 const Entry = require('../models/entry/Entry');
-const Activity = require('../models/activity/Activity');
-const activityTransformer = require('../transformer/activityTransformer');
 
 module.exports.createEntry = async (createdAt, content, user, activities) => {
   return Entry.create({

@@ -17,7 +17,7 @@ const cli = meow('Create user entries', {
   },
 });
 
-process.env.DB_HOST = `mongodb://localhost/${cli.flags.db}`;
+process.env.DB_HOST = 'mongodb://localhost';
 process.env.DB_NAME = cli.flags.db;
 
 require('../src/services/database');
@@ -35,7 +35,7 @@ if (cli.flags.user === undefined) {
 }
 
 try {
-  connect(async () => {
+  connect(process.env.DB_HOST, process.env.DB_NAME, async () => {
     let user = await User.findOne({ username: cli.flags.user });
 
     if (user !== null) {
