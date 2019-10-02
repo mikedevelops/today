@@ -1,1 +1,1 @@
-web: ./bin/heroku.sh
+web: ./bin/journal_server_proc.sh
