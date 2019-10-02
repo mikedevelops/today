@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "env TZ=UTC src/index.js",
+    "start": "env TZ=UTC node src/index.js",
     "server:test": "env TZ=UTC DEV=true nodemon src/index.js",
     "server": "TZ=UTC node src/index.js",
     "db": "mongod --dbpath=./data",
