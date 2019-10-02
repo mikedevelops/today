@@ -1,1 +1,1 @@
-web: cd packages/journal-server && npm start
+web: ./bin/heroku.sh

@@ -1,5 +1,7 @@
 require('dotenv').config();
 
+console.log(process.env.DB_NAME);
+
 const express = require('express');
 const status = require('http-status');
 const bodyParser = require('body-parser');
