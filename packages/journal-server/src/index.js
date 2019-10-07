@@ -1,7 +1,5 @@
 require('dotenv').config();
 
-console.log(process.env.DB_NAME);
-
 const express = require('express');
 const status = require('http-status');
 const bodyParser = require('body-parser');
@@ -44,7 +42,7 @@ db.connect(process.env.DB_HOST, dbName, () => {
 app.get('/status', (req, res) => {
   let dbStatus = false;
 
-  db.connect((err) => {
+  db.connect(process.env.DB_HOST, dbName, (err) => {
     if (err === null) {
       dbStatus = true;
     }
