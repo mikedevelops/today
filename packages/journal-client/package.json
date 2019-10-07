@@ -4,6 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node public/server.js",
+    "build": "parcel build src/index.html -d public/dist && npm run build:server",
+    "build:server": "parcel build src/server/server.js --target node -d public",
     "dev": "parcel src/index.html --no-cache",
     "test": "jest"
   },
@@ -20,15 +23,16 @@
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-react": "^7.12.4",
     "jest": "^24.5.0",
-    "parcel": "^1.12.3",
+    "parcel": "^1.12.4",
     "sass": "^1.22.12",
     "why-did-you-update": "^1.0.6"
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "connected-react-router": "^6.4.0",
     "draft-js": "^0.11.1",
     "emoji-toolkit": "^5.0.4",
+    "express": "^4.17.1",
     "fuzzy-search": "^3.0.1",
     "history": "^4.9.0",
     "immutable": "^4.0.0-rc.12",

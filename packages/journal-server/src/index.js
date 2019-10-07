@@ -20,7 +20,7 @@ const app = express();
 
 logger.level = 'debug';
 
-app.use(cors({ origin: 'http://journal.local:1234' }));
+app.use(cors({ origin: process.env.CLIENT_ORIGIN }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
