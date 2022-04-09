@@ -29,7 +29,7 @@
     "jsonwebtoken": "^8.5.1",
     "migrate-mongo": "^5.0.1",
     "mocha": "^6.1.4",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "mongoose": "^5.5.5",
     "mongoose-migrate": "^0.2.4",
     "nodemon": "^1.19.0",
