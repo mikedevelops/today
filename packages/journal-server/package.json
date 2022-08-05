@@ -30,7 +30,7 @@
     "migrate-mongo": "^5.0.1",
     "mocha": "^6.1.4",
     "moment": "^2.24.0",
-    "mongoose": "^5.5.5",
+    "mongoose": "^5.7.5",
     "mongoose-migrate": "^0.2.4",
     "nodemon": "^1.19.0",
     "passport": "^0.4.0",
